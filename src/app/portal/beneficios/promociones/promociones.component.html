@@ -1,0 +1,230 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation">
+                        {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row rowSubMenuHeader">
+            <div class="col-xs-9 col-sm-12 col-md-12 row center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card-header" id="verde">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>{{titulo}}
+                                    </div>
+                                    <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                                        <a (click)="openForm()" class="btn btn-sm btn-success"> <i
+                                                class="icon-plus margin-left05em icon-btn-headers"></i> Nuevo</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="scroll">
+                                    <table class="table">
+                                        <thead>
+                                        <th>Promociones</th>
+
+                                        </thead>
+                                        <tr (click)="mostrarConfiguracion()">
+                                            <td>2 x 1 Cafe Americano</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10% Pagando con guradatito</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cafe americano grande en la compra de $150</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <fieldset class="form-group">
+                                            <label>Oferta</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon alignJustifyCenter">
+                                                    <i class="icon-link icon-formulario"></i>
+                                                </span>
+                                                <input class="form-control ng-untouched ng-pristine ng-invalid"
+                                                    type="text">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <fieldset class="form-group">
+                                            <label>Dias Vigencia</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon alignJustifyCenter">
+                                                    <i class="icon-link icon-formulario"></i>
+                                                </span>
+                                                <input class="form-control ng-untouched ng-pristine ng-invalid"
+                                                    type="text">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <fieldset class="form-group">
+                                            <label>Inicio Vigencia</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon alignJustifyCenter">
+                                                    <i class="icon-link icon-formulario"></i>
+                                                </span>
+                                                <input class="form-control ng-untouched ng-pristine ng-invalid"
+                                                    type="text">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <fieldset class="form-group">
+                                            <label>Final Vigencia</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon alignJustifyCenter">
+                                                    <i class="icon-link icon-formulario"></i>
+                                                </span>
+                                                <input class="form-control ng-untouched ng-pristine ng-invalid"
+                                                    type="text">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <fieldset class="form-group">
+                                            <label>Tipo de Oferta</label>
+                                            <div class="input-group">
+                                                    <span class="input-group-addon alignJustifyCenter">
+                                                        <i class="icon-link icon-formulario"></i>
+                                                    </span>
+                                                <input class="form-control ng-untouched ng-pristine ng-invalid"
+                                                    type="text">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <fieldset class="form-group">
+                                            <label>Valor Oferta</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon alignJustifyCenter">
+                                                    <i class="icon-link icon-formulario"></i>
+                                                </span>
+                                                <input class="form-control ng-untouched ng-pristine ng-invalid"
+                                                    type="text">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <fieldset class="form-group">
+                                            <label>Número de Cupones a emitir</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon alignJustifyCenter">
+                                                    <i class="icon-link icon-formulario"></i>
+                                                </span>
+                                                <input class="form-control ng-untouched ng-pristine ng-invalid"
+                                                    type="text">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <fieldset class="form-group">
+                                            <label>Tipo de Emision</label>
+                                            <div class="input-group">
+                                                    <span class="input-group-addon alignJustifyCenter">
+                                                        <i class="icon-link icon-formulario"></i>
+                                                    </span>
+                                                <input class="form-control ng-untouched ng-pristine ng-invalid"
+                                                    type="text">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <fieldset class="form-group">
+                                            <label>Vencimiento por Uso</label>
+                                            <div class="input-group">
+                                                    <span class="input-group-addon alignJustifyCenter">
+                                                        <i class="icon-link icon-formulario"></i>
+                                                    </span>
+                                                <input type="check">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <fieldset class="form-group">
+                                            <label>Vencimiento por Vigencia</label>
+                                            <div class="input-group">
+                                                    <span class="input-group-addon alignJustifyCenter">
+                                                        <i class="icon-link icon-formulario"></i>
+                                                    </span>
+                                                <input type="check">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <fieldset class="form-group">
+                                            <label>Vencimiento por Uso</label>
+                                            <div class="input-group">
+                                                    <span class="input-group-addon alignJustifyCenter">
+                                                        <i class="icon-link icon-formulario"></i>
+                                                    </span>
+                                                <input type="check">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <fieldset class="form-group">
+                                            <label>Vencimiento por Vigencia</label>
+                                            <div class="input-group">
+                                                    <span class="input-group-addon alignJustifyCenter">
+                                                        <i class="icon-link icon-formulario"></i>
+                                                    </span>
+                                                <input type="check">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <fieldset class="form-group">
+                                            <label>Vencimiento por Vigencia</label>
+                                            <div class="input-group">
+                                                    <span class="input-group-addon alignJustifyCenter">
+                                                        <i class="icon-link icon-formulario"></i>
+                                                    </span>
+                                                <input type="check">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

@@ -1,0 +1,179 @@
+<header></header>
+
+<div class="row rowSubMenuHeader">
+	<div class="col-xs-12 main-general">
+		<div class="row">
+			<div class="col-xs-12">
+                <div class="cont-boton-regresar regresar-menu">
+                    <div class="boton-regresar" (click)="Regresar()">
+                        <img src="{{load_static}}/images/header/back.png" alt="regresar">
+                        Regresar
+                    </div>
+                </div>
+            </div>
+		</div>
+
+		<div class="row center-xs">
+            <div class="col-xs-11">
+            	<div class="card">
+            		<div class="card-header naranja-01-ico">
+            			<div class="row">
+                            <div class="col-xs-10 reset-padding">
+                            	<i class="icon-stats-bars margin-left05em"></i>
+                            	Busqueda de sucursales
+                            </div>
+							<div class="col-xs-2 end-xs reset-padding btnFormularios">
+								<a (click)="mostrarModalAlta()" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i>&nbsp;Nuevo</a>
+							</div>
+                        </div>
+            		</div>
+            		<div class="card-block">
+            			<div class="row">
+            				<div class="col-xs-10 col-xs-offset-1">
+								<mat-input-container>
+									<input type="text" matInput type="text" class="form-control" [matAutocomplete]="auto" [formControl]="sucursalCtrl">
+								</mat-input-container>
+								<mat-autocomplete #auto="matAutocomplete">
+									<mat-option *ngFor="let sucursal of listaSucursales | async" [value]="sucursal.idSucursal" (onSelectionChange)="dibujarTabla(sucursal)">
+										{{ sucursal.idSucursal }}
+									</mat-option>
+								</mat-autocomplete>
+
+            				</div>
+            			</div>
+            			<div class="row" *ngIf="showTablaSucursal">
+            				<div class="col-xs-10 col-xs-offset-1">
+            					<table class="table">
+            						<thead>
+            							<th class="text-center">País</th>
+            							<th class="text-center">Canal</th>
+            							<th class="text-center">Sucursal</th>
+            							<th class="text-center">NOC</th>
+            							<th class="text-center">BIG</th>
+            						</thead>
+            						<tbody>
+            							<tr (click)="mostrarModalDetalle()">
+            								<td>{{sucursalSelected.idPais}}</td>
+            								<td>{{sucursalSelected.idCanal}}</td>
+            								<td>{{sucursalSelected.idSucursal}}</td>
+            								<td>{{sucursalSelected.bnoc}}</td>
+            								<td>{{sucursalSelected.bbig}}</td>
+            							</tr>
+            						</tbody>
+            					</table>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+		</div>	
+	</div>
+</div>
+
+<app-dialog [(visible)]="displayModal">
+	<div class="modal-content">
+	    <div class="modal-header">
+	        <button (click)="displayModal = !displayModal;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	            <span class="icon-cross" aria-hidden="true"></span>
+	        </button>
+	        <h4 class="modal-title custom_align" id="Heading">Sucursal</h4>
+	    </div>
+	    <div class="modal-body">
+	        <div class="card-block">
+	            <form [formGroup]="formulario" (ngSubmit)="enviarDatos()" novalidate>
+
+	            	<div class="row row-margin-bottom">
+            			<div class="col-xs-12 form-group">
+                            <label>País*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-flag icon-formulario"></i>
+                                </span>
+                                <input type="text" name="txtPais" id="pais" class="form-control" formControlName="pais" OnlyNumber="true">
+                            </div>
+                            <control-messages [control]="formulario.controls.pais"></control-messages>
+                        </div>
+                    </div>
+
+                    <div class="row row-margin-bottom">
+            			<div class="col-xs-12 form-group">
+                            <label>Canal*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-road icon-formulario"></i>
+                                </span>
+                                <input type="text" name="txtCanal" id="canal" class="form-control" formControlName="canal" OnlyNumber="true">
+                            </div>
+                            <control-messages [control]="formulario.controls.canal"></control-messages>
+                        </div>
+                    </div>
+
+                    <div class="row row-margin-bottom">
+            			<div class="col-xs-12 form-group">
+                            <label>Sucursal*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-briefcase icon-formulario"></i>
+                                </span>
+                                <input type="text" name="txtSucursal" id="sucursal" class="form-control" formControlName="sucursal" [readonly]="displayDetail" OnlyNumber="true">
+                            </div>
+                            <control-messages [control]="formulario.controls.sucursal"></control-messages>
+                        </div>
+                    </div>
+
+                    <div class="row row-margin-bottom">
+	        			<div class="col-xs-12 form-group">
+	                        <label>Mostrar wrapper en NOC*</label>
+							<div class="input-group">
+	                            <span class="input-group-addon alignJustifyCenter">
+	                                <i class="icon-question icon-formulario"></i>
+	                            </span>
+	                            <select name="slctResNoc" id="resNoc" class="form-control" formControlName="noc">
+	                                <option value="">Selecciona una respuesta</option>
+	                                <option *ngFor="let option of respuestasCortas" value="{{option.resValue}}">{{option.resText}}</option>
+	                            </select>
+	                        </div>
+	                        <control-messages [control]="formulario.controls.noc"></control-messages>
+	                    </div>
+	                </div>
+
+	                <div class="row row-margin-bottom">
+	        			<div class="col-xs-12 form-group">
+	                        <label>Mostrar wrapper en BIG*</label>
+							<div class="input-group">
+	                            <span class="input-group-addon alignJustifyCenter">
+	                                <i class="icon-question icon-formulario"></i>
+	                            </span>
+	                            <select name="slctResBig" id="resBig" class="form-control" formControlName="big">
+	                                <option value="">Selecciona una respuesta</option>
+	                                <option *ngFor="let option of respuestasCortas" value="{{option.resValue}}">{{option.resText}}</option>
+	                            </select>
+	                        </div>
+	                        <control-messages [control]="formulario.controls.big"></control-messages>
+	                    </div>
+	                </div>
+
+
+	                <div class="modal-footer">
+	                    <button (click)="displayModal = !displayModal;" type="button" class="btn btn-info">
+	                        <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+	                    </button>
+	                    <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid" *ngIf="displayDetail">
+	                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Editar
+	                    </button>
+	                    <button type="submit" class="btn btn-success" [disabled]="!formulario.valid" *ngIf="!displayDetail">
+	                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+	                    </button>
+	                </div>
+
+	            </form>
+	        </div>
+	    </div>
+	</div>
+</app-dialog>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+	<div class="loader"></div>
+</div>

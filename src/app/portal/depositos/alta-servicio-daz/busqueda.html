@@ -1,0 +1,177 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+     <div class="contenedor-general">
+          
+            <div class="row col-xs-12 pathNavegacion btn-regresar padding-menunavegacion" style="padding-left: 5%;">
+                    
+              <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                    
+             </div>
+
+          <div class="contenedor-tablas fondo-contenedores">
+               <div class="header-contenidos verde-03">
+                    <div class="principal">
+                         <img src="{{load_static}}/images/header/control.png">
+                         <div class="titulo">Alta Servicio DAZ</div>
+                    </div>
+                    <div></div>
+               </div>
+               <div class="contenido-principal busqueda-instituciones">
+
+                        <div class="card-block">
+                            
+                            <form #loginForm="ngForm">  
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <input class="form-control" type="text" id="busqueda" [(ngModel)]="nombreCuenta"  name="cuenta" required="true" (keydown)="alfanumerico($event)" placeholder="Institución o número de tarjeta">
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button  class="boton" id="verde" (click)="buscar()"> Buscar</button>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                        </div>
+
+
+                    <div class="registos">
+                         <table class="table">
+                              <thead>
+                                        <th class="text-center">Id Alnova</th>
+                                        <th class="text-center">Cuenta</th>
+                                        <th class="text-center">Institución</th>
+                                        <th class="text-center">Estatus</th>
+                                        <th class="text-center">Activar</th>
+                                        <th class="text-center">Déposito en ventanilla a <br> Cuenta y Contrato Daz</th>
+                              </thead>
+                              <tbody *ngIf="shoTable">
+                                   <tr *ngFor="let item of ojbContainer">
+                                        <td>{{item.idClienteAlnova}}</td>
+                                        <td>{{item.numCuenta}}</td>
+                                        <td>{{item.nomcInstitucion}}</td>
+                                       
+                                        <td> 
+                                            <span class="tag tag-success " *ngIf="item.status">Activo</span> <span class="tag tag-default" *ngIf="!item.status">Inactivo</span>
+                                        </td>
+                                        <td> 
+                                            <input type="checkbox" name="" id="" [(ngModel)]="item.status" (change)="actualizarestatus($event,item)">
+                                        </td>
+                                        <td> 
+                                            <input type="checkbox" name="" id="" [(ngModel)]="item.cuentaDualidadStatus" (change)="actualizarcuentaDualidadStatus($event,item)" [style.cursor]="item.status ? 'pointer':'not-allowed'" [disabled]="!item.status" >                                                
+                                        </td>
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+
+
+                    <div class="row" *ngIf="shoTable">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal ng-pristine ng-valid">
+<!-- 
+                                            <div class="form-group row">
+                                                <label class="col-md-3 form-control-label">Activar Servicio</label>
+                                                <div class="col-md-9 classradio">
+                                                    <label class="radio-inline" for="inline-radio1">
+                                                        <input type="radio" [(ngModel)]="activarRadio" [checked]="activarRadio" [value]="true" (change)="Changeradio($event)" id="inline-radio1" name="inline-radios" >Sí
+                                                    </label>
+                                                    <label class="radio-inline" for="inline-radio2">
+                                                        <input type="radio" [(ngModel)]="activarRadio" [checked]="activarRadio" [value]="false" (change)="Changeradio($event)" id="inline-radio2" name="inline-radios" >No
+                                                    </label>
+                                                </div>
+                                            </div> -->
+
+
+
+                                        </form>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                    </div>
+
+                    <div class="row" *ngIf="shoTable">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-block">
+
+                                            <!-- <div class="card-footer right">
+                        
+                                                    <button type="button" class="btn btn-sm btn-success" (click)="actualizarestatus()" [disabled]="activarBtnActualizar">Actualizar</button>
+                                            </div> -->
+                                    </div>
+
+                                </div>
+
+                            </div>
+                    </div>
+
+                    
+
+                    
+
+               </div>
+          </div>
+     </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<app-dialog [(visible)]="showDialogAlert">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="showDialogAlert = !showDialogAlert;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="icon-cross" aria-hidden="true"></span>
+                </button>
+                <h4 class="modal-title custom_align" id="Heading">Aviso</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-block">
+                    <fieldset class="form-group">
+                        <label>¿Está seguro de que desea Activar/Desactivar el registro?</label>
+                    </fieldset>
+    
+    
+                    <div class="modal-footer" *ngIf="desicion===1">
+                        <button (click)="showDialogAlert = !showDialogAlert; displayModal = displayModal; buscar();" type="button" class="btn btn-info">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+    
+                        <button  (click)="updateparameter();" type="submit" class="btn btn-danger">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                        </button>
+                    </div>
+                    <div class="modal-footer" *ngIf="desicion===2">
+                        <button (click)="showDialogAlert = !showDialogAlert; displayModal = displayModal; buscar();" type="button" class="btn btn-info">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+    
+                        <button  (click)="updateparameterDualidad();" type="submit" class="btn btn-danger">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-dialog>
+
+
+<style>
+    .link{
+        cursor: pointer;
+    }
+
+    .ok{
+        color: green;
+    }
+    .bad{
+        color: red;
+    }
+</style>

@@ -1,0 +1,36 @@
+
+.classradio{
+    display: flex;
+}
+
+.classradio label{
+    padding-right: 10%;
+    display: table !important;
+}
+
+.right{
+    text-align: right;
+}
+
+#busqueda{
+    border: solid 1px #dcdcdc !important;
+    transition: box-shadow 0.3s, border 0.3s !important;
+    border-radius: 4px !important;
+    font-family: 'Roboto-Light', Helvetica;
+}
+
+.boton{
+    width: 90%;
+    height: 33px;
+    color: #FFFFFF;
+    font-family: "Roboto-Medium", Arial;
+    display: inline-block;
+    text-align: center;
+    border: none;
+    font-size: 16px;
+}
+
+#verde{
+    background-color: #25B79B;
+    color: #fff;
+}

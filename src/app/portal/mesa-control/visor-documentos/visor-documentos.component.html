@@ -1,0 +1,65 @@
+<div class="content-visor-documentos" *ngIf="showViewer">
+
+        <div class="content-controller border-bottom center-contents" [ngClass]="{'not-clickable' : loading || disabled}">
+                <div class="content-icon width-icon" (click)="Events('first')" *ngIf="config.controlllers">
+                        <span class="icon-step-backward"></span>
+                </div>
+                <div class="content-icon width-icon" (click)="Events('previous')" *ngIf="config.controlllers">
+                        <span class="icon-backward"></span>
+                </div>
+
+                <form class="content-icon" (ngSubmit)="Events('input')" *ngIf="config.controlllers">
+                        <input
+                                name="pagina"
+                                autocomplete="off"
+                                [maxLength]="data.chrts"
+                                OnlyNumber="true"
+                                [(ngModel)]="data.pagina"
+                        />
+                        <label>/</label>
+                        <input
+                                name="total"
+                                autocomplete="off"
+                                OnlyNumber="true"
+                                [(ngModel)]="data.total"
+                                readonly="true"
+                        />
+                        <input type="submit" style="display: none;">
+                    </form>
+
+                <div class="content-icon width-icon" (click)="Events('next')" *ngIf="config.controlllers">
+                        <span class="icon-forward"></span>
+                </div>
+                <div class="content-icon width-icon" (click)="Events('last')" *ngIf="config.controlllers">
+                        <span class="icon-step-forward"></span>
+                </div>
+        </div>
+        <div class="content-documentos" *ngIf="!loading">
+                <img
+                        autocomplete="off"
+                        [src]="pageDocument"
+                        alt="Documento"
+                        ngDraggable>
+        </div>
+
+        <div class="content-loading" *ngIf="loading">
+                <div class="loader-visor"></div>
+        </div>
+
+        <div class="content-controller border-top extreme-content" [ngClass]="{'not-clickable' : loading || disabled}">
+                <div class="content-icon">
+                        <div class="content-icon width-icon" (click)="Zoom('+')">
+                                <span class="icon-plus4 icon-handler"></span>
+                        </div>
+                        <div class="content-icon width-icon" (click)="Zoom()">
+                                <span class="icon-minus4 icon-handler"></span>
+                        </div>
+                        <div class="content-icon width-icon" (click)="Rotate('-')">
+                                <span class="icon-rotate icon-handler"></span>
+                        </div>
+                </div>
+                <div class="content-icon" *ngIf="config.downloable" (click)="Download()">
+                        <span class="icon-download6 icon-handler"></span>
+                </div>
+        </div>
+</div>

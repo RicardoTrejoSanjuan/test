@@ -1,0 +1,74 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+    <div class="contenedor-general">
+
+        <!-- BANDEJAS DE RECEPCION DE SOLICITUDES -->
+        <div class="cont-boton-regresar regresar-menu">
+             <div class="boton-regresar" (click)="Regresar()">
+                  <img src="{{load_static}}/images/header/back.png" alt="regresar">
+                  Regresar
+            </div>
+        </div>
+
+        <div class="contenedor-tablas fondo-contenedores">
+            <div class="header-contenidos verde-06-active">
+                 <div class="principal">
+                      <span class="icon-search"></span>
+                      <div class="titulo">Seguimiento de Empresas</div>
+                 </div>
+                 <div></div>
+            </div>
+            <div class="contenido-principal" [ngSwitch]="objHandler.tabVisible">
+                <fieldset class="formulario-search margin-creditos">
+                    <div class="input-group">
+                        <span class="input-group-addon alignJustifyCenter icon-left">
+                            <i class="icon-user icon-formulario"></i>
+                        </span>
+                        <input
+                            type="text"
+                            placeholder="Empresas"
+                            class="control-input"
+                            OnlyAlfanumerico="true"
+                            [(ngModel)]="strInstitucion"
+                            (keyup)="PressSearch($event)"
+                            />
+                        <span class="input-group-close alignJustifyCenter cursor-pointer" (click)="ClearInput()">
+                            <i class="icon-cross icon-formulario"></i>
+                        </span>
+                    </div>
+                </fieldset>
+                <div class="margin-creditos" *ngSwitchCase="1">
+                    <table class="table">
+                         <thead class="thead-table">
+                             <td class="text-center cursor-pointer" (click)="SortTableByString('descripcionFlujo')">Tipo Flujo</td>
+                             <td class="text-center cursor-pointer" (click)="SortTableByString('razonSocialInstitucion')">Razón Social</td>
+                             <td class="text-center cursor-pointer" (click)="SortTableByString('rfcInstitucion')">RFC</td>
+                             <td class="text-center cursor-pointer">Asesor Ventas</td>
+                         </thead>
+                         <tbody>
+                              <tr *ngFor="let item of Registros | slice:ph.init:ph.final" class="cursor-pointer" (click)="Validacion(item)">
+                                  <td class="text-uppercase">{{item.descripcionFlujo}}</td>
+                                  <td class="text-uppercase">{{item.razonSocialInstitucion}}</td>
+                                  <td class="text-uppercase">{{item.rfcInstitucion}}</td>
+                                  <td class="text-capitalize">{{item.nombreAsesor}} {{item.apPaternoAsesor}} {{item.apMaternoAsesor}}</td>
+                              </tr>
+                         </tbody>
+                    </table>
+                    <ng2-table #tablainstituciones (update)="ActualizarTabla($event)">
+                    </ng2-table>
+                </div>
+                <div class="margin-creditos" *ngSwitchCase="2">
+                    <div class="registos sin-registros">
+                        La busqueda no arrojo resultados
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

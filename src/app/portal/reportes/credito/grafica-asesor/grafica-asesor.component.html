@@ -1,0 +1,96 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row container-graph">
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                <div class="col-xs-12">
+                    <div class="card content-graph">
+                        <div class="card-header rosa-02-ico">
+                            <div class="row">
+                                <div class="col-xs-9 reset-padding" *ngIf="!mostrarDetalle">
+                                    <i class="icon-user margin-left05em"></i>Asesor
+                                </div>
+                                <div class="col-xs-9 reset-padding" *ngIf="mostrarDetalle">
+                                    <i class="icon-user margin-left05em"></i>Detalle de Asesor
+                                </div>
+                                <div class="col-xs-3 end-xs containet-btn-regresar">
+                                    <p  *ngIf="mostrarDetalle"
+                                        (click)="Regresar()"
+                                        class="btn-regresar">
+                                        <span class="icon-arrow-left"></span>
+                                        Regresar
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-block row graphs" *ngIf="!mostrarDetalle">
+                            <div class="col-xs-3 container-table-data">
+                                <table class="tabla-categories">
+                                    <caption class="caption-center">Categorías</caption>
+                                    <tbody>
+                                        <tr *ngFor="let item of data; let i = index" (click)="CambiarGrafica(item)">
+                                        <td>
+                                            <div [ngStyle]="{'background-color': paletaColores[i]}" class="background">
+                                            </div>
+                                        </td>
+                                        <td>{{item.nombreEmpleado}}</td>
+                                        <td class="border-left">{{item.y}}</td>
+                                        </tr>
+                                        <td></td>
+                                        <td>Total</td>
+                                        <td class="border-left">
+                                            {{totalCreditos}}
+                                        </td>
+                                        <tr>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xs-9">
+                                <grafica-highchart (eventClick)="CambiarGrafica($event)"></grafica-highchart>
+                            </div>
+
+                        </div>
+                        <div class="card-block row graphs" *ngIf="mostrarDetalle">
+                            <div class="col-xs-6">
+                                <grafica-highchart #graficaBalance (eventClick)="CambiarGrafica($event)"></grafica-highchart>
+                            </div>
+                            <div class="col-xs-6">
+                                <grafica-highchart #graficaDetalle (eventClick)="CambiarGrafica($event)"></grafica-highchart>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

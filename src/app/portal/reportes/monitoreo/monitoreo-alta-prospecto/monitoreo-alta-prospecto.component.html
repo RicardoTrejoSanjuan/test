@@ -1,0 +1,156 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+    <div class="contenedor-general">
+
+        <!-- BANDEJAS DE RECEPCION DE SOLICITUDES -->
+        <div class="cont-boton-regresar regresar-menu">
+             <div class="boton-regresar" (click)="Regresar()">
+                  <img src="{{load_static}}/images/header/back.png" alt="regresar">
+                  Regresar
+            </div>
+        </div>
+
+        <div class="contenedor-tablas fondo-contenedores">
+            <div class="header-contenidos naranja-01-ico">
+                 <div class="principal">
+                      <span class="icon-search"></span>
+                      <div class="titulo">Alta de Prospecto</div>
+                 </div>
+                 <div></div>
+            </div>
+            <div class="contenido-principal" style="padding-top: 30px; min-height: 200px;">
+                <div class="margin-creditos">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Tipo De Operación</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-search icon-formulario"></i>
+                                    </span>
+                                    <select class="form-control ng-untouched ng-pristine ng-invalid" (change)="SeleccionarOperacion($event)">
+                                        <option [value]="-1">Seleccione</option>
+                                        <option [value]="item.idFlujo" *ngFor="let item of arrayTipoOperacion">{{item.descripcion}}</option>
+                                    </select>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="margin-creditos">
+                    <form [formGroup]="formulario" novalidate [ngClass]="{'not-clickable': !objHandler.enabled}">
+                        <div class="row" *ngIf="objHandler.tipoCuenta">
+                            <div class="col-xs-12">
+                                <fieldset class="form-group">
+                                    <label>Búsqueda</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-users icon-formulario"></i>
+                                        </span>
+                                        <input
+                                            type="text"
+                                            class="form-control ng-untouched ng-pristine ng-invalid text-uppercase"
+                                            placeholder="BÚSQUEDA"
+                                            formControlName="busqueda">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.busqueda"></control-messages>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <fieldset class="form-group">
+                                    <label>RFC</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-users icon-formulario"></i>
+                                        </span>
+                                        <input
+                                            type="text"
+                                            maxlength="12"
+                                            class="form-control ng-untouched ng-pristine ng-invalid text-uppercase"
+                                            formControlName="rfc"
+                                            OnlyAlfanumerico="true"
+                                            [readonly]="!objHandler.enabled">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.rfc"></control-messages>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <fieldset class="form-group">
+                                    <label>Razón Social</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-users icon-formulario"></i>
+                                        </span>
+                                        <input
+                                            type="text"
+                                            class="form-control ng-untouched ng-pristine ng-invalid text-uppercase"
+                                            formControlName="razonSocial"
+                                            OnlyAlfanumerico="true"
+                                            [readonly]="!objHandler.enabled">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.razonSocial"></control-messages>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <fieldset class="form-group">
+                                    <label>Flujo</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-search icon-formulario"></i>
+                                        </span>
+                                        <select
+                                            class="form-control ng-untouched ng-pristine ng-invalid"
+                                            formControlName="flujo"
+                                            [ngClass]="{'select-disabled': !objHandler.enabled}">
+                                            <option [value]="null">Seleccione</option>
+                                            <option *ngFor="let item of arrayFlujos" [value]="item.idFlujo">{{item.descripcion}}</option>
+                                        </select>
+                                    </div>
+                                    <control-messages [control]="formulario.controls.flujo"></control-messages>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <fieldset class="form-group">
+                                    <label>Asesor Ventas</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-users icon-formulario"></i>
+                                        </span>
+                                        <select
+                                            class="form-control ng-untouched ng-pristine ng-invalid"
+                                            formControlName="asesorVentas"
+                                            [ngClass]="{'select-disabled': !objHandler.enabled}">
+                                            <option [value]="null">Seleccione</option>
+                                            <option *ngFor="let item of arrayAsesor" [value]="item.idAsesor">{{item.nombre}} {{item.apPaterno}} {{item.apMaterno}}</option>
+                                        </select>
+                                    </div>
+                                    <control-messages [control]="formulario.controls.asesorVentas"></control-messages>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer padding-alta-pros">
+                            <button type="submit" class="btn btn-success" [disabled]="!formulario.valid" (click)="Guardar(formulario.value)">
+                            <!--<button type="submit" class="btn btn-success" *ngIf="handlerModal.nuevo" (click)="ValidarItem(formulario.value)"> -->
+                                <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

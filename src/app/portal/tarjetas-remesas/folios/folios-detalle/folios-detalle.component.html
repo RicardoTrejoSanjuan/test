@@ -1,0 +1,114 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row end-xs">
+            <div class="col-xs-10">
+                <div class="pathNavegacion text-left">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row wrapAllHeight center-xs">
+            <div class="col-xs-2">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-10">                
+                <div class="card wrapAllHeightCard">
+                    <div class="card-header-formularios azul-05-ico">
+                        <div class="row">
+                            <div class="col-xs-9 reset-padding header-title">
+                                <i class="icon-file-text-o margin-left05em"></i>Detalle de folio
+                            </div>
+                            <div class="col-xs-3 reset-padding header-title align-flex-end">
+                                <a class="btn btn-sm btn-secondary" (click)="regresar()"> 
+                                    <i class="icon-arrow-circle-left icon-btn-headers"></i>&nbsp;&nbsp;Regresar
+                                </a>
+                                <a class="btn btn-sm btn-secondary" *ngIf="detalleFolioFiltrados.length > 0" (click)="exportarDatosModulo()"> 
+                                    <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Exportar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block wrapAllHeightGraphic scroll-card">
+                        <div class="row detalle-folio">
+                            <div class="col-xs-6 lista-detalle">
+                                <div class="item-detalle"><span class="etiqueta-detalle">Número de folio:</span>&nbsp;{{folioRemesa.idFolio}}</div>
+                                <div class="item-detalle"><span class="etiqueta-detalle">Número de tarjetas:</span>&nbsp;{{folioRemesa.numTarjeta}}</div>
+                                <div class="item-detalle"><span class="etiqueta-detalle">Comentarios:</span>&nbsp;{{folioRemesa.comentario !== null ? folioRemesa.comentario : "Sin ningún comentario"}}</div>
+                            </div>
+                            <div class="col-xs-6 column-vertical-center" *ngIf="folioRemesa.idStatus === listaEstatusFolio.pendiente">
+                                <a class="btn btn-success" *ngIf="folioRemesa.idReceptor === idResponsable" (click)="actualizarEstatusFolio(listaEstatusFolio.aceptado)"> 
+                                    <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Aceptar
+                                </a>
+                                <a class="btn btn-warning" *ngIf="folioRemesa.idReceptor === idResponsable" (click)="actualizarEstatusFolio(listaEstatusFolio.rechazado)"> 
+                                    <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Rechazar
+                                </a>
+                                <a class="btn btn-danger" *ngIf="folioRemesa.idOtorgante === idResponsable" (click)="actualizarEstatusFolio(listaEstatusFolio.cancelado)"> 
+                                    <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Cancelar
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-group" [ngClass]="{'element-disabled': detalleFolioFiltrados.length === 0}">
+                            <label>Buscador</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" name="busqueda" placeholder="Folio..." class="form-control" [(ngModel)]="cadena" (keyup)="filtrarFolios(cadena)">
+                            </div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <th>ID empleado</th>
+                                <th>Tarjeta</th>
+                                <th>Estatus</th>
+                                <th>Fecha entrega</th>
+                                <th>Fecha vencimiento</th>
+                                <th>Detalle</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let folio of detalleFolioFiltrados | slice: manejadorPaginas.init : manejadorPaginas.final">
+                                    <td>{{folio.idEmpleado}}</td>
+                                    <td>{{folio.numTarjeta}}</td>
+                                    <td>
+                                        <span class="tag" [ngClass]="{'tag-success': folio.idStatusTarjeta === 1,'tag-danger': folio.idStatusTarjeta === 0}">
+                                            {{folio.statusTarjeta !== null ? folio.statusTarjeta : "Sin estatus"}}
+                                        </span>
+                                    </td>
+                                    <td>{{folio.fechEntrega !== null ? folio.fechEntrega : "--"}}</td>
+                                    <td>{{folio.fechVencimiento !== null ? folio.fechVencimiento : "--"}}</td>
+                                    <td>
+                                         <a (click)="consultarDetalleTarjeta(folio)">
+                                            <span class="icon-search text-inverse update-icon"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="detalleFolioFiltrados.length === 0">
+                                    <td colspan="6">
+                                        <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ng2-table #tablaDetalleFolio (update)="actualizarTablaFolios($event)" *ngIf="mostrarPaginadorTabla"></ng2-table>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

@@ -1,0 +1,220 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row container-graph">
+            <div class="col-xs-3 col-sm-2 col-md-2 boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card content-graph">
+                            <div class="card-header rosa-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-credit-card margin-left05em"></i> <span>{{nombrePes[numeroPes]}}</span>
+                                    </div>
+                                    <div class="col-xs-3 end-xs containet-btn-regresar">
+                                        <p  *ngIf="btnRegresar"
+                                            (click)="Regresar()"
+                                            class="btn-regresar">
+                                            <span class="icon-arrow-left"></span>
+                                            Regresar
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-block row graphs" *ngIf="vista === 'totalCreditos'">
+                                <div class="col-xs-3 container-table-data">
+                                    <table class="tabla-categories">
+                                        <caption class="caption-center">Categorías</caption>
+                                        <tbody>
+                                            <tr *ngFor="let item of Categorias; let i = index" (click)="MostraTabsGraficas(item)">
+                                                <td>
+                                                    <div [ngStyle]="{'background-color': paletaColores[i]}" class="background">
+                                                </div>
+                                            </td>
+                                            <td>{{item.name}}</td>
+                                            <td class="border-left">{{item.y}}</td>
+                                        </tr>
+                                        <td></td>
+                                        <td>Total</td>
+                                        <td class="border-left">
+                                            {{totalCreditos}}
+                                        </td>
+                                        <tr>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xs-9">
+                                <grafica-highchart #graficaTotalCreditos (eventClick)="MostraTabsGraficas($event)"></grafica-highchart>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xs-12 graphs" *ngIf="vista === 'tabsGraficasGral'">
+                            <div class="row container-tabs-credito">
+                                <div class="tabs" [ngClass]="{'tab-active':(tabs === 'creditosPorInstitucion')}" (click)="setTab('creditosPorInstitucion')">Instituciones
+                                    <span></span>
+                                </div>
+                                <div  class="tabs" [ngClass]="{'tab-active':(tabs === 'detalleBalance')}" (click)="setTab('detalleBalance')">Detalle y Balance
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 graps-with-tabs" *ngIf="tabs === 'creditosPorInstitucion'">
+                                <grafica-highchart #graficaInstituciones (eventClick)="MostarEmpleadosPorInstitucion($event)"></grafica-highchart>
+                            </div>
+                            <div class="col-xs-12 row graps-with-tabs" *ngIf="tabs === 'detalleBalance'">
+                                <div class="col-xs-6">
+                                    <grafica-highchart #graficaCreditoDetalle (eventClick)="MostrarDetalleCredito($event)"></grafica-highchart>
+                                </div>
+                                <div class="col-xs-6">
+                                    <grafica-highchart #graficaCreditoBalance (eventClick)="MostrarBalanceCredito($event)"></grafica-highchart>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 graphs" *ngIf=" vista === 'empleadosPorInstitucion'">
+                            <!-- <div class="col-xs-12" style="height: 180px;"> -->
+                            <div class="col-xs-12 top-graphs">
+                                <grafica-highchart #graficaEmpleadosPorInstitucion (eventClick)="MostrarTablaEmpleados($event)"></grafica-highchart>
+                            </div>
+                            <!-- <div class="col-xs-12 row" style="height: calc(100% - 230px);"> -->
+                            <div class="col-xs-12 row bottom-graphs">
+                                <div class="col-xs-6">
+                                    <grafica-highchart #graficaCreditoDetalle (eventClick)="eventoNuevo($event)"></grafica-highchart>
+                                </div>
+                                <div class="col-xs-6">
+                                    <grafica-highchart #graficaCreditoBalance (eventClick)="eventoNuevo($event)"></grafica-highchart>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 graphs" *ngIf="vista === 'consultaDetallesPorEstatus'">
+                            <grafica-highchart #graficaDetallesPorEstatus (eventClick)="eventoNuevo($event)"></grafica-highchart>
+                        </div>
+
+                        <div class="col-xs-12 graphs" *ngIf="vista === 'consultaBalancePorEstatus'">
+                            <grafica-highchart #graficaDetallesPorEstatus (eventClick)="eventoNuevo($event)"></grafica-highchart>
+                        </div>
+
+                        <div class="row card" *ngIf="vista === 'empleadosPorInstitucionPorEstatus'">
+                                <div class="col-xs-12">
+                                    <div class="scroll marginleftableNombre">
+                                    <table class="table tableScroll">
+                                        <thead>
+                                            <th class="colFixedNombre">Nombre</th>
+                                            <th>Cliente único</th>
+                                            <th>Número de empleado</th>
+                                            <th>RFC</th>
+                                            <th>Edad</th>
+                                            <th>Domicilio</th>
+                                            <th>Ingreso mensual</th>
+                                            <th *ngIf="showOtorgados">Abono</th>
+                                            <th *ngIf="showOtorgados">Capital Pagado</th>
+                                            <th *ngIf="showOtorgados">Fecha surtimiento</th>
+                                            <th *ngIf="showOtorgados">Fecha termino</th>
+                                            <th *ngIf="showOtorgados">Interés pagado</th>
+                                            <th *ngIf="showOtorgados">IVA</th>
+                                            <th *ngIf="showOtorgados">IVA Pagado</th>
+                                            <th *ngIf="showOtorgados">Monto prestado</th>
+                                            <th *ngIf="showOtorgados">Tasa interés</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of pagedItems">
+                                                <td class="colFixedNombre">{{item.nombre}}</td>
+                                                <td>{{item.clienteUnico}}</td>
+                                                <td>{{item.numempleado}}</td>
+                                                <td>{{item.rfc}}</td>
+                                                <td>{{item.edad}}</td>
+                                                <td>{{item.domicilio}}</td>
+                                                <td>{{item.ingresoMensual}}</td>
+                                                <td *ngIf="showOtorgados">{{item.abono}}</td>
+                                                <td *ngIf="showOtorgados">{{item.capitalpagado}}</td>
+                                                <td *ngIf="showOtorgados">{{item.fsurtimiento}}</td>
+                                                <td *ngIf="showOtorgados">{{item.ftermino}}</td>
+                                                <td *ngIf="showOtorgados">{{item.interespagado}}</td>
+                                                <td *ngIf="showOtorgados">{{item.iva}}</td>
+                                                <td *ngIf="showOtorgados">{{item.ivapagado}}</td>
+                                                <td *ngIf="showOtorgados">{{item.montoPrestado}}</td>
+                                                <td *ngIf="showOtorgados">{{item.tasaInteres}}</td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                    </div>
+                                    <div class="container">
+                                        <div class="text-end">
+                                            <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                    <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                                </li>
+                                                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                    <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                                </li>
+                                                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                                    <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                                </li>
+                                                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                    <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                                </li>
+                                                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                    <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <!--<div class="col-xs-12 graphs" *ngIf="vista === 'empleadosPorInstitucionPorEstatus'" style="overflow-y: auto;">
+                            <div class="table-credito" *ngFor="let item of dataTable">
+                                <div class="row">
+                                    <label>{{item.nombre}}</label>
+                                    <label>Ingreso Mensual: $ {{item.ingresoMensual}}</label>
+                                </div>
+                                <div class="row">
+                                    <label>{{item.numempleado}}</label>
+                                    <label>{{item.clienteUnico}}}</label>
+                                    <label>{{item.rfc}}</label>
+                                </div>
+                                <div class="row">
+                                    <label>{{item.domicilio}}</label>
+                                    <label>{{item.edad}}</label>
+                                </div>
+                            </div>
+                        </div!-->
+
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

@@ -1,0 +1,243 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation">
+                        {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row rowSubMenuHeader">
+            <div class="col-xs-9 col-sm-12 col-md-12 row center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card-header" id="verde">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>Asignación de ofertas
+                                    </div>
+                                    <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                                        <a (click)="Regresar()" class="btn btn-sm " *ngIf="institucionBand===false"> 
+                                            <img src="{{load_static}}/images/header/back.png" alt="regresar"> Regresar</a>
+                                        <a (click)="RegresarInst()" class="btn btn-sm " *ngIf="institucionBand===true"> 
+                                                <img src="{{load_static}}/images/header/back.png" alt="regresar"> Regresar</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card ng-scope" ng-controller="trafficDemoCtrl">
+                                <div class="card-footer" *ngIf="institucionBand===false">
+                                    <ul>
+                                        <li>
+                                            <div class="text-muted" style="text-align:left !important"><strong>{{comercio.nombre}}</strong></div>
+                                            <div class="text-muted" style="text-align:left !important">{{oferta.descripcionOferta}}</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-footer" *ngIf="institucionBand===true">
+                                    
+                                    <ul>
+                                        <li>
+                                            <div class="text-muted" style="text-align:left !important"><strong>{{institucion.razonSocial}}</strong></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-block">
+                                    <div class="row" *ngIf="institucionBand===false">
+                                        <div class="col-sm-5">
+                                            <div class="scroll col-xs-12">
+                                                <table class="table"   id="cont1">
+                                                    <thead>
+                                                        <th>INSTITUCIONES POR ASIGNAR</th>
+                                                    </thead>
+                                                    <tr *ngFor="let item of pagedItems" draggable="true"  id="e2" >
+                                                        <td>{{item.razonSocial}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="container">
+                                                <div class="text-end">
+                                                    <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                            <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                            <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                                        </li>
+                                                        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                                            <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                            <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                            <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <br><br><br><br>
+                                                    </div>
+                                                <div class="col-sm-12">
+                                                    <button type="submit" class="btn btn-success" >
+                                                        <i class="icon-arrow-right icoBntModal"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                        <br>
+                                                 </div>
+                                                <div class="col-sm-12">
+                                                    <button type="submit" class="btn btn-success" >
+                                                        <i class="icon-arrow-left icoBntModal"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <div class="scroll col-xs-12">
+                                                <table class="table"   id="cont2">
+                                                    <thead>
+                                                        <th>INSTITUCIONES ASIGNADAS</th>
+                                                    </thead>
+                                                    <tr *ngFor="let iteminst of pagedItemsIns" draggable="true"  id="e4" >
+                                                        <td>{{iteminst.razonSocial}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="container">
+                                                <div class="text-end">
+                                                    <ul *ngIf="pagerIns.pages && pagerIns.pages.length" class="pagination">
+                                                        <li [ngClass]="{disabled:pagerIns.currentPage === 1}">
+                                                            <a (click)="setPageInst(1,pagerIns.rango,pagerIns.total)">Inicio</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pagerIns.currentPage === 1}">
+                                                            <a (click)="setPageInst(pagerIns.currentPage - 1,pagerIns.rango,pagerIns.total)">Anterior</a>
+                                                        </li>
+                                                        <li *ngFor="let page of pagerIns.pages" [ngClass]="{active:pagerIns.currentPage === page}">
+                                                            <a (click)="setPageInst(page,pagerIns.rango,pagerIns.total)">{{page}}</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pagerIns.currentPage === pagerIns.totalPages}">
+                                                            <a (click)="setPageInst(pagerIns.currentPage + 1,pagerIns.rango,pagerIns.total)">Siguiente</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pagerIns.currentPage === pagerIns.totalPages}">
+                                                            <a (click)="setPageInst(pagerIns.totalPages,pagerIns.rango,pagerIns.total)">Último</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="institucionBand===true">
+                                        <div class="col-sm-5">
+                                            <div class="scroll col-xs-12">
+                                                <table class="table"   id="cont1">
+                                                    <thead>
+                                                        <th>OFERTAS POR ASIGNAR</th>
+                                                    </thead>
+                                                    <tr *ngFor="let item of pagedItems" draggable="true"  id="e2">
+                                                        <td>{{item.razonSocial}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="container">
+                                                <div class="text-end">
+                                                    <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                            <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                            <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                                        </li>
+                                                        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                                            <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                            <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                            <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <br><br><br><br>
+                                                    </div>
+                                                <div class="col-sm-12">
+                                                    <button type="submit" class="btn btn-success" >
+                                                        <i class="icon-arrow-right icoBntModal"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                        <br>
+                                                    </div>
+                                                <div class="col-sm-12">
+                                                    <button type="submit" class="btn btn-success" >
+                                                        <i class="icon-arrow-left icoBntModal"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <div class="scroll col-xs-12">
+                                                <table class="table"   id="cont2">
+                                                    <thead>
+                                                        <th>OFERTAS ASIGNADAS</th>
+                                                    </thead>
+                                                    <tr *ngFor="let iteminst of pagedItemsIns" draggable="true"  id="e4" >
+                                                        <td>{{iteminst.razonSocial}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="container">
+                                                <div class="text-end">
+                                                    <ul *ngIf="pagerIns.pages && pagerIns.pages.length" class="pagination">
+                                                        <li [ngClass]="{disabled:pagerIns.currentPage === 1}">
+                                                            <a (click)="setPageInst(1,pagerIns.rango,pagerIns.total)">Inicio</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pagerIns.currentPage === 1}">
+                                                            <a (click)="setPageInst(pagerIns.currentPage - 1,pagerIns.rango,pagerIns.total)">Anterior</a>
+                                                        </li>
+                                                        <li *ngFor="let page of pagerIns.pages" [ngClass]="{active:pagerIns.currentPage === page}">
+                                                            <a (click)="setPageInst(page,pagerIns.rango,pagerIns.total)">{{page}}</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pagerIns.currentPage === pagerIns.totalPages}">
+                                                            <a (click)="setPageInst(pagerIns.currentPage + 1,pagerIns.rango,pagerIns.total)">Siguiente</a>
+                                                        </li>
+                                                        <li [ngClass]="{disabled:pagerIns.currentPage === pagerIns.totalPages}">
+                                                            <a (click)="setPageInst(pagerIns.totalPages,pagerIns.rango,pagerIns.total)">Último</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success" >
+                                            <i class="icon-ticket icoBntModal"></i>&nbsp; Generar cupones
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

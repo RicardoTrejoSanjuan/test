@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
+
+  <!-- base url name-->
+  <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
+
+  <!-- Configured Head Tags  -->
+  <% if (webpackConfig.htmlElements.headTags) { %>
+    <%= webpackConfig.htmlElements.headTags %>
+  <% } %>
+
+  <!-- Configured Head Manifest  -->
+  <%= htmlWebpackPlugin.files.webpackManifest %>
+
+  <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
+    <!-- Webpack Dev Server reload -->
+    <script src="/webpack-dev-server.js"></script>
+  <% } %>
+
+  <!-- Third-party CSS/SCSS imports are both in src/app/app.module and src/styles/ -->
+  <!-- CSS/SCSS will be added here by Webpack -->
+  <!-- There will be also main and polyfill import as preload, but the real files will be added at the bottom of body tag-->
+
+
+</head>
+<body>
+  <app-root>
+    <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
+      <img style="position: absolute; top: 0; bottom: 0; right: 0; left: 0; margin: auto;" src="/assets/images/ring.svg" />
+    <% } else { %>
+      <img style="position: absolute; top: 0; bottom: 0; right: 0; left: 0; margin: auto;" src="<%= htmlWebpackPlugin.options.metadata.baseUrl %>/assets/images/ring.svg"
+    />
+    <% } %>
+
+  </app-root>
+</body>
+</html>

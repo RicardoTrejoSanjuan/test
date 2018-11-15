@@ -1,0 +1,216 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-9 col-sm-10 col-md-10 row center-xs">
+
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+
+
+
+                        <div class="card">
+                            <div class="card-header cafe-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>Tabla de Servicios
+                                    </div>
+                                    <div class="col-xs-3 end-xs reset-padding">
+                                        <a (click)="showDialogAlert = !showDialogAlert;" class="btn btn-sm btn-info"> <i class="icon-plus margin-left05em icon-btn-headers"></i> Nuevo</a>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-block">
+                                <div class="scroll marginleftable">
+                                    <table class="table tableScroll">
+                                        <thead>
+                                            <th class="colFixed1">Cliente Unico</th>
+                                            <th >Nombre</th>
+                                            <th>Domicilio</th>
+                                            <th>Rfc</th>
+                                            <th>Num Empleado</th>
+                                            <th>Edad</th>
+                                            <th>Ingreso Mensual</th>
+                                            <th>Domicilio2</th>
+                                        </thead>
+                                        <tr *ngFor="let servicio of pagedItems">
+                                            <td class="colFixed1 colorCell">{{servicio.clienteUnico}}</td>
+                                            <td>{{servicio.nombre}}</td>
+                                            <td>{{servicio.domicilio}}</td>
+                                            <td>{{servicio.rfc}}</td>
+                                            <td>{{servicio.numempleado}}</td>
+                                            <td>{{servicio.edad}}</td>
+                                            <td>{{servicio.ingresoMensual}}</td>
+                                            <td>{{servicio.domicilio}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="container">
+                                    <div class="text-end">
+                                        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                            <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                            </li>
+                                            <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                            </li>
+                                            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                                <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                            </li>
+                                            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                            </li>
+                                            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+                        <div class="card">
+                            <div class="card-header cafe-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>Formulario example
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="form-group">
+                                    <label for="country">Input</label>
+                                    <input type="text" class="form-control" id="country" placeholder="Country name">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="country">Select</label>
+                                    <select id="select" name="select" class="form-control" size="1">
+                                        <option value="0">Please select</option>
+                                        <option value="1">Option #1</option>
+                                        <option value="2">Option #2</option>
+                                        <option value="3">Option #3</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="country">Checkboxes</label>
+                                    <div class="checkbox">
+                                        <label for="checkbox1">
+                                            <input type="checkbox" id="checkbox1" name="checkbox1" value="option1">Option 1
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label for="checkbox2">
+                                            <input type="checkbox" id="checkbox2" name="checkbox2" value="option2">Option 2
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label for="checkbox3">
+                                            <input type="checkbox" id="checkbox3" name="checkbox3" value="option3">Option 3
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="country">Radios</label>
+                                    <div class="radio">
+                                        <label for="radio1">
+                                                <input type="radio" id="radio1" name="radios" value="option1">Option 1
+                                            </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label for="radio2">
+                                                <input type="radio" id="radio2" name="radios" value="option2">Option 2
+                                            </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label for="radio3">
+                                                <input type="radio" id="radio3" name="radios" value="option3">Option 3
+                                            </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="country">Multiple select</label>
+                                    <select id="multiple-select" name="multiple-select" class="form-control" size="5" multiple="">
+                                        <option value="1">Option #1</option>
+                                        <option value="2">Option #2</option>
+                                        <option value="3">Option #3</option>
+                                        <option value="4">Option #4</option>
+                                        <option value="5">Option #5</option>
+                                        <option value="6">Option #6</option>
+                                        <option value="7">Option #7</option>
+                                        <option value="8">Option #8</option>
+                                        <option value="9">Option #9</option>
+                                        <option value="10">Option #10</option>
+                                    </select>
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<app-dialog [(visible)]="showDialogAlert">
+<h1>Hola</h1>
+</app-dialog>

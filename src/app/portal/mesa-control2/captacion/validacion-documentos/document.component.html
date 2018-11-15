@@ -1,0 +1,72 @@
+<header></header>
+<style type="text/css">
+    .contenedor-pdf {
+        height: 100%;
+        margin: 0 auto;
+        background: transparent url('../../../../images/loader.gif') no-repeat center center;
+    }
+</style>
+<!-- Fondo y contenedor principal -->
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-offset-2 col-xs-10">
+                <div class="row col-xs-12">
+                    <return [model]="'./mesa-control2/captacion'" [value]="true" [classActive]="true"></return>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-2 col-md-2">
+                <avatar-mc [avatar]="true"></avatar-mc>
+                <list-document-mc [_listDocuments]="listDocuments" [_currentlyDocument]="currentlyDocument" (setCurrentlyDocument)="setCurrentlyDocument($event)"></list-document-mc>
+            </div>
+            <div class="row col-xs-9 col-sm-10 col-md-10">
+                <div class="col-xs-12">
+                    <div class="col-xs-12 header-contenidos {{currentlyDocument.claseFondo}}">
+                        <div class="principal">
+                            <img src="{{load_static}}/images/mesa-control-expedientes/{{currentlyDocument.icon}}">
+                            <div class="titulo">
+                                {{currentlyDocument.name}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contenidos-rubros-doc">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xs-12" *ngIf="currentlyDocument.idDocument === 'menu'"> 
+                                    <div class="row">
+                                            <div class="col-xs-4 center-xs" *ngFor="let document of ( listDocuments | filterMenuDoc )">
+                                                <figure>
+                                                    <div [ngClass]="{
+                                                        'document-success': document.status == '0',
+                                                        'document-error': document.status == '1',
+                                                        'document-warning': document.status == '2'
+                                                    }" (click)="openDocument(document)"></div>
+                                                    <figcaption class="center">{{document.name}}</figcaption>
+                                                </figure>
+                                                <br>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12" *ngIf="currentlyDocument.idDocument !== 'menu'">
+                                    <div *ngIf="pdfObjectViewer !== null" [innerHTML]="pdfObjectViewer" style="height: 450px;"
+                                        class="contenedor-pdf"></div>
+                                </div>
+                                <div class="col-xs-offset-8 col-xs-4" *ngIf="currentlyDocument.idDocument !== 'menu' && currentlyDocument.status !== 0">
+                                    <div class="document-button">
+                                        <button class="verde-04-active" (click)="documentationGenerator(currentlyDocument)">Generar documento</button>
+                                        <button class="verde-04-active" (click)="test()">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

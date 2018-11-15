@@ -1,0 +1,610 @@
+.wrapAllHeight{
+    height: calc(100% - 40px);
+    height: -webkit-calc(100% - 40px);
+    height: -moz-calc(100% - 40px);
+}
+
+.wrapAllHeightCard{
+    height: calc(100% - 15px);
+    height: -webkit-calc(100% - 15px);
+    height: -moz-calc(100% - 15px);
+}
+
+.wrapAllHeightGraphic{
+    height: calc(100% - 80px);
+    height: -webkit-calc(100% - 80px);
+    height: -moz-calc(100% - 80px);   
+}
+
+.genericFullHeight{height: 100%;}
+.wrapAllHeightGraphicSection{height: calc(100% - 145px);}
+
+/* Estilos especificos para la estructura de los headers de cada card block del modulo*/
+.align-flex-start {justify-content: flex-start;}
+.align-flex-end {justify-content: flex-end;}
+
+.column-vertical-center {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.align-start {text-align: initial;}
+.align-end {text-align: end;}
+.align-center {text-align: center;}
+
+.header-title {
+    display: flex;
+    align-items: center;
+}
+/*  Estilos especificos para inputs que deseen obtener una apariencia mas explicita de alguna etapa como: desabilidato,invalido, valido, no permitido etc.  */
+.element-disabled {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+}
+
+.button-disabled {
+    opacity: 0.5 !important;
+    pointer-events: none !important;
+}
+
+.element-invalid { 
+    color: #ff3964;
+    border: 1px solid #FE112C !important;
+}
+
+.text-inverse {
+    color: #253E4A;
+}
+
+.text-success {
+    color: #04b273;
+}
+
+.text-danger {
+    color: #ff3964;
+}
+
+.text-primary {
+    color: #00C3CC;
+}
+
+.tag {
+    padding: 0.35em 0.45em !important;
+    font-size: 90% !important;
+}
+
+.tag-primary {
+    background-color: #00AEBF; 
+}
+
+.table-scrollable,.scroll-card {
+    overflow: scroll;
+}
+/* Estilos especificos para la fila en una tabla que indicara que no se encontro ningun resultado */
+.resultado-vacio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #10a0a0;
+}
+
+/* Estilos especificos para la pantalla de la grafica de tarjetas */
+/*#########################################*/
+
+.contenedor-responsable {
+    display: flex; /* Determina que todo lo que se encuentre dentro de este contenedor sera manipulado con flexbox*/
+    flex-direction: row; /* Determina la alineacion de los elementos dentro del contenedor, ya sea en una fila o en una columna */
+    flex-wrap: nowrap; /* Determina si los elementos dentro del contenedor van a crecer conforme al tamaño del contenedor o si se distribuyen en filas */
+    justify-content: space-around; /* Determina la distribucion de los elementos dentro del contenedor, en este caso con la misma distancia entre un elemento y otro */
+    margin-bottom: 12px;
+}
+
+.contenedor-responsable.justify-flex-center {
+    justify-content: center;
+}
+
+.contenedor-responsable.justify-flex-center .tarjeta-general {
+    margin: 0 5px;
+}
+
+.tarjeta-general {
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.3);
+}
+
+.tarjeta-general .estatus,.fecha-busqueda-header {
+    font-weight: 400;
+    color: #363b40;
+}
+
+.tarjeta-general .cantidad {
+    font-weight: 500;
+    color: #393a3d;
+}
+
+.estatus,.cantidad {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 50%;
+    font-size: 18px;
+}
+
+.fecha-busqueda-header {
+    width: 100%;
+    font-size: 18px;
+    background-color: #9fcece;
+    margin-bottom: .3rem
+}
+
+.tarjeta-general.disponibles .estatus{background-color: #C1F8A5;}
+.tarjeta-general.devueltas .estatus{background-color: #FCBEB9;}
+.tarjeta-general.entregadas .estatus{background-color: #A4E5F6;}
+.tarjeta-general.pendientes-distribuir .estatus{background-color: #FAD199;}
+.tarjeta-general.pendientes-devolver .estatus{background-color: #FDB4DA;}
+.tarjeta-general.responsable .estatus{background-color: #f8f2ab;}
+.tarjeta-general.manager .estatus{background-color: #e2d2b7;}
+
+.tarjeta-general.responsable, .tarjeta-general.manager, .tarjeta-general.busqueda {flex-basis: 30%;}
+.tarjeta-general.disponibles, .tarjeta-general.devueltas, .tarjeta-general.entregadas, .tarjeta-general.pendientes-distribuir, .tarjeta-general.pendientes-devolver {flex-basis: 17%;}
+
+.tarjeta-general.disponibles {order: 1;}
+.tarjeta-general.devueltas {order: 2;}
+.tarjeta-general.entregadas {order: 3;}
+.tarjeta-general.pendientes-distribuir {order: 4;}
+.tarjeta-general.pendientes-devolver {order: 5;}
+
+.tarjeta-general.responsable {order: 1;}
+.tarjeta-general.manager {order: 2;}
+.tarjeta-general.busqueda {order: 3;}
+
+
+.mat-input-container {
+    width: 95% !important;
+}
+
+.mat-input-wrapper {
+    padding-bottom: 5px !important;
+}
+
+/* Estilos especificos para el apartado de solicitudes de remesa */
+/*#########################################*/
+/*
+.buscador-tabla {
+    margin-bottom: 20px;
+}
+
+.buscador-tabla .form-control {
+    width: 98% !important;
+}*/
+
+/* Estilos para pop up con tabla de busqueda */
+.form-group label {
+    display: block;
+}
+
+hr.divisor-busqueda-filtros {
+    border-top: 1px solid #dddbdb;
+    margin: 6px 0 12px 0;
+}
+
+.detalle-folio {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    background-color: #f1f1f1;
+}
+
+/* Estilos para el detalle de una tarjeta, las fases por las que ha pasado asi como su estatus actual*/
+
+.contenedor-detalle-tarjeta{
+    /*height: 540px;
+    overflow-y: scroll;
+    border: 1px solid #dbdbdb;*/
+}
+
+.caja-detalle-tarjeta, .info-general {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.caja-detalle-tarjeta {
+    margin: 9px 0;
+    padding: 6px 10px;
+    border: 1px solid #e8e8e8;
+    background-color: #f7f7f7;
+}
+
+.info-general {
+    margin: 20px 0;
+    padding: 5px 10px;
+}
+
+.otorgante, .detalle, .receptor, 
+.icono-status, .numero-remesa, 
+.responsable-tarjetas,.subir-archivo {
+    display: flex;
+    align-items: center;
+}
+
+.icono-status {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 0px 10px;
+    color: #ffffff;
+}
+
+.icono-success {background-color: #34b650;}
+.icono-danger {background-color: #d54848;}
+
+.icono-status span {
+    font-size: 3rem;
+}
+
+.icono-status p {
+    margin-top: 3px;
+    font-weight: 500;
+    font-size: 0.9rem;
+} 
+
+.detalle {
+    margin-right: 10px;
+}
+
+.etiqueta-detalle {
+    color: #4e4e5a;
+    font-weight: 700;
+}
+
+.lista-detalle, .caja-sin-resultados{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.lista-detalle {
+    flex-direction: column;
+}
+
+.lista-detalle .item-detalle {
+    display: flex;
+    align-items: flex-start;
+}
+
+.numero-movimientos .item-detalle {
+    text-align: center;
+    font-size: .9rem;
+}
+
+.caja-sin-resultados {
+    flex-direction: row;
+}
+
+.mensaje-sin-resultados {
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
+/* Estilos exclusivos para un contenedor dinamico con tabs */
+
+.contenedor-tabs,
+.encabezado-tabs,
+.cuerpo-tabs,.tab,
+.caja-tarjetas,
+.cuerpo-caja-tarjetas,
+.encabezado-caja-tarjetas {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.contenedor-tabs {
+    padding: .5rem 0;
+}
+
+.contenedor-tabs,.cuerpo-tabs {
+    flex-direction: column;
+}
+
+.encabezado-tabs {
+    height: 45px;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.tab {
+    cursor: pointer;
+    flex-basis: 50%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px 5px 0px 0px;    
+}
+
+.tab.inactive-tab {
+    color: #515052;
+    background-color: #ffcfc3;
+}
+
+.tab.inactive-tab:hover {
+    background-color: #ffad99;
+}
+
+.tab.active-tab {
+    color: #F7F4F8;
+    background-color: #F47B5E;
+}
+
+.contenedor-cuerpo-tabs {
+    padding: 1rem;
+}
+
+.caja-tarjetas {
+    flex-direction: column;
+    align-items: center;
+}
+
+.encabezado-caja-tarjetas,
+.cuerpo-caja-tarjetas {
+    width: 97%;
+    padding: 3px 5px;
+    align-items: center;
+    border: 1px solid #fcadad;
+}
+
+.caja-tarjetas .encabezado-caja-tarjetas {
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #f7b8b8;
+}
+
+.caja-tarjetas .cuerpo-caja-tarjetas {
+    height: 95px;
+    overflow-y: scroll;
+    flex-direction: column;
+}
+
+.caja-tarjetas ul {
+    margin: 0;
+    width: 100%;
+}
+
+.caja-tarjetas ul li {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px;
+    margin: 5px 0px;
+    background-color: #f4f4f4;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+.borde-contenedor-tabs {
+    border-right: 1px solid #FC5841;
+    border-left: 1px solid #FC5841;
+    border-bottom: 1px solid #FC5841;
+}
+
+.link-icon {
+    cursor: pointer;
+}
+
+.contenedor-seguimiento {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+ 
+.caja-seguimiento {
+    display: flex;
+    flex-basis: 30%;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    color: #48535d;
+    border: 1px solid #d7d7d7;
+    background-color: #efefef;
+    box-shadow: #555d63 3px 3px 8px;
+}
+
+.seguimiento-detalle { font-size: 15px;font-weight: 300; }
+
+.bradcumbs-seguimiento {
+
+    font-size: .8rem;
+    font-weight: 300;
+
+    height: 25px;
+    color: #686868;
+    border: 1px solid #e1e1e1;
+    background-color: #f1f1f1;
+    margin-bottom: 1.25rem;
+    
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Time line es el contenedor principal donde se concentra todo */
+section#linea-tiempo-movimientos {
+  width: 100%;
+  /*margin: 30px auto;*/
+  position: relative;
+}
+/* Time line before es la linea del centro que marca el trazo de la linea */
+section#linea-tiempo-movimientos:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  margin-left: -1px;
+  width: 3px;
+  height: 100%;
+  background: #25303B;
+}
+/* Los article son las cajas que contienen cada item o tarjeta de la linea*/
+section#linea-tiempo-movimientos article {
+  width: 100%;
+  margin-top: 30px;
+  position: relative;
+}
+section#linea-tiempo-movimientos article:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* El div inner son las tarjetas que contienen la informacion*/
+.tarjeta-movimiento {
+  width: 45%;
+  float: left;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid rgba(204,204,204,0.7);
+  box-shadow: 0px 15px 10px -10px #ccc;
+}
+/* El sapn es el circulo que delimita el inicio de una tarjeta en la linea */
+.tarjeta-movimiento .fecha-movimiento {
+  display: block;
+  position: absolute;
+  width: 60px;
+  height: 50px;
+  padding: 5px 0;
+  top: 0;
+  left: 50%;
+  margin-left: -32px;
+  border-radius: 100%;
+  font-weight: 400;
+  text-transform: uppercase;
+  background: #25303B;
+  color: rgba(255,255,255,0.8);
+  border: 2px solid rgba(255,255,255,0.5);
+  box-shadow: 0 0 0 5px #25303B;
+}
+/* Los span dentro de el circulo delimitador deben estar centrados*/
+.tarjeta-movimiento .fecha-movimiento span {
+  display: block;
+  text-align: center;
+}
+.tarjeta-movimiento .fecha-movimiento .dia-fecha, .tarjeta-movimiento .fecha-movimiento .anio-fecha {
+  font-size: 12px;
+}
+.tarjeta-movimiento .fecha-movimiento .mes-fecha {
+  font-size: 18px;
+}
+/* Los h2 dentro de la tarjeta actua como su encabezado*/
+.tarjeta-movimiento .encabezado-tarjeta {
+  padding: 10px 15px;
+  color: #fff;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 6px 6px 0 0;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+.tarjeta-movimiento .encabezado-tarjeta span {
+  display: flex;
+  padding: 8px;
+}
+.tarjeta-movimiento .encabezado-tarjeta span#movimiento {
+  
+}
+.tarjeta-movimiento .encabezado-tarjeta span#status-movimiento {
+  background-color: rgba(0,0,0,0.2);
+}
+/* Los encabezados tienen un pequeño pico al final del elemento html*/
+.tarjeta-movimiento .encabezado-tarjeta:after {
+  content: '';
+  position: absolute;
+  top: 23px;
+  right: -5px;
+  width: 10px; 
+  height: 10px;
+  border-right: 1px solid rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  -webkit-transform: rotate(-45deg);
+}
+/* Las etiquetas p con el contenido principal de la tarjeta*/
+.tarjeta-movimiento .cuerpo-tarjeta {
+  padding: 10px 15px;
+  background: #fff;
+  color: #25303B;
+  border-radius: 0 0 6px 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tarjeta-movimiento .cuerpo-tarjeta .info-movimiento {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 5px 0;
+}
+
+.tarjeta-movimiento .cuerpo-tarjeta .info-movimiento#detalle-movimiento span {
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 300;
+  background-color: #eee;
+}
+
+.tarjeta-movimiento .cuerpo-tarjeta .info-movimiento#responsables span {
+  display:flex;
+  justify-content:center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  font-weight: 500;
+  background-color: #eee;
+}
+
+.tarjeta-movimiento .cuerpo-tarjeta .info-movimiento#responsables span.nombre-responsable{flex-basis: 45%;}
+.tarjeta-movimiento .cuerpo-tarjeta .info-movimiento#responsables span.icono-responsable{flex-basis: 10%;}
+
+.tarjeta-movimiento .cuerpo-tarjeta .info-movimiento#comentarios span {
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 300;
+  background-color: #eee;
+}
+/* Las tarjetas deben de estar posicionads de una forma secuencial, una a la derecha y otra a la izquierda, de igual forma el pico que sobresale del encabezado debe cumplir este comportamiento*/
+section#linea-tiempo-movimientos article:nth-child(2n+2) .tarjeta-movimiento {
+  float: right;
+}
+section#linea-tiempo-movimientos article:nth-child(2n+2) .tarjeta-movimiento .encabezado-tarjeta:after {
+  left: -5px;
+  border-right: none;
+  border-bottom: none;
+  border-left: 1px solid rgba(0,0,0,0.2) !important;
+  border-top: 1px solid rgba(0,0,0,0.2) !important;
+}
+/*De aqui en adelante solo se define el color de cada encabezado con su respectivo pico*/
+.tarjeta-movimiento .encabezado-tarjeta.devolucion-tarjeta {
+  background: #e74c3c;
+}
+.tarjeta-movimiento .encabezado-tarjeta.devolucion-tarjeta:after {
+  background: #e74c3c;
+}
+.tarjeta-movimiento .encabezado-tarjeta.entrega-tarjeta {
+  background: #2ecc71;
+}
+.tarjeta-movimiento .encabezado-tarjeta.entrega-tarjeta:after {
+  background: #2ecc71;
+}

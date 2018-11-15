@@ -1,0 +1,487 @@
+<style>
+    .bloqueado{
+        background-color: rgb(242, 242, 242);
+        cursor: no-drop;
+    }
+    .etiquetas{
+        font-weight: bold;
+        color: #808080e8;
+    }
+</style>
+
+<header></header>
+<div class="fondo-mesa-control">
+    <div class="contenedor-general">
+        <div class="row col-xs-12 pathNavegacion btn-regresar padding-menunavegacion" style="padding-left: 5%;">
+            <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+        </div>
+        <div class="contenedor-tablas fondo-contenedores">
+            <div class="header-contenidos verde-03">
+                <div class="principal">
+                    <img src="{{load_static}}/images/header/control.png">
+                    <div class="titulo">Parametrización de cuenta principal </div>
+                </div>
+                <div></div>
+            </div>
+            <div class="contenido-principal busqueda-instituciones card-block"> 
+                    <div class="row">
+                        <div class="col-xs-11 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter" style="height: 36px;">
+                                    <i class="icon-office icon-formulario"></i>
+                                </span>
+                                <mat-input-container style="width:100%">
+                                    <input style="width:94% !important; margin-left: 0px; height: 20px ; margin-top: 0px;" type="text" class="search-input" autofocus matInput type="text" id="inst" [matAutocomplete]="auto" [formControl]="institucionCtrl"  OnlyAlfanumerico="true">
+                                </mat-input-container>
+
+                                <mat-autocomplete #auto="matAutocomplete" >
+                                    <mat-option *ngFor="let inst of listaInstituciones"  [value]="inst.razonSocial" (onSelectionChange)="buscarCuentas(inst)">
+                                        {{inst.razonSocial}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                            <button (click)="buscar()" class="btn btn-success"  >
+                                <i class=" icoBntModal"></i>Buscar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group row" *ngIf="tipoEstruc===2"> 
+                        <div class="input-group col-xs-6">
+                        </div>
+                        <div class="input-group col-xs-6">
+                            <label class="col-xs-4">Número de cuenta</label>
+                            <div class="input-group  col-xs-8">
+                                <mat-input-container style=" width: 100%; ">
+                                    <input style="width:96% !important; margin-left: 0px; height: 20px; margin-top: 0px;" type="text" class="search-input" matInput type="text" [matAutocomplete]="auto" [formControl]="institucionCuentasCtrl" [readonly]="isAvailable" OnlyAlfanumerico="true">
+                                </mat-input-container>
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let inst of listaInstitucionesCuentas | async" [value]="inst.name" (onSelectionChange)="buscarCuentasInst(inst)">
+                                        {{ inst.name }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div [ngClass]="{'col-xs-6': tipoEstruc===2, 'col-xs-12': tipoEstruc!==2}" >
+                        <!--<div class="scroll col-xs-12" >-->
+                                <table class="table" >
+                                <thead>
+                                    <th>Titular</th>
+                                    <th>Número de Cuenta</th>
+                                    <th>Número de Estructura</th>
+                                </thead>
+                                <tbody >
+                                    <tr *ngFor="let item of pagedItems "   style="cursor:pointer" (click)=consultarCuentas(item); [style.background-color] = "item.numCuenta === color ? '#E4E6E1' : null" [style.display]="item.idTipoEstruc === 2 ? 'none' : '' ">
+                                        <td>{{inst}}</td>
+                                        <td>{{item.numCuenta}}</td>
+                                        <td>{{item.descTipoEstruc}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <!--</div>-->
+                        <div class="container">
+                            <div class="text-end">
+                                <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                        <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                    </li>
+                                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                        <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                    </li>
+                                    <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                        <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                    </li>
+                                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                        <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                    </li>
+                                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                        <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div [ngClass]="{'col-xs-6': tipoEstruc===2, 'col-xs-12': tipoEstruc!==2}">
+                        <!--<div class="scroll col-xs-12" *ngIf="tipoEstruc===2" >-->
+                                <table class="table" *ngIf="tipoEstruc===2">
+                                <thead>
+                                    <th>Titular</th>
+                                    <th>Número de Cuenta</th>
+                                    <!--<th>Alias</th>-->
+                                </thead>
+                                <tbody [dragula]='"another-bag"' [dragulaModel]='pagedItemsIns' id="asignar" >
+                                    <tr *ngFor="let itemIns of pagedItemsIns "   style="cursor:pointer;  " draggable="true" [style.background-color] = "itemIns.numCuenta === color ? '#E4E6E1' : null" 
+                                        [attr.data-num-Cuenta]="itemIns.numeroCuenta" 
+                                        [attr.data-alias]="itemIns.alias" 
+                                        [attr.data-id-Institucion]="itemIns.idInstitucion"  
+                                        [attr.data-numero-Tarjeta]="itemIns.numTarjeta"
+                                        [attr.data-cuenta-Periferica]="itemIns.cuentaPeriferica"
+                                        [attr.data-nombre-Titular]="itemIns.nombreTitular"
+                                        [attr.data-estatus-Tarjeta]="itemIns.estatusTarjeta"
+                                        [attr.data-nombre-Empresa]="itemIns.nombreEmpresa"
+                                        [attr.data-limite-Gasto]="itemIns.limiteGasto"
+                                        [attr.data-fecha]="itemIns.fecha"
+                                        [attr.data-vigencia]="itemIns.vigencia"
+                                        [attr.data-monto-Disponible]="itemIns.montoDisponible"
+                                        [attr.data-monto-Remanente]="itemIns.montoRemanente"
+                                        [attr.data-saldo-Periferico]="itemIns.saldoPeriferico"
+                                        [attr.data-saldo-Disponible]="itemIns.saldoDisponible">
+                                        <td>{{insti.name}}</td>
+                                        <td>{{itemIns.numeroCuenta }}</td>
+                                        <!--<td>{{itemIns.nombreTitular}}</td>-->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <!--</div>-->
+                        <!--<div class="scroll col-xs-12" *ngIf="tipoEstruc===1">-->
+                            <table class="table" *ngIf="tipoEstruc===1">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" class="text-center">Número de cuenta</th>
+                                        <th rowspan="2" class="text-center">Tarjeta</th>
+                                        <th rowspan="2" class="text-center">Usuario</th>
+                                        <th colspan="5" >LIMITE  PRESUPUESTO</th>
+                                        <th rowspan="2" class="text-center">Monto periférico</th>
+                                        <th rowspan="2" class="text-center">Total disponible</th>
+                                        
+                                    </tr>
+                                    <tr>
+                                            <th class="text-center">Limite de gasto asignado</th>
+                                            <th class="text-center">Fecha y Hora</th>
+                                            <th class="text-center">Vigencia Limite de gasto</th>
+                                            <th class="text-center">Monto dispuesto</th>
+                                            <th class="text-center">Monto remanente</th>
+                                            
+                                    </tr>   
+                                </thead>
+                                <tbody  id="asignar">
+                                    <tr *ngFor="let itemIns of pagedItemsIns "   style="  z-index: -1;" [style.background-color] = "itemIns.numCuenta === color ? '#E4E6E1' : null" [attr.data-num-Cuenta]="itemIns.numCuenta" [attr.data-alias]="itemIns.alias" [attr.data-id-Institucion]="itemIns.idInstitucion"  [attr.data-id-Pais]="itemIns.idPais">
+                                        <td>{{itemIns.cuentaPeriferica }}</td>
+                                        <td>{{itemIns.numTarjeta}}</td> 
+                                        <td>{{itemIns.nombreTitular}}</td> 
+                                        <td>{{itemIns.limiteGasto}}</td> 
+                                        <td>{{itemIns.fechaHora}}</td>
+                                        <td>{{itemIns.vigencia}}</td> 
+                                        <td>{{itemIns.montoDisponible}}</td>
+                                        <td>{{itemIns.montoRemanente }}</td>
+                                        <td>{{itemIns.saldoPeriferico}}</td> 
+                                        <td>{{itemIns.saldoDisponible}}</td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <!--</div>-->
+                        <div class="container">
+                            <div class="text-end">
+                                <ul *ngIf="pagerIns.pages && pagerIns.pages.length" class="pagination">
+                                    <li [ngClass]="{disabled:pagerIns.currentPage === 1}">
+                                        <a (click)="setPageInst(1,pagerIns.rango,pagerIns.total)">Inicio</a>
+                                    </li>
+                                    <li [ngClass]="{disabled:pagerIns.currentPage === 1}">
+                                        <a (click)="setPageInst(pagerIns.currentPage - 1,pagerIns.rango,pagerIns.total)">Anterior</a>
+                                    </li>
+                                    <li *ngFor="let page of pagerIns.pages" [ngClass]="{active:pagerIns.currentPage === page}">
+                                        <a (click)="setPageInst(page,pagerIns.rango,pagerIns.total)">{{page}}</a>
+                                    </li>
+                                        <li [ngClass]="{disabled:pagerIns.currentPage === pagerIns.totalPages}">
+                                        <a (click)="setPageInst(pagerIns.currentPage + 1,pagerIns.rango,pagerIns.total)">Siguiente</a>
+                                    </li>
+                                    <li [ngClass]="{disabled:pagerIns.currentPage === pagerIns.totalPages}">
+                                        <a (click)="setPageInst(pagerIns.totalPages,pagerIns.rango,pagerIns.total)">Último</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group row card-footer" style=" font-size: 12px; margin-bottom: 0px; color: #17187dc2; font-weight: bold" *ngIf="configuracionCuentaBand"> 
+                       <!-- <div class="col-xs-4"></div>
+                        <div class="col-xs-4">
+                            <label style="font-size: 17px;color:  gray;">Configuración cuenta central principal</label>
+                        </div>
+                        <div class="col-xs-4"></div>
+                        <div class="row  card-block col-xs-6" >
+                            <div class="col-xs-12 row form-group"> 
+                                <label class="col-xs-6">Descripción tipo de estructura:</label><label  class="col-xs-6 etiquetas"> {{instSeleccionada.descTipoEstruc}} </label>
+                            </div>
+                            <div class="col-xs-12 row form-group"> 
+                                <label class="col-xs-6">Límite de gasto: </label><label  class="col-xs-6 etiquetas"> {{instSeleccionada.limiteGasto}} </label>
+                            </div> 
+                            <div class="col-xs-12 row form-group"> 
+                                <label class="col-xs-6">Vigencia límite de gasto: </label><label  class="col-xs-6 etiquetas"> {{instSeleccionada.descTipoRevolvencia}} </label>
+                            </div> 
+                            <div class="col-xs-12 row form-group"> 
+                                <label class="col-xs-6">Tipo de barrido: </label><label  class="col-xs-6 etiquetas"> {{instSeleccionada.descBarrrido}} </label>
+                            </div>
+                        </div>
+                        <div class="row  card-block col-xs-6" >
+                            <!--<div class="col-xs-12 row form-group"> 
+                                <label class="col-xs-6">Transacción de barrido: </label><label  class="col-xs-6 etiquetas"> {{instSeleccionada.descBarrrido}} </label>
+                            </div>
+                            <div class="col-xs-12 row form-group"> 
+                                <label class="col-xs-6">Tipo de comisión: </label><label  class="col-xs-6 etiquetas"> {{instSeleccionada.idTipoComision}} </label>
+                            </div> 
+                            <div class="col-xs-12 row form-group"> 
+                                <label class="col-xs-6">Monto de comisión: </label><label  class="col-xs-6 etiquetas"> {{instSeleccionada.comision}} </label>
+                            </div> 
+                            <div class="col-xs-12 row form-group"> 
+                                <label class="col-xs-6">Estructura consolidada: </label><label  class="col-xs-6 etiquetas"> <span *ngIf="instSeleccionada.estructuraConsolidada===1">Sí</span><span *ngIf="instSeleccionada.estructuraConsolidada===0">No</span> </label>
+                            </div> 
+                        </div>-->
+                        <table class="table" >
+                            <tbody  id="asignar">
+                                <tr>
+                                    <th colspan="4" ><label style="font-size: 17px;color:  gray; text-align: center;">Configuración cuenta central principal</label></th>
+                                </tr> 
+                                <tr>
+                                    <th>Descripción tipo de estructura:</th>
+                                      <td style="border:  none;"><label class="etiquetas"> {{instSeleccionada.descTipoEstruc}} </label> </td>
+                                    <th>Tipo de comisión:</th>
+                                      <td style="border:  none;"><label class="etiquetas"> {{instSeleccionada.idTipoComision}} </label></td>
+                                  </tr>
+                                  <tr>
+                                    <th>Límite de gasto:</th>
+                                      <td style="border:  none;"><label class="etiquetas"> {{instSeleccionada.limiteGasto}} </label></td>
+                                    <th>Monto de comisión:</th>
+                                      <td style="border:  none;"><label class="etiquetas"> {{instSeleccionada.comision}} </label></td>
+                                  </tr>
+                                  <tr>
+                                    <th>Vigencia límite de gasto:</th>
+                                      <td style="border:  none;"><label class="etiquetas"> {{instSeleccionada.descTipoRevolvencia}} </label></td>
+                                    <th>Estructura consolidada: </th>
+                                      <td style="border:  none;"><label class="etiquetas"> <span *ngIf="instSeleccionada.estructuraConsolidada===1">Sí</span><span *ngIf="instSeleccionada.estructuraConsolidada===0">No</span> </label></td>
+                                  </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-xs-12" >
+                            <div class="row end-xs" style="margin-bottom: 0px"> 
+                                <button type="submit" class="btn btn-success" (click)="heredar()">
+                                    Heredar configuración a cuentas hijas
+                                </button>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="row  card-block " style="height:100%; max-height: 725px; overflow: scroll; border: 1px solid #D1D4D7;" [ngClass]="{'col-xs-6': cuentaSelect, 'col-xs-12': !cuentaSelect}"><!--[ngClass]="{'col-xs-8': cuentaSelect, 'col-xs-12': !cuentaSelect}"-->
+                        <div class="col-xs-2"></div>
+                        <div class="form-group col-xs-8 card contenedor-arbol" >
+                            <tree-view  [cuentas]="cuentas" [todo]="cuentas" [arrastrando]="arrastrando" class="col-xs-12 row" (seleccion)=seleccionar($event) *ngIf="nuevo"></tree-view>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    
+                    <div class="row  col-xs-6 card-block"  style="border-top: 1px solid #D1D4D7;" *ngIf="cuentaSelect"> 
+                        <form [formGroup]="formulario" (ngSubmit)="agregar(false)" novalidate>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-12 form-group row"> 
+                                    <label class="col-xs-4">Nombre Empresa</label>
+                                    <div class="input-group  col-xs-8">
+                                        <input type="text" name="" id="nombreEmpresa" class="form-control bloqueado " formControlName="nombreEmpresa"  [ngClass]="{'invalid-form-control': !formulario.controls.nombreEmpresa.valid}" >
+                                    </div>
+                                    <control-messages [control]="formulario.controls.nombreEmpresa"></control-messages>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Nombre titular</label>
+                                    <div class="input-group  col-xs-8">
+                                        <input type="text" name="" id="nombreTiutlar" class="form-control bloqueado" formControlName="nombreTiutlar"  [ngClass]="{'invalid-form-control': !formulario.controls.nombreTiutlar.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.nombreTiutlar"></control-messages>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Límite de gasto</label>
+                                    <div class="input-group col-xs-8">
+                                        <input type="text" name="" id="limiteGasto" class="form-control" formControlName="limiteGasto" OnlyNumber="true" [ngClass]="{'invalid-form-control': !formulario.controls.limiteGasto.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.limiteGasto"></control-messages>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Vigencia límite de gasto</label>
+                                    <div class="input-group col-xs-8">
+                                        <select name="slctEntidadNac" id="vigencia" class="form-control" formControlName="vigencia">
+                                                <option value="0">Seleccione</option>
+                                                <option *ngFor="let vigencia of listaDocumento.listLimiteVigGasto" value="{{vigencia.idTipoRevolvencia}}">{{vigencia.descTipoRevolvencia}}</option>
+                                        </select>
+                                    </div>
+                                    <control-messages [control]="formulario.controls.vigencia"></control-messages>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Individualización de saldo cubierto</label>
+                                    <div class="input-group col-xs-8">
+                                        <div class="col-md-5">
+                                            <input type="radio" formControlName="saldoCuebierto" id="saldoCuebierto" name="saldoCuebierto"  [value]="1">Sí
+                                            </div>
+                                        <div class="col-md-6">
+                                            <input type="radio"  formControlName="saldoCuebierto" id="saldoCuebierto" name="saldoCuebierto"  [value]="0">No
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Número de tarjeta asociada</label>
+                                    <div class="input-group  col-xs-8">
+                                        <input type="text" name="" id="numTarjeta" class="form-control bloqueado" formControlName="numTarjeta"  [ngClass]="{'invalid-form-control': !formulario.controls.numTarjeta.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.numTarjeta"></control-messages>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4 ">Vigencia</label>
+                                    <div class="input-group  col-xs-8">
+                                        <input type="text" name="" id="vigenciaTarjeta" class="form-control bloqueado" formControlName="vigenciaTarjeta"  [ngClass]="{'invalid-form-control': !formulario.controls.vigenciaTarjeta.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.vigenciaTarjeta"></control-messages>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Estatus Tarjeta</label>
+                                    <div class="input-group  col-xs-8">
+                                        <input type="text" name="" id="estatusTarjeta" class="form-control bloqueado" formControlName="estatusTarjeta"  [ngClass]="{'invalid-form-control': !formulario.controls.estatusTarjeta.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.estatusTarjeta"></control-messages>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Fecha apertura</label>
+                                    <div class="input-group  col-xs-8">
+                                        <input type="text" name="" id="fechaApertura" class="form-control bloqueado" formControlName="fechaApertura"  [ngClass]="{'invalid-form-control': !formulario.controls.fechaApertura.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.fechaApertura"></control-messages>
+                                </div>
+                                <!--<div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Programacion vigencia limite</label>
+                                    <div class="input-group bloqueado">
+                                        <input type="text" name="" id="vigenciaLimite" class="form-control bloqueado" formControlName="vigenciaLimite"  [ngClass]="{'invalid-form-control': !formulario.controls.vigenciaLimite.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.vigenciaLimite"></control-messages>
+                                </div>-->
+                                
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Monto dispuesto</label>
+                                    <div class="input-group  col-xs-8">
+                                        <input type="text" name="" id="montoDisponible" class="form-control bloqueado" formControlName="montoDisponible"  [ngClass]="{'invalid-form-control': !formulario.controls.montoDisponible.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.montoDisponible"></control-messages>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Monto Remanente</label>
+                                    <div class="input-group  col-xs-8">
+                                        <input type="text" name="" id="montoRemanente" class="form-control bloqueado" formControlName="montoRemanente"  [ngClass]="{'invalid-form-control': !formulario.controls.montoRemanente.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.montoRemanente"></control-messages>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Monto periférico</label>
+                                    <div class="input-group  col-xs-8">
+                                        <input type="text" name="" id="saldoPeriferico" class="form-control bloqueado" formControlName="saldoPeriferico"  [ngClass]="{'invalid-form-control': !formulario.controls.saldoPeriferico.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.saldoPeriferico"></control-messages>
+                                </div>
+                                <div class="col-xs-12 form-group row">
+                                    <label class="col-xs-4">Total disponible</label>
+                                    <div class="input-group  col-xs-8">
+                                        <input type="text" name="" id="saldoDisponible" class="form-control bloqueado" formControlName="saldoDisponible"  [ngClass]="{'invalid-form-control': !formulario.controls.saldoDisponible.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.saldoDisponible"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row end-xs">
+                                <button type="submit" class="btn btn-success" name="btnGuardar" id="guardar" ><!--[disabled]="!formulario.valid || mensaje" -->
+                                    <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-dialog [(visible)]="modalCupones">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button aria-hidden="true" class="close" data-dismiss="modal" type="button"
+                    (click)="closeForm()">
+                <span aria-hidden="true" class="icon-cross"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Alta de Cupones</h4>
+        </div>
+        <div class="modal-body">
+            <div class="card-block">
+            <form [formGroup]="formulario" (ngSubmit)="agregar(false)" novalidate>
+                    <div class="row row-margin-bottom">
+                        <div class="col-xs-6 form-group">
+                            <label>Tipo Límite de gasto</label>
+                            <div class="input-group">
+                                <select name="slctEntidadNac" id="tipoLimiteGasto" class="form-control" formControlName="tipoLimiteGasto">
+                                    <option value="0">Seleccione</option>
+                                    <option *ngFor="let tipoLimiteGasto of listaDocumento.listLimiteGasto" value="{{tipoLimiteGasto.idLimiteCobertura}}">{{tipoLimiteGasto.descLimiteCobertura}}</option>
+                                </select>
+                            </div>
+                            <control-messages [control]="formulario.controls.tipoLimiteGasto"></control-messages>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>Número de tarjeta asociada</label>
+                            <div class="input-group">
+                                <input type="text" name="" id="numTarjeta" class="form-control" formControlName="numTarjeta"  [ngClass]="{'invalid-form-control': !formulario.controls.numTarjeta.valid}">
+                            </div>
+                            <control-messages [control]="formulario.controls.numTarjeta"></control-messages>
+                        </div>
+                    </div>
+                    <div class="row row-margin-bottom">
+                        <div class="col-xs-6 form-group">
+                            <label>Límite de gasto</label>
+                            <div class="input-group">
+                                <input type="text" name="" id="limiteGasto" class="form-control" formControlName="limiteGasto"  [ngClass]="{'invalid-form-control': !formulario.controls.limiteGasto.valid}">
+                            </div>
+                            <control-messages [control]="formulario.controls.limiteGasto"></control-messages>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>Programacion vigencia limite</label>
+                            <div class="input-group">
+                                <input type="text" name="" id="vigenciaLimite" class="form-control" formControlName="vigenciaLimite"  [ngClass]="{'invalid-form-control': !formulario.controls.vigenciaLimite.valid}">
+                            </div>
+                            <control-messages [control]="formulario.controls.vigenciaLimite"></control-messages>
+                        </div>
+                    </div>
+                    <div class="row row-margin-bottom">
+                        <div class="col-xs-6 form-group">
+                            <label>Vigencia límite de gasto</label>
+                            <select name="slctEntidadNac" id="vigencia" class="form-control" formControlName="vigencia">
+                                    <option value="0">Seleccione</option>
+                                    <option *ngFor="let vigencia of listaDocumento.listLimiteVigGasto" value="{{vigencia.idTipoRevolvencia}}">{{vigencia.descTipoRevolvencia}}</option>
+                            </select>
+                            <control-messages [control]="formulario.controls.vigencia"></control-messages>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>Individualización de saldo cubierto</label>
+                            <div class="input-group">
+                                <div class="col-md-5">
+                                    <input type="radio" formControlName="saldoCuebierto" id="saldoCuebierto" name="saldoCuebierto"  [value]="1">Sí
+                                    </div>
+                                <div class="col-md-6">
+                                    <input type="radio"  formControlName="saldoCuebierto" id="saldoCuebierto" name="saldoCuebierto"  [value]="0">No
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                <br>
+                <br>
+                <div class="row end-xs">
+                    <button type="submit" class="btn btn-success" name="btnGuardar" id="guardar" ><!--[disabled]="!formulario.valid || mensaje" -->
+                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                    </button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</app-dialog>
+    
+    
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+

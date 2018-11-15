@@ -1,0 +1,12 @@
+<header></header>
+
+<div class="fondo-portal">
+    <div class="contenedor-general">
+        <return [model]="'./dashboard'" [value]="false"></return>
+        <menu-container [list]="listMenu"></menu-container>
+    </div>
+</div>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

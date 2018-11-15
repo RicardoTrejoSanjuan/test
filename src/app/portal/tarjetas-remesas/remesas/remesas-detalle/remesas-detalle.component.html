@@ -1,0 +1,108 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row end-xs">
+            <div class="col-xs-10">
+                <div class="pathNavegacion text-left">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row wrapAllHeight center-xs">
+            <div class="col-xs-2">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-10">                
+                <div class="card wrapAllHeightCard">
+                    <div class="card-header-formularios azul-05-ico">
+                        <div class="row">
+                            <div class="col-xs-9 reset-padding header-title">
+                                <i class="icon-money margin-left05em"></i>Detalle de remesa
+                            </div>
+                            <div class="col-xs-3 reset-padding header-title align-flex-end">
+                                <a class="btn btn-sm btn-secondary" (click)="regresar()"> 
+                                    <i class="icon-arrow-circle-left icon-btn-headers"></i>&nbsp;&nbsp;Regresar
+                                </a>
+                                <a class="btn btn-sm btn-secondary" *ngIf="detalleRemesaFiltradas.length > 0" (click)="exportarDatosModulo()"> 
+                                    <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Exportar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block wrapAllHeightGraphic scroll-card">
+                        <div class="row detalle-folio">
+                            <div class="col-xs-6 lista-detalle">
+                                <div class="item-detalle"><span class="etiqueta-detalle">Número de remesa:</span>&nbsp;{{remesa.numRemesa !== null ? remesa.numRemesa : "--"}}</div>
+                                <div class="item-detalle"><span class="etiqueta-detalle">Tarjeta inicial:</span>&nbsp;{{remesa.numTarjetaInicial !== null ? remesa.numTarjetaInicial : "--"}}</div>
+                                <div class="item-detalle"><span class="etiqueta-detalle">Tarjeta final:</span>&nbsp;{{remesa.numTarjetaFinal !== null ? remesa.numTarjetaFinal : "--"}}</div>
+                            </div>
+                            <div class="col-xs-6 lista-detalle">
+                                <div class="item-detalle"><span class="etiqueta-detalle">Número de guia:</span>&nbsp;{{remesa.numGuia !== null ? remesa.numGuia : "--"}}</div>
+                                <div class="item-detalle"><span class="etiqueta-detalle">Número de folio:</span>&nbsp;{{remesa.numFolio !== null ? remesa.numFolio : "--"}}</div>
+                                <div class="item-detalle"><span class="etiqueta-detalle">Número de tarjetas:</span>&nbsp;{{remesa.numTarjetas !== null ? remesa.numTarjetas : "--"}}</div>
+                            </div>
+                        </div>
+                        <div class="form-group" [ngClass]="{'element-disabled': detalleRemesaFiltradas.length === 0}">
+                            <label>Buscador</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" name="busqueda" placeholder="Tarjeta..." class="form-control" [(ngModel)]="cadena" (keyup)="filtrarDetalleRemesa(cadena)">
+                            </div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <th>ID empleado</th>
+                                <th>Tarjeta</th>
+                                <th>Estatus</th>
+                                <th>Fecha entrega</th>
+                                <th>Fecha vencimiento</th>
+                                <th>Detalle</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let tarjeta of detalleRemesaFiltradas | slice: manejadorPaginas.init : manejadorPaginas.final">
+                                    <td>{{tarjeta.idEmpleado}}</td>
+                                    <td>{{tarjeta.numTarjeta}}</td>
+                                    <td>
+                                        <span class="tag" [ngClass]="{'tag-success': tarjeta.idStatusTarjeta === 1,'tag-danger': tarjeta.idStatusTarjeta === 0}">
+                                            {{tarjeta.statusTarjeta !== null ? tarjeta.statusTarjeta : "Sin estatus"}}
+                                        </span>
+                                    </td>
+                                    <td>{{tarjeta.fechEntrega !== null ? tarjeta.fechEntrega : "--"}}</td>
+                                    <td>{{tarjeta.fechVencimiento !== null ? tarjeta.fechVencimiento : "--"}}</td>
+                                    <td>
+                                         <a (click)="consultarDetalleTarjeta(tarjeta)">
+                                            <span class="icon-search text-inverse update-icon"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="detalleRemesaFiltradas.length === 0">
+                                    <td colspan="6">
+                                        <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ng2-table #tablaDetalleRemesa (update)="actualizarTablaDetalleRemesa($event)" *ngIf="mostrarPaginadorTabla"></ng2-table>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

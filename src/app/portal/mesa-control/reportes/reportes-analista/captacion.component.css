@@ -1,0 +1,138 @@
+.naranja{
+    background-color: #FCB578;
+}
+
+#tarjeta{
+    background-color: #F3F3F3;
+    padding: 3px 0;
+    /*min-height: 100px;*/
+    /*background-color: red;*/
+}
+
+#cantidad{
+    /*color: #fff !important;*/
+    font-size: 30px;
+}
+
+small{
+    /*color: #fff !important;*/
+    font-size: 9px;
+}
+
+#estatus{
+    margin-top: 10px;
+    margin-right: 2px;
+}
+#descripcion{
+    min-height: 20px;
+}
+#tipo{
+    display: inline-block;
+    float: right;
+}
+/*progress{
+  -webkit-appearance: progress-bar;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 1em;
+    width: 10em;
+    vertical-align: -0.2em;
+ color:#fff;
+
+}*/
+
+#ar{
+    float: right;
+}
+
+.container-card {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.container-resume-card {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.container-resume-card {
+    border: 1px solid #e2e2e2;
+    border-radius: 3px;
+    text-align: left;
+    box-shadow: 0 3px 6px -3px rgba(0, 0, 0, 0.3);
+}
+
+.item-card,.resume-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.status-resume-card {
+    width: 90%;
+    margin: 0 auto;
+
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.resume-card > span#cuantity {font-size: 18px;font-weight: 600;}
+.resume-card > span#cuantity > i {font-size: 14px;}
+.resume-card > p {font-size: 12px;}
+
+.item-card {
+    background-color: #F3F3F3;
+    margin-left: 5px;
+    padding: 4px 8px;
+    border: 1px solid #e2e2e2;
+    box-shadow: 0 3px 6px -3px rgba(0, 0, 0, 0.3);
+}
+
+.item-card:nth-child(1) {margin-left: 0px;}
+.item-card > p {font-size: 10px;}
+.item-card > span {font-size: 16px;}
+
+.resume-card.detail-request:before,.index-bar {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 4px;
+    height: 90%;
+    left: -8px;
+    top: 5%;
+}
+
+.resume-card.detail-request#captacion > span,
+.resume-card.detail-request#pendiente > span,
+.resume-card.detail-request#totales > span {color: #499438;}
+.resume-card.detail-request#enlace > span {color: #c54948;}
+
+.resume-card.detail-request#captacion:before {background-color: #54c03b;}
+.resume-card.detail-request#enlace:before {background-color: #df5352;}
+
+.resume-card.detail-request > p,.resume-card.status-card > p {font-size: 10px; font-weight: 400;}
+.resume-card.detail-request > span,.resume-card.status-card > span  {font-size: 14px; font-weight: 600;}
+
+.status-card {margin-left: 10px;}
+
+.container-table-data {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: auto;
+    max-width: 400px;
+    padding-bottom: 0px;
+}

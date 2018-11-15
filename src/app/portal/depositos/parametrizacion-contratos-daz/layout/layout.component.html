@@ -1,0 +1,324 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2  row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 row middle-xs">
+
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-10 row center-xs">
+
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+
+
+
+                        <div class="card">
+                            <div class="card-header-formularios cafe-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>Layout Estado de Cuenta
+                                    </div>
+                                    <!-- <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                                        <a (click)="openForm()" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i> Nuevo</a>
+                                        <a (click)="reporte()" class="btn btn-sm btn-success"> <i class="icon-file-text2 margin-left05em icon-btn-headers"></i> Excel</a>
+                                    </div> -->
+                                </div>
+                            </div>
+
+                            
+                            <div class="card-block minheight">
+
+                                    <div class="row">
+                                            <div class="col-sm-5 titleMenuizquiero">
+                                                <h4 class="card-title mb-0">{{depositosObject.name}}</h4>
+                                                <div class="small text-muted">RFC: {{depositosObject.rfcInstitucion}}</div>
+                                            </div>
+                                            <div class="col-sm-7 titleMenuderecho">
+                                                    <div class="small text-muted">Contrato DAZ: {{depositosObject.idContratoDaz}}</div>
+                                                    <div class="small text-muted">Cuenta: {{depositosObject.numCuenta}}</div>
+                                                    <div class="small text-muted">Clabe Interbancaria: {{depositosObject.ctosDazClave}}</div>
+                                                <!-- <div class="small text-muted">Referencia: Uniforme</div> -->
+                                            </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 center-xs">
+                                            <div class="card-block bodercardblock">
+
+                                                    <!-- <form class="form-horizontal ng-pristine ng-valid">
+
+                                                        <div class="form-actions alinbtn">
+                                                            <button type="submit" class="btn btn-success">Save changes</button>
+                                                            <button class="btn btn-default" type="button">Cancel</button>
+                                                        </div>
+
+
+                                                    </form> -->
+
+                                                    <div class="row center-xs">
+                                                        <div class="col-sm-5">
+                                                            <div class="panel panel-primary">
+                                                                <div class="panel-heading">Campos disponibles</div>
+                                                                <div class="panel-body">
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-body" [dragula]='"another-bag"' id="box1" [dragulaModel]='many'>
+                                                                            
+                                                                              <ul class="list-group" *ngFor="let text of many" id="{{text.idCampo}}">
+                                                                                  <li class="list-group-item" dnd-sortable="" draggable="true" [innerHtml]='text.descripcion'></li>
+                                                                              </ul>
+    
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-2 center-xs displayFlex">
+                                                            <div class="AlinAdd"> Agregar >> <br> <br> << Quitar </div>
+                                                          </div>
+
+                                                        <div class="col-sm-5">
+                                                            <div class="panel panel-success">
+                                                                <div class="panel-heading">Configuracion de Layout</div>
+                                                                <div class="panel-body">
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-body" [dragula]='"another-bag"' id="box2" [dragulaModel]='many2'>
+                                                                            
+                                                                              <ul class="list-group" *ngFor="let text of many2" id="{{text.idCampo}}">
+                                                                                  <li class="list-group-item" dnd-sortable="8" draggable="true" [innerHtml]='text.descCampo'></li>
+                                                                              </ul>
+    
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                            <div class="col-md-11"></div>
+                                                        <div class="col-xm-1">
+                                                                
+                                                                                                       
+                                                                                                        <div class="form-actions alinbtn editbtnguardar">
+                                                                                                                <button type="button" style="margin-left:12%" class="btn btn-success" (click)="Guardar()" [disabled]="guardarbtn"> Guardar</button>
+                                                                                                        </div>
+                                                                
+                                                                
+                                                                                                </div>
+
+
+
+                                                    </div>
+                                                </div>
+
+
+                                        </div>
+
+
+                                        
+
+                                    </div>
+
+
+                            </div>
+
+                            <div class="row">
+
+                             
+                            </div>
+
+                            
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<style>
+
+.form-group label {
+    display: block;
+}
+
+.minheight{
+    min-height: 500px !important;
+}
+
+.titleMenuizquiero{
+    text-align: start;
+    padding-left: 18px;
+    margin-bottom: 17px;
+}
+.titleMenuderecho{
+    margin-top: 6px;
+    text-align: left;
+}
+
+.bodercardblock{
+    border: 1px solid #d1d4d7;
+}
+
+.alinbtn{
+    text-align: right;
+}
+
+.alinradio{
+    display: flex;
+}
+.btninput{
+    display: flex;
+}
+.widthInput{
+    width: 20px;
+    float: left;
+    margin-right: 5px;
+}
+
+.marginRightRadio{
+    margin-right: 20px;
+}
+
+.flexbox{
+    display: flex;
+    align-items: center;
+}
+
+.flexboxPadding{
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+
+/* css nuevo */
+
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.panel-primary {
+    border-color: #337ab7;
+}
+
+.panel-info {
+    border-color: #bce8f1;
+}
+
+.panel-success {
+    border-color: #d6e9c6;
+}
+
+.panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.panel-primary>.panel-heading {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+
+.panel-info>.panel-heading {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.panel-success>.panel-heading {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+.panel-default {
+    border-color: #ddd;
+    max-height: 325px;
+    min-height: 325px;
+    overflow: scroll;
+}
+
+.list-group {
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.AlinAdd{
+  display: flex;
+    align-items: center;
+}
+
+.displayFlex{
+  display: flex;
+}
+
+
+
+</style>

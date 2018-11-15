@@ -1,0 +1,168 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row container-graph">
+            <div class="col-xs-3 col-sm-2 col-md-2 boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card content-graph" >
+                        <div class="card-header verde-05-ico tBlanco" >
+                            <div class="row">
+                                <div class="col-xs-9 reset-padding" >
+                                    <i class="icon-bar-chart margin-left05em"></i>Gráfica Por Analistas 
+                                </div>
+                                <div class="col-xs-3 end-xs containet-btn-regresar" *ngIf="segunda || tercera" >
+                                    <p  (click)="regresar()" 
+                                        class="btn-regresar">
+                                        <span class="icon-arrow-left"></span>
+                                        Regresar
+                                    </p>
+                                </div>
+                            </div>
+                        </div> 
+                        
+                        <div id="estatus" class="row graph20" >
+                            <div class="col-sm-6 col-md-3" *ngFor="let item of stSolicitudes, let i = index">
+                                <div class="card">
+                                    <div id="tarjeta">
+                                        <div class="h1 text-muted text-xs-right mb-2"></div>
+                                        <div id="cantidad" class="mb-0">{{item.total}}</div>
+                                        <div id="descripcion"><small class="text-muted text-uppercase font-weight-bold">{{item.title}}</small></div>
+                                        <div class="flex-containerl">
+                                            <div class="progress">
+                                                <div class="azul" [style.width]="this.porcentajeAux[i]+'%'">
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs" *ngIf="segunda || tercera" ><span class="navegacion">{{nombreInstitucion}}</span> &nbsp; <span *ngIf="tercera" class="navegacion">{{estatus}}</span></div>
+                        <div class="row card-block center-xs center-sm center-lg graph80" *ngIf="!segunda && !tercera">
+                            <div class="col-xs-4 container-table-data">
+                                <div class="container-categories">
+                                    <table class="tabla-categories" >
+                                        <caption>Categorías</caption>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Analistas</th>
+                                                <th>Tot.</th>
+                                                <th>Porc.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of reportesEstatus2; let i = index" (click)="cambiarSegundaGrafica(item)">
+                                                <td>
+                                                    <div [ngStyle]="{'background-color': paletaColores[i]}" class="background">
+                                                    </div>
+                                                </td>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.total}}</td>
+                                                <td>{{item.y}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-xs-8 graphs" style="margin: auto 0;" *ngIf="!segunda">
+                               <grafica-highchart #graficaComponent (eventClick)="cambiarSegundaGrafica($event)"></grafica-highchart>
+                            </div>
+                        </div>
+                        <div class="row card-block center-xs center-sm center-lg graph80" *ngIf="segunda">
+                            <div class="col-xs-4 container-table-data">
+                                <div class="container-categories">
+                                    <table class="tabla-categories" >
+                                        <caption>Categorías</caption>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Estatus</th>
+                                                <th>Tot.</th>
+                                                <th>Porc.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of reportesEstatus2; let i = index" (click)="cambiarTerceraGrafica(item)">
+                                                <td>
+                                                    <div [ngStyle]="{'background-color': paletaColores[i]}" class="background">
+                                                    </div>
+                                                </td>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.total}}</td>
+                                                <td>{{item.y}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-xs-8 graphs" style="margin: auto 0;">
+                               <grafica-highchart #segundaGrafica (eventClick)="cambiarTerceraGrafica($event)"></grafica-highchart>
+                            </div>
+                        </div>
+                        <div class="row card-block center-xs center-sm center-lg graph80" *ngIf="tercera">
+                            <div class="col-xs-4 container-table-data">
+                                <div class="container-categories">
+                                    <table class="tabla-categories" >
+                                        <caption>Categorías</caption>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Empresas</th>
+                                                <th>Tot.</th>
+                                                <th>Porc.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of reportesEstatus2; let i = index" (click)="cargarTabla(item)">
+                                                <td>
+                                                    <div [ngStyle]="{'background-color': paletaColores[i]}" class="background">
+                                                    </div>
+                                                </td>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.total}}</td>
+                                                <td>{{item.y}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-xs-8 graphs" style="margin: auto 0;">
+                               <grafica-highchart #tercerGrafica (eventClick)="cambiarTerceraGrafica($event)"></grafica-highchart>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

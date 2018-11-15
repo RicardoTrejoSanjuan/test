@@ -1,0 +1,181 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation">
+                        {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row rowSubMenuHeader">
+            <div class="col-xs-9 col-sm-12 col-md-12 row center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <!-- <div class="card-header" id="verde">
+                                <i class="icon-credit-card"></i>Busqueda de Comercio
+                            </div> -->
+                            <div class="card-header" id="verde">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>{{titulo}}
+                                    </div>
+                                    <div *ngIf="isAvailable===false" class="col-xs-3 end-xs reset-padding btnFormularios">
+                                        <a (click)="openForm()" class="btn btn-sm btn-success"> <i
+                                                class="icon-plus margin-left05em icon-btn-headers"></i> Nuevo</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-block row">
+                                <fieldset class="form-group  col-xs-6">
+                                    <label>Seleccione tipo de busqueda</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-user icon-formulario"></i>
+                                        </span>
+                                        <select class="form-control ng-untouched ng-pristine ng-invalid" (change)="changeBusqueda()" [(ngModel)]="tipoBusqueda" type="text">
+                                            <option value="">Comercio</option>
+                                            <option value="inst">Institucion</option>
+                                        </select>
+                                    </div>
+                                    <control-messages [control]="formulario.controls.nombreComercio"></control-messages>
+                                </fieldset>
+                                <div *ngIf="isAvailable===false" class=" col-xs-6">
+                                    <div class="row row-margin-bottom">
+                                        <div class="col-xs-12 form-group">
+                                            <label>Comercios</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon alignJustifyCenter">
+                                                    <i class="icon-female icon-formulario"></i>
+                                                </span>
+                                                <input class="form-control " type="text" 
+                                                        [(ngModel)]="nombre" name="cuenta" required="true"
+                                                        placeholder="Escribe el nombre del Comercio"
+                                                        (keyup)="buscar(nombre)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="scroll col-xs-12" *ngIf="isAvailable===false">
+                                    <table class="table">
+                                        <thead>
+                                        <th>Id Institución</th>
+                                        <th>Id Comercio</th>
+                                        <th>Empresa</th>
+
+                                        </thead>
+                                        <tr (click)="mostrarConfiguracion(comercio)" *ngFor='let comercio of comerciosArray;'>
+                                            <td>{{comercio.idInstitucion}}</td>
+                                            <td>{{comercio.idComercio}}</td>
+                                            <td>{{comercio.nombre}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div *ngIf="isAvailable===true" class="col-xs-6">
+                                    <div class="row row-margin-bottom">
+                                        <div class="col-xs-12 form-group">
+                                            <label>Instituciones</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon alignJustifyCenter">
+                                                    <i class="icon-female icon-formulario"></i>
+                                                </span>
+                                                <input class="form-control" type="text" 
+                                                        [(ngModel)]="nombreInst" name="cuenta" required="true"
+                                                        placeholder="Escribe el nombre de la institución"
+                                                        (keyup)="buscarInst(nombreInst)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="scroll col-xs-12" *ngIf="isAvailable===true">
+                                    <table class="table">
+                                        <thead>
+                                        <th>Institución</th>
+
+                                        </thead>
+                                        <tr (click)="mostrarOfertasInst(inst)" *ngFor='let inst of arrayInstituciones;'>
+                                            <td>{{inst.razonSocial}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-dialog [(visible)]="modalFormulario">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button aria-hidden="true" class="close" data-dismiss="modal" type="button"
+                    (click)="closeForm()">
+                <span aria-hidden="true" class="icon-cross"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Alta de Comercio</h4>
+        </div>
+        <div class="modal-body">
+            <div class="card-block">
+            <form [formGroup]="formulario" (ngSubmit)="guardarComercio()" novalidate>
+                <fieldset class="form-group">
+                    <label>Institución BIG</label>
+                    <div class="input-group">
+                        <span class="input-group-addon alignJustifyCenter" style="height: 36px;">
+                            <i class="icon-office icon-formulario"></i>
+                        </span>
+
+                        <mat-input-container>
+                            <input style="width:94% !important; margin-left: 0px; height: 20px; margin-top: 0px;" type="text" class="search-input" matInput type="text" [matAutocomplete]="auto" formControlName="institucion" [formControl]="institucionCtrl" [readonly]="isAvailable" OnlyAlfanumerico="true">
+                        </mat-input-container>
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let inst of listaInstituciones | async" [value]="inst.name" (onSelectionChange)="getInstitucion(inst)">
+                                {{ inst.name }}
+                            </mat-option>
+                        </mat-autocomplete>
+
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                        <label>Nombre Comercio</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-user icon-formulario"></i>
+                            </span>
+                            <input type="text" name="txtNombre" id="nombreComercio" class="form-control" formControlName="nombreComercio" OnlyAlfanumerico="true" [ngClass]="{'invalid-form-control': !formulario.controls.nombreComercio.valid}">
+                        </div>
+                        <control-messages [control]="formulario.controls.nombreComercio"></control-messages>
+                </fieldset>
+                <fieldset class="form-group">
+                        <label>Logo</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-user icon-formulario"></i>
+                            </span>
+                            <input type="text" name="txtLogo" id="logo" class="form-control" formControlName="logo" OnlyAlfanumerico="true" [ngClass]="{'invalid-form-control': !formulario.controls.logo.valid}">
+                            <button (click)="modalFormulario = !modalFormulario;" type="button" class="btn btn-info">
+                                    Examinar
+                            </button>
+                        </div>
+                        <control-messages [control]="formulario.controls.logo"></control-messages>
+                        
+                </fieldset>
+                <div class="row end-xs">
+                    <button type="submit" class="btn btn-success" name="btnGuardar" id="guardar" [disabled]="!formulario.valid" >
+                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                    </button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</app-dialog>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+

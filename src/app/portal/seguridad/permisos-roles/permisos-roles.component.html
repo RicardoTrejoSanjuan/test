@@ -1,0 +1,243 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+	<div class="col-xs-12 main-general">
+		<!-- Detalle de datos generales de la session y modulo -->
+		<div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+		<!-- Contenedor del area de trabajo de la grafica -->
+		<div class="row">
+			<div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+				<ul class="nav">
+					<li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+						<div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+					</li>
+				</ul>
+			</div>
+			<div class="row col-xs-9 col-sm-10 col-md-10 row center-xs">
+				<div class="row col-xs-12 center-xs row-menu-general">
+					<div class="col-xs-12">
+						<div class="card">
+							<div class="card-header tBlanco cafe-01-ico">
+								<div class="row">
+									<div class="col-xs-9 reset-padding">
+                                    	<i class="icon-stats-bars margin-left05em"></i>
+                                    	Lista de usuarios con roles
+	                                </div>
+									<div class="col-xs-3 end-xs reset-padding btnFormularios">
+										<a (click)="mostrarFormularioModal()" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i>&nbsp;Nuevo</a>
+									</div>
+								</div>
+							</div>
+							<div class="row card-block">
+								<div class="col-xs-12 row">
+									<input type="text" [(ngModel)]="strBusqueda" name="busqueda" class="form-control col-xs-12" placeholder="Buscar usuarios" (keyup)="FiltrarUsuarios(strBusqueda)">
+								</div>
+
+							</div>
+							<div class="row card-block">
+								<div class="col-xs-12">
+									<div>
+										<table class="table">
+											<thead>
+												<th class="text-center">Grupo</th>
+												<th class="text-center">Rol</th>
+												<th class="text-center">Usuario</th>
+												<th class="text-center">Estatus</th>
+												<th class="text-center">Tareas</th>
+											</thead>
+											<tbody>
+												<tr *ngFor="let usuario of Usuarios | slice:ph.init:ph.final">
+													<td>{{usuario.idGrupo}}</td>
+													<td>{{usuario.idRol}} - {{usuario.rol}}</td>
+													<td>{{usuario.usuario}} - {{usuario.nombre}}</td>
+													<td>
+														<span class="tag tag-success" *ngIf="usuario.status === 1" >Activo</span>
+	                                            		<span class="tag tag-danger" *ngIf="usuario.status === 0" >Inactivo</span>
+													</td>
+													<td>
+														<a (click)="mostrarDetalleModal(usuario)" class="btnDetalle" title="Ver detalle">
+		                                                    <span class="icon-folder-open"></span>
+		                                                </a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div>
+										<ng2-table #tablausuarios (update)="ActualizarTabla($event)">
+										</ng2-table>
+									</div>
+								</div>
+								<!--
+								<div class="container">
+                                    <div class="text-end">
+                                        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                            <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                            </li>
+                                            <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                            </li>
+                                            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                                <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                            </li>
+                                            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                            </li>
+                                            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+								-->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<app-dialog [(visible)]="displayModal">
+	<div class="modal-content">
+	    <div class="modal-header">
+	        <button (click)="displayModal = !displayModal;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	            <span class="icon-cross" aria-hidden="true"></span>
+	        </button>
+	        <h4 class="modal-title custom_align" id="Heading">Usuarios</h4>
+	    </div>
+	    <div class="modal-body">
+	        <div class="card-block">
+	            <form [formGroup]="formulario" (ngSubmit)="saveForm()" novalidate>
+
+	            	<fieldset class="form-group">
+	                    <label>Grupos</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formulario"></i>
+	                        </span>
+	                        <select id="select" name="select" class="form-control" size="1" formControlName="idGrupo" (change)="obtenerListaRoles()">
+	                            <option value="">Selecciona un grupo</option>
+	                            <option value="{{grupo.idGrupo}}" *ngFor="let grupo of listaGrupos">{{grupo.idGrupo}}&nbsp;-&nbsp;{{grupo.descripcion}}</option>
+	                        </select>
+	                    </div>
+	                    <control-messages [control]="formulario.controls.idGrupo"></control-messages>
+	                </fieldset>
+
+	                <fieldset class="form-group">
+	                    <label>Roles</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formulario"></i>
+	                        </span>
+	                        <select id="select" name="select" class="form-control" size="1" formControlName="idRol" (change)="obtenerListaUsuarios()">
+	                            <option value="">Selecciona un rol</option>
+	                            <option value="{{rol.idRol}}" *ngFor="let rol of listaRoles">{{rol.idRol}}&nbsp;-&nbsp;{{rol.descripcion}}</option>
+	                        </select>
+	                    </div>
+	                    <control-messages [control]="formulario.controls.idRol"></control-messages>
+	                </fieldset>
+
+	                <fieldset class="form-group">
+	                    <label>Usuarios</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formulario"></i>
+	                        </span>
+	                        <select id="select" name="select" class="form-control" size="1" formControlName="idUsuario">
+	                            <option value="">Selecciona un usuario</option>
+	                            <option value="{{usuario.idUsuario}}" *ngFor="let usuario of listaUsuarios">{{usuario.idUsuario}}&nbsp;-&nbsp;{{usuario.nombre}}&nbsp;{{usuario.paterno}}&nbsp;{{usuario.materno}}</option>
+	                        </select>
+	                    </div>
+	                    <control-messages [control]="formulario.controls.idUsuario"></control-messages>
+	                </fieldset>
+
+	                <fieldset class="form-group" *ngIf="editItem">
+	                    <label>Estatus</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-hammer icon-formulario"></i>
+	                        </span>
+
+	                        <select id="select" name="select" class="form-control" size="1" formControlName="status">
+	                            <option value="">Selecciona un estatus</option>
+	                            <option value="0">Inactivo</option>
+	                            <option value="1">Activo</option>
+	                        </select>
+
+	                    </div>
+	                    <control-messages [control]="formulario.controls.status"></control-messages>
+	                </fieldset>
+
+	                <div class="modal-footer">
+	                    <button (click)="displayModal = !displayModal;" type="button" class="btn btn-info">
+	                        <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+	                    </button>
+
+	                    <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid" *ngIf="editItem">
+	                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Editar
+	                    </button>
+
+	                    <button (click)="displayModal = !displayModal; showDialogAlert = !showDialogAlert;" type="button" class="btn btn-danger" [disabled]="!formulario.valid" *ngIf="editItem">
+	                        <span class="icon-bin2 icoBntModal"></span>&nbsp;&nbsp;Eliminar
+	                    </button>
+
+	                    <button type="submit" class="btn btn-success" [disabled]="!formulario.valid" *ngIf="saveItem">
+	                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+	                    </button>
+	                </div>
+
+	            </form>
+	        </div>
+	    </div>
+	</div>
+</app-dialog>
+
+<app-dialog [(visible)]="showDialogAlert">
+	<div class="modal-content">
+        <div class="modal-header">
+            <button (click)="showDialogAlert = !showDialogAlert;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Aviso</h4>
+        </div>
+        <div class="modal-body">
+            <div class="card-block">
+                <fieldset class="form-group">
+                    <label>¿Está seguro de que desea eliminar el registro?</label>
+                </fieldset>
+
+                <div class="modal-footer">
+                    <button (click)="showDialogAlert = !showDialogAlert; displayModal = !displayModal;" type="button" class="btn btn-info">
+                        <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                    </button>
+
+                	<button (click)="deleteForm();showDialogAlert = !showDialogAlert;" type="submit" class="btn btn-danger">
+                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+	</div>
+</app-dialog>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

@@ -1,0 +1,273 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <!-- BOTON REGRESAR -->
+        <div class="row">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-10">
+                <div class="col-xs-12 cont-boton-regresar">
+                    <div class="boton-regresar" (click)="Regresar()">
+                        <img src="{{load_static}}/images/header/back.png" alt="regresar">
+                        Regresar
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FIN BOTON REGRESAR -->
+        <!-- CONTEINDO PRINCIPAL -->
+        <div class="row content-calif-rubros">
+            <!-- MENU LATERAL -->
+            <div class="col-xs-3 col-sm-2 col-md-2 boxMenuIzquierdo reset-padding">
+                <ul>
+                    <li class="menu-opcion {{item.claseFondo}}" *ngFor="let item of menuLateral" routerLink="{{item.url}}">
+                        <div class="icono {{item.claseIcono}}">
+                            <span class="{{item.imagen}}"></span>
+                        </div>
+                        <div class="titulo-texto">
+                            {{item.textoMenu}}
+                        </div>
+                        <div class="status-calif"><!-- Calificación --></div>
+                    </li>
+                </ul>
+            </div>
+            <!-- FIN MENU LATERAL -->
+            <div class="col-xs-10">
+                <div class="col-xs-12 fondo-contenedores reset-padding background-white">
+                    <!-- HEADER DE LA VISTA -->
+                    <div class="header-contenidos azul-05-ico">
+                         <div class="principal">
+                              <span class="icon-users"></span>
+                              <div class="titulo">Responsables</div>
+                         </div>
+                         <div class="principal cursor-pointer opacity">
+                             <p class="btn-nuevo-header tag-success" (click)="NuevoRegistro()">
+                                 <span class="icon-plus icono"></span>Nuevo
+                             </p>
+                         </div>
+                    </div>
+                    <!-- FIN HEADER DE LA VISTA -->
+                    <!-- CONTENIDO DE LAS TABLAS -->
+                    <div class="contenido-principal-table" [ngSwitch]="objHandler.tabVisible">
+                        <fieldset class="formulario-search margin-creditos">
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter icon-left">
+                                    <i class="icon-search icon-formulario"></i>
+                                </span>
+                                <input
+                                    type="text"
+                                    placeholder="Responsable"
+                                    class="control-input"
+                                    [(ngModel)]="strResponsables"
+                                    (keyup)="PressSearch($event)"
+                                    OnlyAlfanumerico="true"
+                                    />
+                                <span class="input-group-close alignJustifyCenter cursor-pointer" (click)="ClearInput()">
+                                    <i class="icon-cross icon-formulario"></i>
+                                </span>
+                            </div>
+                        </fieldset>
+                        <div class="margin-creditos" *ngSwitchCase="1">
+                            <table class="table">
+                                 <thead class="thead-table">
+                                     <td class="text-center cursor-pointer" (click)="SortTableByNumber('idResponsable')">ID</td>
+                                     <td class="text-center cursor-pointer" (click)="SortTableByString('apPaterno')" colspan="3">NOMBRE</td>
+                                     <td class="text-center cursor-pointer">EXT</td>
+                                     <td class="text-center cursor-pointer">E-MAIL</td>
+                                     <td class="text-center cursor-pointer" (click)="SortTableByNumber('status')">ESTATUS</td>
+                                     <td class="text-center cursor-pointer"></td>
+                                 </thead>
+                                 <tbody>
+                                      <tr *ngFor="let item of Responsables | slice:ph.init:ph.final">
+                                           <td>{{item.idResponsable}}</td>
+                                           <td class="text-capitalize">{{item.nombre}}</td>
+                                           <td class="text-capitalize">{{item.apPaterno}}</td>
+                                           <td class="text-capitalize">{{item.apMaterno}}</td>
+                                           <td>{{item.extension}}</td>
+                                           <td>{{item.email}}</td>
+                                           <td [ngSwitch]="item.status">
+                                               <p class="btn-status tag-success" *ngSwitchCase="1">Activo</p>
+                                               <p class="btn-status tag-danger" *ngSwitchCase="0">Inactivo</p>
+                                           </td>
+                                           <td>
+                                               <span class="icon-clipboard3 cursor-pointer" (click)="EditarRegistro(item)"></span>
+                                           </td>
+                                      </tr>
+                                 </tbody>
+                            </table>
+                            <ng2-table #tablaresponsables (update)="ActualizarTabla($event)">
+                            </ng2-table>
+                        </div>
+                        <div class="margin-creditos" *ngSwitchCase="2">
+                            <div class="registos sin-registros">
+                                La busqueda no arrojo resultados
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIN CONTENIDO DE LAS TABLAS -->
+                </div>
+            </div>
+        </div>
+        <!-- FIN CONTEINDO PRINCIPAL -->
+
+    </div>
+</div>
+
+<app-dialog [(visible)]="handlerModal.visible">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button aria-hidden="true" class="close" data-dismiss="modal" type="button" (click)="CloseForm()">
+                <span aria-hidden="true" class="icon-cross"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading" *ngIf="handlerModal.editar">Editar Responsable</h4>
+            <h4 class="modal-title custom_align" id="Heading" *ngIf="handlerModal.nuevo">Nuevo Responsable</h4>
+        </div>
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formulario" novalidate>
+                    <div class="row" *ngIf="handlerModal.editar">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>ID</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-search icon-formulario"></i>
+                                    </span>
+                                    <input
+                                        type="text"
+                                        class="form-control ng-untouched ng-pristine ng-invalid"
+                                        formControlName="idResponsable"
+                                        readonly="true">
+                                </div>
+                                <control-messages [control]="formulario.controls.idResponsable"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Nombre</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-user icon-formulario"></i>
+                                    </span>
+                                    <input formControlName="nombre" class="form-control ng-untouched ng-pristine ng-invalid text-capitalize" type="text" OnlyAlfanumerico="true">
+                                </div>
+                                <control-messages [control]="formulario.controls.nombre"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Apellido Paterno</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-users icon-formulario"></i>
+                                    </span>
+                                    <input formControlName="apPaterno" class="form-control ng-untouched ng-pristine ng-invalid text-capitalize" type="text" OnlyAlfanumerico="true">
+                                </div>
+                                <control-messages [control]="formulario.controls.apPaterno"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Apellido Materno</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-users icon-formulario"></i>
+                                    </span>
+                                    <input formControlName="apMaterno" class="form-control ng-untouched ng-pristine ng-invalid text-capitalize" type="text" OnlyAlfanumerico="true">
+                                </div>
+                                <control-messages [control]="formulario.controls.apMaterno"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Extensión</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-phone2 icon-formulario"></i>
+                                    </span>
+                                    <input formControlName="extension" class="form-control ng-untouched ng-pristine ng-invalid" type="text" maxlength="5" OnlyNumber="true">
+                                </div>
+                                <control-messages [control]="formulario.controls.extension"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>E-Mail</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-envelope-o icon-formulario"></i>
+                                    </span>
+                                    <input formControlName="mail" class="form-control ng-untouched ng-pristine ng-invalid" type="text">
+                                </div>
+                                <control-messages [control]="formulario.controls.mail"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Status</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-toggle-on icon-formulario"></i>
+                                    </span>
+                                    <select formControlName="status" class="form-control ng-untouched ng-pristine ng-invalid">
+                                        <option value="1">Activo</option>
+                                        <option value="0">Inactivo</option>
+                                    </select>
+                                </div>
+                                <control-messages [control]="formulario.controls.status"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Usuario Creación</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-user icon-formulario"></i>
+                                    </span>
+                                    <input
+                                        type="text"
+                                        class="form-control ng-untouched ng-pristine ng-invalid text-capitalize"
+                                        readonly="true"
+                                        formControlName="usuarioCreacion">
+                                </div>
+                                <control-messages [control]="formulario.controls.usuarioCreacion"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" (click)="CloseForm()">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success" *ngIf="handlerModal.nuevo" [disabled]="!formulario.valid" (click)="Alta(formulario.value)">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                        </button>
+                        <button type="submit" class="btn btn-primary" *ngIf="handlerModal.editar" [disabled]="!formulario.valid" (click)="Actualizar(formulario.value)">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Editar
+                        </button>
+                        <button type="submit" class="btn btn-danger" *ngIf="handlerModal.editar" (click)="Delete(formulario.value)">
+                            <i class="icon-bin2 icoBntModal"></i>&nbsp; Eliminar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</app-dialog>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

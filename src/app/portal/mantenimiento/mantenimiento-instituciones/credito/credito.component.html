@@ -1,0 +1,475 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                     <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card full-height">
+                            <div class="card-header-formularios cafe-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-12 reset-padding header-middle">
+                                        <i class="icon-shield2 margin-left05em"></i>Configuración de crédito para {{institucionActual.razonSocial}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-block">
+                                <!-- FORMULARIO DE BUSQUEDA DE CONFIGURACIONES -->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <form [formGroup]="formularioBusqueda" (ngSubmit)="consultarConfiguracionPorProducto(formularioBusqueda.value)" novalidate>
+                                            <div class="row row-margin-bottom">
+                                                <div class="col-xs-10 form-group">
+                                                    <label>Producto*</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-star icon-formulario"></i>
+                                                        </span>
+                                                        <select class='form-control' formControlName="producto">
+                                                            <option value="">Selecciona un producto</option>
+                                                            <option *ngFor="let item of listaProductos" value={{item.idProducto}}>{{item.descripcionProducto}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <control-messages [control]="formularioBusqueda.controls.producto"></control-messages>
+                                                </div>
+                                                
+                                                <div class="col-xs-2" id="columnaConsultar">
+                                                    <input type="submit" name="btnConsultar" id="consultar" class="btn" value="Consultar" [disabled]="!formularioBusqueda.valid">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- FORMULARIO DE BUSQUEDA DE CONFIGURACIONES -->
+                                <hr class="separador-mantenimiento">
+                                <br><br>
+                                <!-- TABLA DE SCORE Y PLAZOS DE LA INSTITUCION -->
+                                <div class="row" *ngIf="mostrarTablaDetalle && (informacionCredito.length > 0)">
+                                    <div class="col-xs-12">
+                                        <div class="row center-xs">
+                                            <div class="col-xs-10">
+                                                <p class="leyenda-creditos">Crèditos activos:&nbsp;<i class="numero-creditos">{{numeroCreditosActivos}}</i></p>
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                         <div class="row">
+                                            <div class="text-left col-xs-6">
+                                                <label class="table-title">Validaciones de crédito a ser concideradas</label>
+                                            </div>
+                                            <div class="col-xs-6 end-xs reset-padding">
+                                                <button type="button" class="btn btn-sm btn-primary" (click)="mostrarModalValidaciones()" [disabled]="!formularioBusqueda.valid || listaValidaciones.length === 0">
+                                                    <i class="icon-pencil icon-btn-headers"></i>&nbsp;&nbsp;Actualizar
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-success" (click)="mostrarModalAlta()" [disabled]="!formularioBusqueda.valid || listaValidaciones.length > 5">
+                                                    <i class="icon-plus icon-btn-headers"></i>&nbsp;&nbsp;Nuevo
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                          <thead>
+                                                <th class="text-center">Validación crédito</th>
+                                                <th class="text-center">Estatus</th>
+                                          </thead>
+                                          <tbody>
+                                                <tr *ngFor="let item of listaValidaciones">
+                                                    <td>{{item.descripcion}}</td>
+                                                    <td>
+                                                        <span class="tag tag-success" *ngIf="item.status === 1">Activo</span>
+                                                        <span class="tag tag-danger" *ngIf="item.status !== 1">Inactivo</span>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="listaValidaciones.length === 0">
+                                                    <td colspan="2">
+                                                        <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                                    </td>
+                                                </tr>
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- TABLA DE SCORE Y PLAZOS DE LA INSTITUCION -->
+                                <br><br>
+                                <br><br>
+                                <!-- TABLA DE SALARIOS DE LA INSTITUCION -->
+                                <div class="row" *ngIf="mostrarTablaDetalle && (informacionCredito.length > 0)">
+                                    <div class="col-xs-12">
+                                        <div class="row">
+                                            <div class="text-left col-xs-6">
+                                                <label class="table-title">Salarios por score</label>
+                                            </div>
+                                            <div class="col-xs-6 end-xs">
+                                                <button type="button" class="btn btn-sm btn-primary" (click)="mostrarModalAct()" [disabled]="!formularioBusqueda.valid">
+                                                    <i class="icon-pencil icon-btn-headers"></i>&nbsp;&nbsp;Actualizar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                          <thead>
+                                                <th class="text-center">Arraigo laboral</th>
+                                                <th class="text-center">Edad min</th>
+                                                <th class="text-center">Edad min meses</th>
+                                                <th class="text-center">Edad max</th>
+                                                <th class="text-center">Edad max meses</th>
+                                                <th class="text-center">Sin historial?</th>
+                                                <th class="text-center">Disp promediar min</th>
+                                                <th class="text-center">Disp promediar max</th>
+                                                <th class="text-center">Cal sal</th>
+                                                <th class="text-center">Esquema</th>
+                                          </thead>
+                                          <tbody>
+                                                <tr *ngFor="let item of informacionCredito">
+                                                    <td>{{item.arraigoLaboral}}</td>
+                                                    <td>{{item.edadMin}}</td>
+                                                    <td>{{item.edadMinMeses}}</td>
+                                                    <td>{{item.edadMax}}</td>
+                                                    <td>{{item.edadMaxMeses}}</td>
+                                                    <td>{{item.sinHistorial}}</td>
+                                                    <td>{{item.dispPromediar}}</td>
+                                                    <td>{{item.dispPromediarMAx}}</td>
+                                                    <td>{{item.tipoCalSal === 1 ? 'Promedio': 'Moda'}}</td>
+                                                    <td>{{item.idEsquemaCred === 1 ? 'Saldos globales' : 'Saldos insolutos'}}</td>
+                                                </tr>
+                                                <tr *ngIf="informacionCredito.length === 0">
+                                                    <td colspan="10">
+                                                        <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                                    </td>
+                                                </tr>
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- TABLA DE SALARIOS DE LA INSTITUCION -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-dialog [(visible)]="mostrarFormularioValidaciones">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="esconderModalValidaciones()">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Validaciones de credito</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formularioActualizaValidaciones" (ngSubmit)="actualizarConfigCreditoValidaciones(formularioActualizaValidaciones.getRawValue())" novalidate *ngIf="mostrarFormularioValidaciones">
+                    
+                    <div class="col-xs-12 form-group" *ngFor="let validacion of listaValidaciones">
+                        <label>{{validacion.descripcion}}</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <select id="selectValidacion" name="selectValidacion" class="form-control" formControlName="{{arregloValidacionesControls[(validacion.idValidacion - 1)]}}">
+                                <option value="0">Inactivo</option>
+                                <option value="1">Activo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button (click)="esconderModalValidaciones()" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success" [disabled]="!formularioActualizaValidaciones.valid">
+                            <i class="icon-pencil-square-o icoBntModal"></i>&nbsp;&nbsp;Editar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>    
+</app-dialog>
+
+
+<app-dialog [(visible)]="mostrarFormularioModal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="esconderModalAlta()">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Validación de credito</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formularioCreditos" (ngSubmit)="crearConfigCreditoInstitucion(formularioCreditos.value)" novalidate>
+                    
+                    <div class="col-xs-12 form-group">
+                        <label>Validación*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <select id="selectValidacion" name="selectValidacion" class="form-control" formControlName="validacion">
+                                <option value="">Selecciona una validación</option>
+                                <option *ngFor="let item of catalogoValidaciones" value="{{item.idValidacion}}">{{item.descripcion}}</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formularioCreditos.controls.validacion"></control-messages>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                        <label>Estatus*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <select id="selectEstatus" name="selectEstatus" class="form-control" formControlName="estatus">
+                                <option value="">Selecciona un estatus</option>
+                                <option value="0">Inactivo</option>
+                                <option value="1">Activo</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formularioCreditos.controls.estatus"></control-messages>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button (click)="esconderModalAlta()" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success" [disabled]="!formularioCreditos.valid">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>    
+</app-dialog>
+
+<app-dialog [(visible)]="mostrarFormularioAct">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="esconderModalAct()">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Configuración general de credito</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formularioActualizaCred" (ngSubmit)="actualizarConfigCreditoInstitucion(formularioActualizaCred.getRawValue())" novalidate>
+                    
+                    <div class="col-xs-12 form-group">
+                        <label>Arraigo laboral*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-money icon-formulario"></i>
+                            </span>
+                            <input type="text" class="form-control" formControlName="arraigo" OnlyNumber="true">
+                        </div>
+                        <control-messages [control]="formularioActualizaCred.controls.arraigo"></control-messages>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>Edad minima*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-money icon-formulario"></i>
+                                </span>
+                                <!-- <input type="text" class="form-control" formControlName="edadMin" OnlyNumber="true"> -->
+
+                                <select id="edadMinSelect" name="edadMinS" class="form-control" formControlName="edadMin" [ngClass]="{'element-invalid': (formularioActualizaCred.controls.edadMin.invalid && (formularioActualizaCred.controls.edadMin.dirty || formularioActualizaCred.controls.edadMin.touched))}">
+                                    <option value="">Selecciona una edad</option>
+                                    <option *ngFor="let item of listaEdades" value="{{item}}">{{item}}</option>
+                                </select>
+                            </div>
+                            <control-messages [control]="formularioActualizaCred.controls.edadMin"></control-messages>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>Edad minima (meses)*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-money icon-formulario"></i>
+                                </span>
+                                <!-- <input type="text" class="form-control" formControlName="edadMinMeses" OnlyNumber="true"> -->
+
+                                <select id="edadMinMesSelect" name="edadMinMesS" class="form-control" formControlName="edadMinMeses">
+                                    <option value="0">Ningún mes</option>
+                                    <option value="1">Un mes</option>
+                                    <option value="2">Dos meses</option>
+                                    <option value="3">Tres meses</option>
+                                    <option value="4">Cuatro meses</option>
+                                    <option value="5">Cinco meses</option>
+                                    <option value="6">Seis meses</option>
+                                    <option value="7">Siete meses</option>
+                                    <option value="8">Ocho meses</option>
+                                    <option value="9">Nueve meses</option>
+                                    <option value="10">Diez meses</option>
+                                    <option value="11">Once meses</option>
+                                    <option value="12">Doce meses</option>
+                                </select>
+                            </div>
+                            <control-messages [control]="formularioActualizaCred.controls.edadMinMeses"></control-messages>
+                        </div>
+                    </div>
+                    <div class="row">                   
+                        <div class="col-xs-6 form-group">
+                            <label>Edad maxima*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-money icon-formulario"></i>
+                                </span>
+                                <!-- <input type="text" class="form-control" formControlName="edadMax" OnlyNumber="true"> -->
+
+                                 <select id="edadMaxSelect" name="edadMaxS" class="form-control" formControlName="edadMax" [ngClass]="{'element-invalid': (formularioActualizaCred.controls.edadMax.invalid && (formularioActualizaCred.controls.edadMax.dirty || formularioActualizaCred.controls.edadMax.touched))}">
+                                    <option value="">Selecciona una edad</option>
+                                    <option *ngFor="let item of listaEdades" value="{{item}}">{{item}}</option>
+                                </select>
+                            </div>
+                            <control-messages [control]="formularioActualizaCred.controls.edadMax"></control-messages>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>Edad maxima (meses)*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-money icon-formulario"></i>
+                                </span>
+                                <!-- <input type="text" class="form-control" formControlName="edadMaxMeses" OnlyNumber="true"> -->
+
+                                <select id="edadMaxMesSelect" name="edadMaxMesS" class="form-control" formControlName="edadMaxMeses">
+                                    <option value="0">Ningún mes</option>
+                                    <option value="1">Un mes</option>
+                                    <option value="2">Dos meses</option>
+                                    <option value="3">Tres meses</option>
+                                    <option value="4">Cuatro meses</option>
+                                    <option value="5">Cinco meses</option>
+                                    <option value="6">Seis meses</option>
+                                    <option value="7">Siete meses</option>
+                                    <option value="8">Ocho meses</option>
+                                    <option value="9">Nueve meses</option>
+                                    <option value="10">Diez meses</option>
+                                    <option value="11">Once meses</option>
+                                    <option value="12">Doce meses</option>
+                                </select>
+                            </div>
+                            <control-messages [control]="formularioActualizaCred.controls.edadMaxMeses"></control-messages>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form-group">
+                        <label>Sin historial?*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <select id="selectHistorial" name="selectHistorial" class="form-control" formControlName="sinHistorial">
+                                <option value="">Selecciona una opción</option>
+                                <option value="SI">Si</option>
+                                <option value="NO">No</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formularioActualizaCred.controls.sinHistorial"></control-messages>
+                    </div>
+                    <div class="col-xs-12 form-group">
+                        <label>Esquema de credito*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <select id="selectEsquema" name="selectEsquema" class="form-control" formControlName="esquemaCred">
+                                <option value="">Selecciona una opción</option>
+                                <option value="1">Saldos globales</option>
+                                <option value="2">Saldos insolutos</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formularioActualizaCred.controls.esquemaCred"></control-messages>
+                    </div>
+                    <div class="col-xs-12 form-group">
+                        <label>Calculo salario*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <select id="selectHistorial" name="selectHistorial" class="form-control" formControlName="tipoCalSal">
+                                <option value="">Selecciona una opción</option>
+                                <option value="1">Promedio</option>
+                                <option value="2">Moda</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formularioActualizaCred.controls.tipoCalSal"></control-messages>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>Dispersiones minimas*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-money icon-formulario"></i>
+                                </span>
+                                <input type="text" class="form-control" formControlName="dispPromediar" OnlyNumber="true" [ngClass]="{'element-invalid': (formularioActualizaCred.controls.dispPromediar.invalid && (formularioActualizaCred.controls.dispPromediar.dirty || formularioActualizaCred.controls.dispPromediar.touched))}">
+                            </div>
+                            <control-messages [control]="formularioActualizaCred.controls.dispPromediar"></control-messages>
+                        </div>
+
+                        <div class="col-xs-6 form-group">
+                            <label>Dispersiones maximas*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-money icon-formulario"></i>
+                                </span>
+                                <input type="text" class="form-control" formControlName="dispPromediarMax" OnlyNumber="true" [ngClass]="{'element-invalid': (formularioActualizaCred.controls.dispPromediarMax.invalid && (formularioActualizaCred.controls.dispPromediarMax.dirty || formularioActualizaCred.controls.dispPromediarMax.touched))}">
+                            </div>
+                            <control-messages [control]="formularioActualizaCred.controls.dispPromediarMax"></control-messages>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button (click)="esconderModalAct()" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary" [disabled]="!formularioActualizaCred.valid">
+                            <i class="icon-pencil-square-o icoBntModal"></i>&nbsp;&nbsp;Editar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>    
+</app-dialog>
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+

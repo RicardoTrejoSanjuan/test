@@ -1,0 +1,34 @@
+<header></header>
+    <div class="fondo-portal">
+         <div class="contenedor-general">
+              <!-- MENU PRINCIPAL DE PORTAL BIG -->
+              <!-- BOTON REGRESAR -->
+                <div class="contenedor-btn-regresar">
+                     <div class="btn-regresar">
+                     </div>
+                </div>
+                <!-- FIN BOTON REGRESAR -->
+              <div class="contenedor-menu fondo-contenedores">
+                   <div class="menu-opcion" *ngFor="let item of child" [routerLink]="[item.url]">
+                        <div class="icono-span {{item.color}}">
+                             <span class="{{item.imagen}}"></span>
+                        </div>
+                        <div class="informacion {{item.claseFondo}}">
+                             <h3 class="titulo-menu">{{item.textoMenu}}</h3>
+                             <div class="progress-bar">
+                                  <div class="{{item.claseIcono}}"></div>
+                             </div>
+                        </div>
+                   </div>
+              </div>
+              <!-- FIN MENU PRINCIPAL DE PORTAL BIG -->
+         </div>
+    </div>
+
+
+<div *ngIf="activateLoading" class="Loading">
+  <div class="loader">
+    <p class="loaderMsg"> {{msgloading}} </p>
+  </div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

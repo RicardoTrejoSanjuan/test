@@ -1,0 +1,136 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row end-xs">
+            <div class="col-xs-10">
+                <div class="pathNavegacion text-left">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row wrapAllHeight center-xs">
+            <div class="col-xs-2">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-10">                
+                <div class="card wrapAllHeightCard">
+                    <div class="card-header-formularios azul-05-ico">
+                        <div class="row">
+                            <div class="col-xs-9 reset-padding header-title align-flex-start">
+                                <i class="icon-credit-card margin-left05em"></i>Detalle de tarjeta&nbsp;{{tarjetaRemesa.numTarjeta}}
+                            </div>
+                            <div class="col-xs-3 reset-padding header-title align-flex-end">
+                                <a class="btn btn-sm btn-secondary" (click)="regresar()"> 
+                                    <i class="icon-arrow-circle-left icon-btn-headers"></i>&nbsp;&nbsp;Regresar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block wrapAllHeightGraphic scroll-card">
+                        <div class="info-general" *ngIf="listaDetallesTarjeta.length !== 0">
+                            <div class="numero-remesa">
+                                <span class="etiqueta-detalle">Número de remesa:</span>&nbsp;{{numRemesa}}
+                            </div>
+                            <div class="responsable-tarjetas">
+                                <span class="etiqueta-detalle">Responsable:</span>&nbsp;{{getFullName()}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="numero-movimientos" *ngIf="listaDetallesTarjeta.length > 0">
+                                    <div class="item-detalle">
+                                        <span class="etiqueta-detalle">Número de movimientos:</span>&nbsp;{{listaDetallesTarjeta.length}}
+                                    </div>
+                                </div>
+                                <!-- <div class="caja-detalle-tarjeta" *ngFor="let detalle of listaDetallesTarjeta">
+                                    <div class="detalle">
+                                        <div class="lista-detalle">
+                                            <div class="item-detalle">
+                                                <span class="etiqueta-detalle">ID folio:</span>&nbsp;{{detalle.idFolio}}
+                                            </div>
+                                            <div class="item-detalle">
+                                                <span class="etiqueta-detalle">Estatus de tarjetas:</span>&nbsp;{{detalle.status}}
+                                            </div>
+                                            <div class="item-detalle">
+                                                <span class="etiqueta-detalle">Número de tarjetas:</span>&nbsp;{{detalle.numTarjetas}}
+                                            </div>
+                                            <div class="item-detalle">
+                                                <span class="etiqueta-detalle">Fecha de recepción:</span>&nbsp;{{detalle.fechaRecibido !== null ? detalle.fechaRecibido : "---"}}
+                                            </div>
+                                            <div class="item-detalle">
+                                                <span class="etiqueta-detalle">Comentarios:</span>&nbsp;{{detalle.comentario !== null ? detalle.comentario : "---"}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="otorgante">
+                                        {{detalle.idOtorgante}}<br>
+                                        {{detalle.otorgante}}
+                                    </div>
+                                    <div class="icono-status" [ngClass]="{'icono-success': detalle.idTipoMov == 1,'icono-danger': detalle.idTipoMov == 2}">
+                                        <span class="icon-chevron-circle-right"></span>
+                                        <p>{{detalle.tipoMov}}</p>
+                                    </div>
+                                    <div class="receptor">
+                                        {{detalle.idReceptor}}<br>
+                                        {{detalle.receptor}}
+                                    </div>
+                                </div> -->
+
+                                <section id="linea-tiempo-movimientos">
+                                    <article *ngFor="let detalle of listaDetallesTarjeta">
+                                        <div class="tarjeta-movimiento">
+                                            <span class="fecha-movimiento">
+                                                <span class="dia-fecha">{{detalle.fechaFragmentada.dia}}</span>
+                                                <span class="mes-fecha">{{detalle.fechaFragmentada.mes}}</span>
+                                                <span class="anio-fecha">{{detalle.fechaFragmentada.anio}}</span>
+                                            </span>
+                                            <div class="encabezado-tarjeta" [ngClass]="{'entrega-tarjeta': detalle.idTipoMov == 1,'devolucion-tarjeta': detalle.idTipoMov == 2}">
+                                                <span id="movimiento">{{detalle.tipoMov}}</span>
+                                                <span id="status-movimiento">{{detalle.status}}</span>
+                                            </div>
+                                            <div class="cuerpo-tarjeta">
+                                                <div class="info-movimiento" id="detalle-movimiento">
+                                                    <span>Folio número&nbsp;<b>{{detalle.idFolio}}</b></span>
+                                                    <span><b>{{detalle.numTarjetas}}&nbsp;tarjetas</b>&nbsp;{{ (detalle.idTipoMov === 1) ? "entregadas" : "devueltas"}}</span>
+                                                </div>
+                                                <div class="info-movimiento" id="responsables">
+                                                    <span class="nombre-responsable">{{detalle.otorgante}}&nbsp;[{{detalle.idOtorgante}}]</span>
+                                                    <span class="icon-chevron-circle-right icono-responsable"></span>
+                                                    <span class="nombre-responsable">{{detalle.receptor}}&nbsp;[{{detalle.idReceptor}}]</span>
+                                                </div>
+                                                <div class="info-movimiento" id="comentarios" *ngIf="detalle.comentario !== null">
+                                                    <span>Comentarios:&nbsp;"{{detalle.comentario}}"</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </section>
+
+                                <div class="caja-sin-resultados caja-detalle-tarjeta" *ngIf="listaDetallesTarjeta.length == 0">
+                                    <div class="mensaje-sin-resultados">
+                                        No se encontro ningún movimiento registrado
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

@@ -1,0 +1,154 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+    <div class="contenedor-general">
+        <!-- BANDEJAS DE RECEPCION DE SOLICITUDES -->
+        <div class="cont-boton-regresar regresar-menu">
+             <div class="boton-regresar" (click)="Regresar()">
+                  <img src="{{load_static}}/images/header/back.png" alt="regresar">
+                  Regresar
+            </div>
+        </div>
+
+        <div class="contenedor-tablas fondo-contenedores">
+            <div class="header-contenidos verde-03">
+                 <div class="principal">
+                      <img src="{{load_static}}/images/header/busqueda.png">
+                      <div class="titulo">Busqueda de Créditos</div>
+                 </div>
+                 <div></div>
+            </div>
+            <div class="contenido-principal">
+                <div class="margin-creditos seleccion-institucion">
+
+                    <label class="label-institucion">Institución</label>
+                    <div class="container-search-str">
+                        <mat-input-container class="ng-tns-c8-5 mat-input-container ng-pristine ng-valid ng-touched">
+                            <input matInput [matAutocomplete]="auto" [formControl]="FormInstituciones" class="str-entrada">
+                        </mat-input-container>
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let institucion of Instituciones | async" [value]="institucion.nombre" (onSelectionChange)="ConsultaRegistros(institucion)">
+                                {{ institucion.nombre }}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <span class="icon-cross btn-cerrar" (click)="ClearInstitucion()"></span>
+                    </div>
+
+
+                </div>
+
+                <form class="margin-creditos form-busqueda-credito" [formGroup]="FormFilters" *ngIf="objHandler.showFilters" novalidate>
+                    <input type="text" placeholder="Búsqueda" class="filtro-nombre" formControlName="strBusqueda" (keyup)="BusquedaStr(FormFilters.value)">
+
+                    <select class="filtros-varios" formControlName="producto" (change)="SeleccionandoProducto(FormFilters.value)">
+                        <option value=null *ngIf="(Productos.length > 1)">Producto</option>
+                        <option *ngFor="let producto of Productos" value={{producto.idProducto}}>{{producto.producto}}</option>
+                    </select>
+
+                    <select class="filtros-varios" formControlName="estatus" (change)="SeleccionandoStatus(FormFilters.value)">
+                        <option value=null>Estatus</option>
+                        <option *ngFor="let status of estatusList" value={{status.id}}>{{status.title}}</option>
+                    </select>
+
+                    <div class="filtros-varios date-picker">
+                        <div class="close-datepicker" (click)="BorrarDatePicker('inicial')">
+                            <span class="icon-close"></span>
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            <mat-input-container class="ng-tns-c8-7 mat-input-container ng-pristine">
+                                <input
+                                    #fechaInicial
+                                    formControlName="fechaInicial"
+                                    (ngModelChange)="SeleccionandoFecha(fechaInicial.value, 'inicial')"
+                                    [max]="maxDate"
+                                    name="fechaInicial"
+                                    matInput
+                                    [matDatepicker]="pickerInicial"
+                                    placeholder="">
+                                <mat-datepicker-toggle matSuffix [for]="pickerInicial"></mat-datepicker-toggle>
+                            </mat-input-container>
+                            <mat-datepicker #pickerInicial></mat-datepicker>
+                        </div>
+                    </div>
+                    <div class="filtros-varios date-picker">
+                        <div class="close-datepicker" (click)="BorrarDatePicker('final')">
+                            <span class="icon-close"></span>
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            <mat-input-container class="ng-tns-c8-7 mat-input-container ng-untouched ng-pristine">
+                                <input
+                                    #fechaFinal
+                                    formControlName="fechaFinal"
+                                    (ngModelChange)="SeleccionandoFecha(fechaFinal.value, 'final')"
+                                    [max]="maxDate"
+                                    [min]="minDate"
+                                    name="fechaFinal"
+                                    matInput
+                                    [matDatepicker]="pickerFinal"
+                                    placeholder="">
+                                <mat-datepicker-toggle matSuffix [for]="pickerFinal"></mat-datepicker-toggle>
+                            </mat-input-container>
+                            <mat-datepicker #pickerFinal></mat-datepicker>
+                        </div>
+                    </div>
+                </form>
+
+
+                <div class="margin-creditos" *ngIf="objHandler.showRegisters">
+                    <table class="table">
+                         <thead>
+                             <td class="text-center">NOMBRE</td>
+                             <td class="text-center">ID CRÉDITO</td>
+                             <td class="text-center">IMPORTE</td>
+                             <td class="text-center">FECHA SURTIMIENTO</td>
+                             <td class="text-center">PLAZO</td>
+                             <td class="text-center" *ngIf="objHandler.tipoUsuario">REVISADOS</td>
+                             <td class="text-center"></td>
+                         </thead>
+                         <tbody>
+                              <tr *ngFor="let item of pagedItems">
+                                   <td>{{item.nombre}}</td>
+                                   <td>{{item.idCredito}}</td>
+                                   <td>{{item.capital | currency:'MXN':true}}</td>
+                                   <td>{{item.fechaSurtimiento}}</td>
+                                   <td>{{item.plazo}}</td>
+                                   <td *ngIf="objHandler.tipoUsuario">
+                                       <span class="icon-check-square-o color-checked" *ngIf="item.statusRevision === 1"></span>
+                                       <span class="icon-square-o" *ngIf="item.statusRevision === 0"></span>
+                                   </td>
+                                   <td class="padding-img"><img class="img-credito" src="{{load_static}}/images/mesa-control-expedientes/expediente-verde.png" (click)="RevisarDocumentos(item)"></td>
+                              </tr>
+                         </tbody>
+                    </table>
+                    <div class="container">
+                        <div class="text-center">
+                            <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                    <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                </li>
+                                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                    <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                </li>
+                                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                    <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                </li>
+                                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                    <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                </li>
+                                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                    <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

@@ -1,0 +1,155 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row end-xs">
+            <div class="col-xs-10">
+                <div class="pathNavegacion text-left">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row wrapAllHeight center-xs">
+            <div class="col-xs-2">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-10">                
+                <div class="card wrapAllHeightCard">
+                    <div class="card-header-formularios azul-05-ico">
+                        <div class="row">
+                            <div class="col-xs-9 reset-padding header-title align-flex-start">
+                                <i class="icon-paper-plane margin-left05em"></i>Solicitudes de remesa
+                            </div>
+                            <div class="col-xs-3 reset-padding header-title align-flex-end">
+                                <a class="btn btn-sm btn-success" (click)="abrirModalCreacion()"> 
+                                    <i class="icon-plus icon-btn-headers"></i>&nbsp;&nbsp;Crear
+                                </a>
+                                <a class="btn btn-sm btn-secondary" *ngIf="solicitudesFiltradas.length > 0" (click)="exportarDatosModulo()"> 
+                                    <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Exportar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block wrapAllHeightGraphic scroll-card">
+
+                        <div class="form-group" [ngClass]="{'element-disabled': solicitudesFiltradas.length === 0}">
+                            <label>Buscador</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" name="busqueda" placeholder="Solicitud..." class="form-control" [(ngModel)]="cadena" (keyup)="filtrarSolicitudes(cadena)">
+                            </div>
+                        </div>
+
+                        <div class="tabla">
+                            <table class="table">
+                                <thead>
+                                    <th class="text-center">ID solicitud</th>
+                                    <th class="text-center">Remesas</th>
+                                    <th class="text-center">Remesas procesadas</th>
+                                    <th class="text-center">Tarjetas por remesa</th>
+                                    <th class="text-center">Tipo de tarjeta</th>
+                                    <th class="text-center">Estatus</th>
+                                    <th class="text-center">Fecha de expedición</th>
+                                </thead>
+                                <tr *ngFor="let solicitud of solicitudesFiltradas | slice:pagesHandler.init:pagesHandler.final">
+                                    <td>{{solicitud.idSolicitud}}</td>
+                                    <td>{{solicitud.numRemesas}}</td>
+                                    <td>{{solicitud.numTarjetasRemesaProc}}</td>
+                                    <td>{{solicitud.numTarjetasRemesa}}</td>
+                                    <td>{{solicitud.tipoTarjeta}}</td>
+                                    <td>
+                                        <span class="tag" [ngClass]="{'tag-success': solicitud.status === 'PROCESADA','tag-danger': solicitud.status === 'PENDIENTE'}">
+                                            {{solicitud.status}}
+                                        </span>
+                                    </td>
+                                    <td>{{solicitud.fechaSolicitud}}</td>
+                                </tr>
+                                <tr *ngIf="solicitudesFiltradas.length === 0">
+                                    <td colspan="7">
+                                        <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="paginador text-end" *ngIf="mostrarPaginadorTabla">
+                            <ng2-table #tablasolicitudes (update)="actualizarTablaSolicitudes($event)"></ng2-table>  
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-dialog [(visible)]="mostrarFormularioSolicitud">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="ocultarFormularioSolicitudes()">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Crear una solicitud de remesa</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formularioSolicitud" (ngSubmit)="crearSolicitud(formularioSolicitud.getRawValue())" novalidate>
+                    
+                    <div class="col-xs-12 reset-padding">
+                        <div class="row">
+                            <div class="col-xs-6 form-group">
+                                <label>Número de remesas*</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-star icon-formulario"></i>
+                                    </span>
+                                    <input type="text" placeholder="Cantidad de remesas" class="form-control" formControlName="numeroRemesas" OnlyNumber="true" 
+                                    [ngClass]="{'element-invalid': formularioSolicitud.controls.numeroRemesas.invalid && (formularioSolicitud.controls.numeroRemesas.dirty || formularioSolicitud.controls.numeroRemesas.touched)}">
+                                </div>
+                                <control-messages [control]="formularioSolicitud.controls.numeroRemesas"></control-messages>
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <label>Número de tarjetas por remesa*</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-star icon-formulario"></i>
+                                    </span>
+                                    <input type="text" placeholder="Cantidad de tarjetas" class="form-control" formControlName="numeroTarjetas" OnlyNumber="true" 
+                                    [ngClass]="{'element-invalid': formularioSolicitud.controls.numeroTarjetas.invalid && (formularioSolicitud.controls.numeroTarjetas.dirty || formularioSolicitud.controls.numeroTarjetas.touched)}">
+                                </div>
+                                <control-messages [control]="formularioSolicitud.controls.numeroTarjetas"></control-messages>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="modal-footer">
+                        <button (click)="ocultarFormularioSolicitudes()" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success" [disabled]="!formularioSolicitud.valid" [ngClass]="{'button-disabled': !formularioSolicitud.valid}">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</app-dialog>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

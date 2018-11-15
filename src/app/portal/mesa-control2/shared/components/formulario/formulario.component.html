@@ -1,0 +1,18 @@
+<div id="form-valida">
+    <form name="modificar" id="modificar">
+        <div id="mostrar_datos" *ngFor="let itemInput of listForm; let i = index">
+            <div class="e1">
+                <label>{{itemInput.etiqueta}}</label>
+            </div>
+            <div class="e2 {{activaClick}}">
+                <img class="btn-aceptar-rechazar {{itemInput.color}}" src="{{load_static + itemInput.path}}" (click)="validOkX(itemInput)">
+            </div>
+            <div class="e3" *ngIf=origen>
+                <input type="text" value={{itemInput.valor}} class="valorInput" id="{{itemInput.etiqueta}}" required>
+            </div>
+            <div class="e3" *ngIf=!origen>
+                <label >{{itemInput.valor}}</label>
+            </div>
+        </div>
+    </form>
+</div>

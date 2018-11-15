@@ -1,0 +1,41 @@
+/* ARCHIVO CSS PARA LOS ESTILOS QUE SON APLICADOS AL AVATAR DE USUARIO DE MESA DE CONTROL */
+.container-avatar{
+     min-height: 110px;
+     display: flex;
+     background-color: #d0f6f6;
+     max-width: 400px;
+     margin-bottom: 10px;
+}
+.container-avatar .foto{
+    width: 35%;
+    padding: 2%;
+    border-right: 1px solid #13B0AC;
+    display: flex;
+    align-items: center;
+}
+
+.container-avatar .foto img {
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+}
+.container-avatar .datos-usuario{
+     width: 65%;
+     display: flex;
+     align-items: center;
+}
+.container-avatar .datos-usuario .datos{
+     color: rgba(66, 186, 159, 0.9);
+     font-size: 14px;
+     padding: 0px 10px;
+     width: 100%;
+     background-image: url('../../../../images/header/usuario-side.jpg');
+     background-repeat: no-repeat;
+     background-position: bottom;
+     background-position-x: right;
+     word-break: break-word;
+}
+
+.container-avatar .datos-usuario .datos .nombre{
+     color: black;
+}

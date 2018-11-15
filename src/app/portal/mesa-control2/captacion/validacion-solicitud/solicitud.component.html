@@ -1,0 +1,57 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+    <div class="contenedor-general">
+        <!-- DOCUMENTOS DE LA SOLICITUD -->
+        <return [model]="'./mesa-control2/captacion'" [value]="true" [classActive]="false"></return>
+        <div class="contenedor-tablas fondo-contenedores">
+            <div class="header-contenidos verde-03">
+                <div class="principal">
+                    <img src="{{load_static}}/images/header/control.png">
+                    <div class="titulo">Comprobantes</div>
+                </div>
+                <div></div>
+            </div>
+            <div class="row">
+                <div id="visorPdf" class="col-xs-8">
+                    <div class="container-validacion2 container-docs">
+                        <div class="col-xs-6">
+                            <visor-documentos #visorUno (GetImageBase64)="ConsultarDocumentoVisor1($event)"></visor-documentos>
+                        </div>
+                        <div class="col-xs-6">
+                            <visor-documentos #visorDos (GetImageBase64)="ConsultarDocumentoVisor2($event)"></visor-documentos>
+                        </div>
+                    </div>
+                    <div class="container-docs flex-imgValida">
+                        <div class="container-images">
+                            <div class="gallery {{itemImg.class}}" *ngFor="let itemImg of galleryImg; let i = index" (click)="changeImage(itemImg)">
+                                <img src="{{load_static + itemImg.path}}" alt="{{itemImg.id}}">
+                            </div>
+                        </div>
+                        <imagenPdf *ngIf="imagesPdf.length > 0" class="container-checkImg {{activaClick}}" [imagesPdfAll]="imagesPdf" (banderaImagesPdf)="validaImagenesPdf($event)"></imagenPdf>
+                    </div>
+                    <div class="container-docs container-historial">
+                        <historial [visible]="historialVisible" [dataUser]="dataUser"></historial>
+                    </div>
+                </div>
+                <div id="FormSelfie" class="col-xs-4">
+                    <div class="container-docs center-xs">
+                            <avatar-mc class="container-selfie" [avatar]="false"></avatar-mc>
+                    </div>
+                    <div class="container-validacion container-docs">
+                        <formulario [listFormAll]="listFormAll" [origen]="origen" [perfil]="perfil" [activaClick]="activaClick" (banderaBotonAC)="validaForm($event)"
+                            (listFormAC)="updateListForm($event)" (banderaFoto)="validaSelfie($event)"></formulario>
+                    </div>
+                    <div class="container-docs">
+                        <button class="btn mc_button {{dataBoton.color}} {{activaClick}}" (click)="enviaValidacion(dataBoton)">{{dataBoton.etiqueta}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FIN DE LA SOLICITUD -->
+    </div>
+</div>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

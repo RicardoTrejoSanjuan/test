@@ -1,0 +1,66 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+     <div class="contenedor-general">
+          <!-- BANDEJAS DE RECEPCION DE SOLICITUDES -->
+          <div class="cont-boton-regresar regresar-menu">
+                <div class="boton-regresar" (click)="regresar()">
+                    <img src="{{load_static}}/images/header/back.png" alt="regresar">
+                    Regresar
+                </div>
+          </div>
+          <div class="contenedor-tablas fondo-contenedores">
+               <div class="header-contenidos verde-03">
+                    <div class="principal">
+                         <img src="{{load_static}}/images/header/control.png">
+                         <div class="titulo">Búsqueda de Instituciones</div>
+                    </div>
+                    <div></div>
+               </div>
+               <div class="contenido-principal busqueda-instituciones">
+                    <div class="registos">
+                         <form class="form-busqueda" novalidate>
+                              <div class="content-input">
+                                   <input name="busqueda" type="text" placeholder="Buscar instituciones" autocomplete="off" [(ngModel)]="filter" OnlyAlfanumerico 
+                                   (ngModelChange)="busquedaInstituciones(filter)" />
+                                   <span class="icon-cross btn-cerrar" (click)="limpiarBusqueda()"></span>
+                              </div>
+                         </form>
+                    </div>
+                    <div class="registos" *ngIf="!isEmptyInputSearch">
+                         <table class="table">
+                              <thead>
+                                        <th class="text-center">NÚMERO INSTITUCIÓN</th>
+                                        <th class="text-center">RAZON SOCIAL</th>
+                                        <th class="text-center">TIPO CLIENTE</th>
+                                        <th class="text-center">RFC</th>
+                              </thead>
+                              <tbody>
+                                   <tr *ngFor="let item of objResponse | slice:pagesHandler.init:pagesHandler.final" (click)="irConfigProductos(item)">
+                                        <td>{{item.idInstitucion}}</td>
+                                        <td>{{item.razonSocial}}</td>
+                                        <td>{{item.descTipoCliente}}</td>
+                                        <td>{{item.rfcInstitucion}}</td>
+                                   </tr>
+                                   <tr *ngIf="isEmptyResponse">
+                                        <td colspan="4">
+                                             <p class="sin-registros">La busqueda no arrojo resultados</p>
+                                        </td>
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+                    <div class="registos" *ngIf="!isEmptyInputSearch">
+                         <ng2-table #tablaBusqueda (update)="Update($event)"></ng2-table>
+                    </div>
+               </div>
+          </div>
+          <!-- FIN BANDEJAS DE RECEPCION DE SOLICITUDES -->
+     </div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

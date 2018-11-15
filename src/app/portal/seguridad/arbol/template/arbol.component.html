@@ -1,0 +1,120 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-9 col-sm-10 col-md-10 row center-xs">
+
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+
+
+
+                        <div class="card">
+                            <div class="card-header-formularios cafe-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>Árbol de Permisos
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-block">
+                                <form [formGroup]="formulario" (ngSubmit)="buscar()" novalidate>
+
+                                    <div class="row">
+                                        <div class="form-group col-xs-12 col-md-4">
+                                            <label for="ccmonth">Grupos</label>
+                                            <select class="form-control" formControlName="idGrupo" (change)="getRol(formulario.value.idGrupo)">
+                                                <option value="">Por favor seleccione</option>
+                                                <option *ngFor="let item of getObjecAllGrupo" [ngValue]="item.idGrupo">{{item.descripcion}}</option>
+                                            </select>
+                                            <control-messages [control]="formulario.controls.idGrupo"></control-messages>
+                                        </div>
+                                        <div class="form-group col-xs-12 col-md-4 ">
+                                            <label for="ccyear">Rol</label>
+                                            <select class="form-control" formControlName="idRol">
+                                                <option value="">Por favor seleccione</option>
+                                                <option *ngFor="let item of getObjecAllRol" [ngValue]="item.idRol">{{item.descripcion}}</option>
+                                            </select>
+                                            <control-messages [control]="formulario.controls.idRol"></control-messages>
+                                        </div>
+
+                                         <div class="form-group col-xs">
+                                            <div class="btnorizontal"> </div>
+                                            <button type="submit" class="btn btn-primary btnarbol" id="verde" [disabled]="!formulario.valid">
+                                                <span class="icon-search icoBntModal"></span>&nbsp; Buscar
+                                            </button>
+
+                                        </div>
+                                        <div class="row col-xs-12 card-block" style="height:100%; max-height: 400px; overflow: scroll; border: 1px solid #D1D4D7;" *ngIf="asignarModulos">
+                                            <div class="col-xs-2"></div>
+                                            <div class="form-group col-xs-8 card contenedor-arbol" >
+                                                <tree-view [permisos]="permisos" [todo]="permisos" class="col-xs-12 row" ></tree-view>
+                                            </div>
+                                            <div class="col-xs-2"></div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                                <div class=" row "  *ngIf="asignarModulos">
+                                    <div class="btnorizontal col-xs-12 row"> </div>
+                                    <button (click)="asignar()" id="verde" class="btn btnarbol col-xs-12 " [disabled]="!formulario.valid">
+                                        <span class="icon-checkmark icoBntModal"></span>&nbsp; Asignar
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

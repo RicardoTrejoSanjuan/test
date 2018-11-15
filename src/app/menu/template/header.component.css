@@ -1,0 +1,41 @@
+.rowTituloHeader{
+    height: 6%;
+    background-color: #fff;
+    /*border-bottom: 1px solid #d1d4d7;*/
+}
+.boxTitiloHeader{
+    background-color:black;
+}
+.tituloheader{
+    color: white;
+    font-size: 2em;
+}
+.HeaderContendPrincipal{
+    display: flex;
+}
+.iconswitch {
+    position: absolute;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0px;
+}
+.boxCerrar {
+    width: 43px;
+    /*background-color: #bebebe;*/
+    /*border-right: solid 1px #afafaf;*/
+    height: 6%;
+}
+
+
+a {
+    text-decoration: none;
+    color: #333333;
+}
+
+.nombre{
+    margin: 0 5%;
+    font-weight: bold;
+    color: #6b6b6b;
+}

@@ -1,0 +1,154 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+    <div class="contenedor-general">
+
+        <!-- BANDEJAS DE RECEPCION DE SOLICITUDES -->
+        <div class="cont-boton-regresar regresar-menu">
+            <div class="boton-regresar" (click)="Regresar()">
+                <img src="{{load_static}}/images/header/back.png" alt="regresar"> Regresar
+            </div>
+        </div>
+
+        <div class="contenidos-pantalla-full fondo-contenedores background-beige" [ngSwitch]="objHandler.tabVisible">
+            <!-- HEADER DE LA VISTA -->
+            <div class="header-contenidos verde-04-ico">
+                <div class="principal">
+                    <span class="icon-gears"></span>
+                    <div class="titulo">Validacion</div>
+                </div>
+                <div></div>
+            </div>
+            <!-- FIN HEADER DE LA VISTA -->
+            <div class="contenidos-distribuidos" *ngSwitchCase="1">
+                <div class="contenidos-centrado col-xs-11">
+                    <div class="header-informacion">
+                        <p>Revisión de Expediente</p>
+                        <p class="text-capitalize">En Proceso por: {{institucion.nombreAsesor}} {{institucion.apPaternoAsesor}} {{institucion.apMaternoAsesor}}</p>
+                        <p class="text-capitalize">Área: {{institucion.currentArea}}</p>
+                        <!-- <p class="text-capitalize">Alterno: Leonel Santiago Gonzalez Flores</p> -->
+                    </div>
+                </div>
+                <div class="reset-padding contenidos-centrado col-xs-1">
+                    <div class="container-dias-totales">
+                        <p class="label">Total Dias</p>
+                        <p class="value">{{diasTotales}}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- CONTENEDOR DE CONFIGURACIONES DE SEGUIMIENTO -->
+            <div class="contenidos-distribuidos altura-seguimiento" *ngSwitchCase="1">
+                <!-- CONTENIDOS DE LA CAJA IZQUIERDA -->
+                <div class="boxes-50 box-40-width">
+                    <div class="content-table content-time-line">
+                        <div class="content-right-align">
+                            <!-- frst-left-align/frst-right-align/frst-alternate/frst-date-opposite-->
+                            <div class="frst-timeline-style-4 frst-right-align">
+                                <!-- frst-timeline-block -->
+                                <div class="frst-timeline-block frst-odd-item aqua-blue" data-animation="slideInUp" *ngFor="let item of arrayFlujoTraking">
+                                    <div class="frst-timeline-img">
+                                        <span></span>
+                                    </div>
+                                    <!-- frst-timeline-img -->
+                                    <div class="frst-timeline-content animated rotateInDownLeft" style="position: relative;">
+                                        <div class="frst-timeline-content-inner">
+                                            <div class="side-border">
+                                                <h2>{{item.descArea}}</h2>
+                                            </div>
+                                            <div class="dias-faltan icon-section" [ngClass]="{'icon-section-alert': item.diasRetraso > 0, 'icon-section-current': item.currentTask}">
+                                                <i class="fa fa-star fa-2x" aria-hidden="true"></i>{{item.diasReales}} día</div>
+                                            <h4>{{item.diasDuracion}}</h4>
+                                            <h2>{{item.descEtapa}}</h2>
+                                        </div>
+                                        <!-- frst-timeline-content-inner -->
+                                    </div>
+                                    <!-- frst-timeline-content -->
+                                </div>
+                                <!-- frst-timeline-block -->
+                            </div>
+                            <!-- frst-timeline -->
+                        </div>
+                    </div>
+                </div>
+                <!-- FIN CONTENIDOS DE LA CAJA IZQUIERDA -->
+                <!-- CONTENIDOS DE LA CAJA DERECHA -->
+                <div class="boxes-50 box-60-width">
+                    <div class="content-table">
+                        <div class="header-table">
+                            <p class="titulo">{{institucion.descripcionFlujo}}</p>
+                            <p class="subtitulo">{{institucion.razonSocialInstitucion}}</p>
+                            <div class="title-column">
+                                <span class="column-35">Responsable</span>
+                                <span class="column-15">Fecha Inicio</span>
+                                <span class="column-15">Fecha Fin</span>
+                                <span class="column-5">Dias Reales</span>
+                                <span class="column-5">Retraso</span>
+                                <span class="column-20">Acción</span>
+                            </div>
+                        </div>
+                        <table class="table-etapas" style="margin-top: 88px;">
+                            <!--
+                            <thead>
+                                <tr>
+                                    <td colspan="6">
+                                        {{institucion.descripcionFlujo}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6"> {{institucion.razonSocialInstitucion}} </td>
+                                </tr>
+
+                                <tr>
+                                    <td> Responsable </td>
+                                    <td> Fecha Inicio </td>
+                                    <td> Fecha Fin </td>
+                                    <td> Dias Reales </td>
+                                    <td> Retraso</td>
+                                    <td> Acción</td>
+                                </tr>
+
+                            </thead>
+                            -->
+                            <tbody>
+                                <tr *ngFor="let item of arrayFlujoTraking; let i=index">
+                                    <td class="column-35">{{item.nombre}}</td>
+                                    <td class="column-15">{{item.fechaInicio}}</td>
+                                    <td class="column-15">{{item.fechaFin}}</td>
+                                    <td class="column-5">
+                                        <input
+                                            type="text"
+                                            class="input-dias-editable"
+                                            [disabled]="item.fechaInicio === null || item.fechaFin === null"
+                                            OnlyNumber="true"
+                                            [ngModel]="item.diasReales"
+                                            (keydown.enter)="ModificarDias($event, item)">
+                                    </td>
+                                    <td class="column-5"> {{item.diasRetraso}} </td>
+                                    <td class="column-20">
+                                        <div class="card-block-2">
+                                            <span class="icon-play3 btnAccion iniciar" [ngClass]="{'deactive': !item.iniciar}" (click)="item.iniciar && IniciarTarea(item)"></span>
+                                            <span class="icon-stop2 btnAccion finalizar" [ngClass]="{'deactive': !item.finalizar}" (click)="item.finalizar && FinalizarTarea(item)"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+                <!-- FIN CONTENIDOS DE LA CAJA DERECHA -->
+            </div>
+            <div class="altura-seguimiento sin-registros-configuracion margin-configuracion" *ngSwitchCase="2">
+                Sin Registros Por Mostrar
+            </div>
+            <!-- FIN CONTENEDOR DE CONFIGURACIONES DE SEGUIMIENTO -->
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

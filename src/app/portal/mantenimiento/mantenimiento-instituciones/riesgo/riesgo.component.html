@@ -1,0 +1,485 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                     <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card full-height">
+                            <div class="card-header-formularios cafe-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-12 reset-padding header-middle">
+                                        <i class="icon-shield2 margin-left05em"></i>Configuración matriz de riesgos para {{institucionCurrent.razonSocial}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-block">
+                                <!-- FORMULARIO DE BUSQUEDA DE CONFIGURACIONES -->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <form [formGroup]="formularioBusqueda" (ngSubmit)="consultarConfigScoreSalario(formularioBusqueda.value)" novalidate>
+                                            <div class="row row-margin-bottom">
+                                                <div class="col-xs-5 form-group">
+                                                    <label>Producto*</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-star icon-formulario"></i>
+                                                        </span>
+                                                        <select class='form-control' formControlName="producto">
+                                                            <option value="">Selecciona un producto</option>
+                                                            <option *ngFor="let item of productoValidate.registros" value={{item.idProducto}}>{{item.descripcionProducto}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <control-messages [control]="formularioBusqueda.controls.producto"></control-messages>
+                                                </div>
+                                                <div class="col-xs-5 form-group">
+                                                    <label>Periodicidad de pago*</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-calendar icon-formulario"></i>
+                                                        </span>
+                                                        <select class='form-control' formControlName="periocidad">
+                                                            <option value="">Selecciona una periodicidad</option>
+                                                            <option *ngFor="let item of periodicidadValidate.registros" value={{item.idPeridocidadPago}}>{{item.descripPeriodo}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <control-messages [control]="formularioBusqueda.controls.periocidad"></control-messages>
+                                                </div>
+                                                <div class="col-xs-2" id="columnaConsultar">
+                                                    <input type="submit" name="btnConsultar" id="consultar" class="btn" value="Consultar" [disabled]="!formularioBusqueda.valid">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- FORMULARIO DE BUSQUEDA DE CONFIGURACIONES -->
+                                <hr class="separador-mantenimiento">
+                                <br>
+                                <br>
+                                <div class="config-plazo" *ngIf="mostrarBotonAlta">
+                                <!-- FORMULARIO PARA COPIAR CONFIGURACION -->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <form [formGroup]="formularioCopiar" (ngSubmit)="clonarConfigPlazos(formularioCopiar.value, formularioBusqueda.value)" novalidate>
+                                            <div class="row row-margin-bottom">
+                                                <div class="col-xs-2" id="copyRadioButton">
+                                                    <label [ngClass]="{'radio-selected': mostrarCopiaConfig,'radio-label': formularioBusqueda.valid && !mostrarCopiaConfig,'radio-disabled': !formularioBusqueda.valid}">
+                                                         <input type="radio" name="copy" (click)="habilitarSeccionCopiar()" [checked]="mostrarCopiaConfig" [disabled]="!formularioBusqueda.valid">
+                                                         <span class="button-opt"><i class="icon-copy small-icon"></i></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-8 form-group">
+                                                    <label>Copiar configuración plazos de:</label>
+                                                    <div class="input-group" [ngClass]="{'element-disabled': !institucionesConfig.length > 0}">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-user icon-formulario"></i>
+                                                        </span>
+                                                        <select class='form-control' formControlName="institucion">
+                                                            <option value="">Selecciona una institución</option>
+                                                            <option *ngFor="let item of institucionesConfig" value={{item.idInstitucion}}>{{item.descripcion}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <control-messages [control]="formularioCopiar.controls.institucion"></control-messages>
+                                                </div>
+                                                <div class="col-xs-2" id="columnaConsultar">
+                                                    <input type="submit" name="btnConsultar" id="consultar" class="btn" value="Clonar" [disabled]="!formularioCopiar.valid">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- FORMULARIO PARA COPIAR CONFIGURACION -->
+                                <br><br>
+                                <!-- TABLA DE SCORE Y PLAZOS DE LA INSTITUCION -->
+                                <div class="row" *ngIf="mostrarBotonAlta">
+                                    <div class="col-xs-12">
+                                        <div class="row">
+                                            <div class="text-left col-xs-6">
+                                                <label class="table-title">Plazos por score</label>
+                                            </div>
+                                            <div class="col-xs-6 end-xs reset-padding">
+                                                <button (click)="mostrarFormularioAltaPlazoScore()" type="button" class="btn btn-sm btn-success" [disabled]="mostrarCopiaConfig || !mostrarBotonAlta">
+                                                    <i class="icon-plus icon-btn-headers"></i>&nbsp;&nbsp;Nuevo
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                          <thead>
+                                                <th class="text-center">Plazo</th>
+                                                <th class="text-center">Tasa</th>
+                                                <th class="text-center">Score Minimo</th>
+                                                <th class="text-center">Score Maximo</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Editar</th>
+                                                <th class="text-center">Eliminar</th>
+                                          </thead>
+                                          <tbody>
+                                            <tr *ngFor="let item of scoreInstitucion">
+                                                <td>{{item.plazo}}</td>
+                                                <td>{{item.tasa}}</td>
+                                                <td>{{item.scoreMinimo}}</td>
+                                                <td>{{item.scoreMaximo}}</td>
+                                                <td>
+                                                    <span class="tag tag-success" *ngIf="item.status === 1">Activo</span>
+                                                    <span class="tag tag-danger" *ngIf="item.status !== 1">Inactivo</span>
+                                                </td>
+                                                <td>
+                                                    <a (click)="llenarFormularioPlazoScore(item)">
+                                                        <span class="icon-pencil-square text-inverse update-icon"></span>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a (click)="asignarValoresEliminar(item,1)">
+                                                        <span class="icon-trash text-inverse delete-icon"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="scoreInstitucion.length === 0">
+                                                <td colspan="7">
+                                                    <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                                </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                        <div class="text-end" *ngIf="paginadorScores.pages && paginadorScores.pages.length">
+                                            <ul class="pagination">
+                                                <li [ngClass]="{disabled:paginadorScores.currentPage === 1}">
+                                                    <a (click)="setPageFirstPaginator(1,paginadorScores.rango,paginadorScores.total)">Inicio</a>
+                                                </li>
+                                                <li [ngClass]="{disabled:paginadorScores.currentPage === 1}">
+                                                    <a (click)="setPageFirstPaginator(paginadorScores.currentPage - 1,paginadorScores.rango,paginadorScores.total)">Anterior</a>
+                                                </li>
+                                                <li *ngFor="let page of paginadorScores.pages" [ngClass]="{active:paginadorScores.currentPage === page}">
+                                                    <a (click)="setPageFirstPaginator(page,paginadorScores.rango,paginadorScores.total)">{{page}}</a>
+                                                </li>
+                                                <li [ngClass]="{disabled:paginadorScores.currentPage === paginadorScores.totalPages}">
+                                                    <a (click)="setPageFirstPaginator(paginadorScores.currentPage + 1,paginadorScores.rango,paginadorScores.total)">Siguiente</a>
+                                                </li>
+                                                <li [ngClass]="{disabled:paginadorScores.currentPage === paginadorScores.totalPages}">
+                                                    <a (click)="setPageFirstPaginator(paginadorScores.totalPages,paginadorScores.rango,paginadorScores.total)">Último</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <!-- TABLA DE SCORE Y PLAZOS DE LA INSTITUCION -->
+                                <br>
+                                <br>
+                                <br>
+                                <div class="config-salario" *ngIf="mostrarBotonAlta">
+                                <!-- FORMULARIO PARA COPIAR CONFIGURACION -->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <form [formGroup]="formularioCopiarSalario" (ngSubmit)="clonarConfigSalarios(formularioCopiarSalario.value, formularioBusqueda.value)" novalidate>
+                                            <div class="row row-margin-bottom">
+                                                <div class="col-xs-2" id="copyRadioButton">
+                                                    <label [ngClass]="{'radio-selected': mostrarCopiaConfigSalario,'radio-label': formularioBusqueda.valid && !mostrarCopiaConfigSalario,'radio-disabled': !formularioBusqueda.valid}">
+                                                         <input type="radio" name="copy" (click)="habilitarSeccionCopiarSalario()" [checked]="mostrarCopiaConfigSalario" [disabled]="!formularioBusqueda.valid">
+                                                         <span class="button-opt"><i class="icon-copy small-icon"></i></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-8 form-group">
+                                                    <label>Copiar configuración de salarios de:</label>
+                                                    <div class="input-group" [ngClass]="{'element-disabled': !institucionesConfigSalario.length > 0}">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-user icon-formulario"></i>
+                                                        </span>
+                                                        <select class='form-control' formControlName="institucion">
+                                                            <option value="">Selecciona una institución</option>
+                                                            <option *ngFor="let item of institucionesConfigSalario" value={{item.idInstitucion}}>{{item.descripcion}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <control-messages [control]="formularioCopiarSalario.controls.institucion"></control-messages>
+                                                </div>
+                                                <div class="col-xs-2" id="columnaConsultar">
+                                                    <input type="submit" name="btnConsultar" id="consultar" class="btn" value="Clonar" [disabled]="!formularioCopiarSalario.valid">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- FORMULARIO PARA COPIAR CONFIGURACION -->
+                                <br><br>
+                                <!-- TABLA DE SALARIOS DE LA INSTITUCION -->
+                                <div class="row" *ngIf="mostrarBotonAlta">
+                                    <div class="col-xs-12">
+                                        <div class="row">
+                                            <div class="text-left col-xs-6">
+                                                <label class="table-title">Salarios por score</label>
+                                            </div>
+                                            <div class="col-xs-6 end-xs reset-padding">
+                                                <button (click)="mostrarFormularioAltaSalarioScore()" type="button" class="btn btn-sm btn-success" [disabled]="mostrarCopiaConfigSalario || !mostrarBotonAlta">
+                                                    <i class="icon-plus icon-btn-headers"></i>&nbsp;&nbsp;Nuevo
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                          <thead>
+                                                <th class="text-center">Salario minimo</th>
+                                                <th class="text-center">Salario maximo</th>
+                                                <th class="text-center">Score minimo</th>
+                                                <th class="text-center">Editar</th>
+                                                <th class="text-center">Eliminar</th>
+                                          </thead>
+                                          <tbody>
+                                            <tr *ngFor="let item of salariosInstitucion">
+                                                <td>{{item.sueldoMinimo}}</td>
+                                                <td>{{item.sueldoMaximo}}</td>
+                                                <td>{{item.scoreMinimo}}</td>
+                                                <td>
+                                                    <a (click)="llenarFormularioSalarioScore(item)">
+                                                        <span class="icon-pencil-square text-inverse update-icon"></span>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a (click)="asignarValoresEliminar(item,2)">
+                                                        <span class="icon-trash text-inverse delete-icon"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="salariosInstitucion.length === 0">
+                                                <td colspan="5">
+                                                    <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                                </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                        <div class="text-end" *ngIf="paginadorSalarios.pages && paginadorSalarios.pages.length">
+                                            <ul class="pagination">
+                                                <li [ngClass]="{disabled:paginadorSalarios.currentPage === 1}">
+                                                    <a (click)="setPageSecondPaginator(1,paginadorSalarios.rango,paginadorSalarios.total)">Inicio</a>
+                                                </li>
+                                                <li [ngClass]="{disabled:paginadorSalarios.currentPage === 1}">
+                                                    <a (click)="setPageSecondPaginator(paginadorSalarios.currentPage - 1,paginadorSalarios.rango,paginadorSalarios.total)">Anterior</a>
+                                                </li>
+                                                <li *ngFor="let page of paginadorSalarios.pages" [ngClass]="{active:paginadorSalarios.currentPage === page}">
+                                                    <a (click)="setPageSecondPaginator(page,paginadorSalarios.rango,paginadorSalarios.total)">{{page}}</a>
+                                                </li>
+                                                <li [ngClass]="{disabled:paginadorSalarios.currentPage === paginadorSalarios.totalPages}">
+                                                    <a (click)="setPageSecondPaginator(paginadorSalarios.currentPage + 1,paginadorSalarios.rango,paginadorSalarios.total)">Siguiente</a>
+                                                </li>
+                                                <li [ngClass]="{disabled:paginadorSalarios.currentPage === paginadorSalarios.totalPages}">
+                                                    <a (click)="setPageSecondPaginator(paginadorSalarios.totalPages,paginadorSalarios.rango,paginadorSalarios.total)">Último</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- TABLA DE SALARIOS DE LA INSTITUCION -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-dialog [(visible)]="mostrarFormularioScore">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="mostrarFormularioScore = false">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Configuración Matriz de Riesgos</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formularioPlazoScore" (ngSubmit)="crearPlazoScore(formularioPlazoScore.getRawValue())" novalidate>
+                    
+                    <div class="col-xs-12 form-group">
+                        <label>Plazo*</label>
+                        <div class="input-group" [ngClass]="{'element-disabled': !crearPlazo}">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <input type="text" class="form-control" formControlName="plazo" OnlyNumber="true">
+                        </div>
+                        <control-messages [control]="formularioPlazoScore.controls.plazo"></control-messages>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                        <label>Tasa*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <input type="text" class="form-control" formControlName="tasa" OnlyNumber="true">
+                        </div>
+                        <control-messages [control]="formularioPlazoScore.controls.tasa"></control-messages>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                        <label>Score minimo*</label>
+                        <div class="input-group" [ngClass]="{'element-disabled': !crearPlazo}">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <input type="text" class="form-control" formControlName="scoremin" OnlyNumber="true" [ngClass]="{'element-invalid': (formularioPlazoScore.controls.scoremin.invalid && (formularioPlazoScore.controls.scoremin.dirty || formularioPlazoScore.controls.scoremin.touched))}">
+                        </div>
+                        <control-messages [control]="formularioPlazoScore.controls.scoremin"></control-messages>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                        <label>Score maximo*</label>
+                        <div class="input-group" [ngClass]="{'element-disabled': !crearPlazo}">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <input type="text" class="form-control" formControlName="scoremax" OnlyNumber="true" [ngClass]="{'element-invalid': (formularioPlazoScore.controls.scoremax.invalid && (formularioPlazoScore.controls.scoremax.dirty || formularioPlazoScore.controls.scoremax.touched))}">
+                        </div>
+                        <control-messages [control]="formularioPlazoScore.controls.scoremax"></control-messages>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button (click)="mostrarFormularioScore = false" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary" [disabled]="!formularioPlazoScore.valid" *ngIf="!crearPlazo">
+                            <i class="icon-pencil-square-o icoBntModal"></i>&nbsp;&nbsp;Editar
+                        </button>
+                        <button type="submit" class="btn btn-success" [disabled]="!formularioPlazoScore.valid" *ngIf="crearPlazo">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>    
+</app-dialog>
+
+<app-dialog [(visible)]="mostrarFormularioSalario">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="mostrarFormularioSalario = false">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Configuración Matriz de Riesgos</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formularioSalarioScore" (ngSubmit)="crearSalario(formularioSalarioScore.getRawValue())" novalidate>
+
+                    <div class="col-xs-12 form-group">
+                        <label>Salario minimo*</label>
+                        <div class="input-group" [ngClass]="{'element-disabled': !crearSalarios}">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <input type="text" class="form-control" formControlName="salariomin" OnlyNumber="true" [ngClass]="{'element-invalid': (formularioSalarioScore.controls.salariomin.invalid && (formularioSalarioScore.controls.salariomin.dirty || formularioSalarioScore.controls.salariomin.touched))}">
+                        </div>
+                        <control-messages [control]="formularioSalarioScore.controls.salariomin"></control-messages>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                        <label>Salario maximo*</label>
+                        <div class="input-group" [ngClass]="{'element-disabled': !crearSalarios}">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <input type="text" class="form-control" formControlName="salariomax" OnlyNumber="true" [ngClass]="{'element-invalid': (formularioSalarioScore.controls.salariomax.invalid && (formularioSalarioScore.controls.salariomax.dirty || formularioSalarioScore.controls.salariomax.touched))}">
+                        </div>
+                        <control-messages [control]="formularioSalarioScore.controls.salariomax"></control-messages>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                        <label>Score minimo*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <input type="text" class="form-control" formControlName="scoremin" OnlyNumber="true">
+                        </div>
+                        <control-messages [control]="formularioSalarioScore.controls.scoremin"></control-messages>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button (click)="mostrarFormularioSalario = false" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary" [disabled]="!formularioSalarioScore.valid" *ngIf="!crearSalarios">
+                            <i class="icon-pencil-square-o icoBntModal"></i>&nbsp;&nbsp;Editar
+                        </button>
+                        <button type="submit" class="btn btn-success" [disabled]="!formularioSalarioScore.valid" *ngIf="crearSalarios">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>    
+</app-dialog>
+
+<app-dialog [(visible)]="mostrarFormularioEliminar">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="mostrarFormularioEliminar = false">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Administración productos</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form (ngSubmit)="eliminarElemento()" novalidate>
+                    
+                    <div class="col-xs-12 form-group">
+                        <h6>Esta apunto de eliminar un elemento de configuración de la institución, ¿Desea continuar con la acción?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button (click)="mostrarFormularioEliminar = false;" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</app-dialog>
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

@@ -1,0 +1,20 @@
+<table class="table">
+    <thead>
+        <td class="text-center" *ngFor="let column of columns">{{ column.name }}</td>
+    </thead>
+    <tbody>
+        <tr *ngFor="let field of fields">
+            <td *ngFor="let column of columns">
+                <span [ngSwitch]="column.key">
+                    <span *ngSwitchCase="'imagen'">
+                        <img class="img-captacion" src="{{load_static}}/images/mesa-control-expedientes/{{catColores(field.estadoBloqueo)}}"
+                            (click)="getAvailable($event, field)">
+                    </span>
+                    <span *ngSwitchDefault>
+                        {{field[column.key]}}
+                    </span>
+                </span>
+            </td>
+        </tr>
+    </tbody>
+</table>

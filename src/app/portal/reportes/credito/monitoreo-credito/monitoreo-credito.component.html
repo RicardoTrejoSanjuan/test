@@ -1,0 +1,138 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+	<div class="col-xs-12 main-general">
+		<!-- Detalle de datos generales de la session y modulo -->
+		<div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+		<!-- Contenedor del area de trabajo de la grafica -->
+		<div class="row container-graph">
+			<div class="row col-xs-12 col-sm-12 col-md-12 center-xs">
+				<div class="row col-xs-12 center-xs row-menu-general">
+					<div class="col-xs-12">
+						<div class="card content-graph">
+							<div class="card-header tBlanco rosa-01-ico">
+								<div class="row">
+									<div class="col-xs-12 reset-padding">
+                                    	<i class="icon-stats-bars margin-left05em"></i>
+                                    	Reporte de perfilamiento
+	                                </div>
+								</div>
+							</div>
+							<div class="row card-block graphs">
+								<div class="containerFlex">
+									<div class="box statusBox" id="flex-small">
+										<div class="box statusBoxContent" id="bottomLine">
+											<div class="boxContent">
+									  			<div class="cube">
+									  				<div class="faceCube" id="top"></div>
+									  				<div class="faceCube" id="front"></div>
+									  				<div class="faceCube" id="right"><span class="cuantityCube">{{objPerfilamiento.nominaBig.totalSolicitudes}}</span></div>
+									  				<div class="faceCube" id="left"></div>
+									  				<div class="faceCube" id="back"></div>
+									  				<div class="faceCube" id="bottom"></div>
+									  			</div>
+									  		</div>
+									  		<div class="boxCategory">
+								  				<span class="category">Nomina</span>
+								  				<span class="cuantity">{{objPerfilamiento.nominaBig.totalSolicitudes}}</span>
+								  			</div>
+								  			<div class="ball resplandor" #ballTopStart></div>
+										</div>
+										<div class="box statusBoxContent" id="middleLine">
+											<div class="boxContent">
+									  			<div class="cube">
+									  				<div class="faceCube" id="top"></div>
+									  				<div class="faceCube" id="front"></div>
+									  				<div class="faceCube" id="right"><span class="cuantityCube">{{objPerfilamiento.pensionados.totalSolicitudes}}</span></div>
+									  				<div class="faceCube" id="left"></div>
+									  				<div class="faceCube" id="back"></div>
+									  				<div class="faceCube" id="bottom"></div>
+									  			</div>
+									  		</div>
+									  		<div class="boxCategory">
+								  				<span class="category">Pensionados</span>
+								  				<span class="cuantity">{{objPerfilamiento.pensionados.totalSolicitudes}}</span>
+								  			</div>
+								  			<div class="ball resplandor" #ballMiddleStart></div>			
+										</div>
+										<div class="box statusBoxContent" id="topLine">
+											<div class="boxContent">
+									  			<div class="cube">
+									  				<div class="faceCube" id="top"></div>
+									  				<div class="faceCube" id="front"></div>
+									  				<div class="faceCube" id="right"><span class="cuantityCube">{{objPerfilamiento.portabilidad.totalSolicitudes}}</span></div>
+									  				<div class="faceCube" id="left"></div>
+									  				<div class="faceCube" id="back"></div>
+									  				<div class="faceCube" id="bottom"></div>
+									  			</div>
+									  		</div>
+									  		<div class="boxCategory">
+									  			<span class="category">Portabilidad</span>
+									  			<span class="cuantity">{{objPerfilamiento.portabilidad.totalSolicitudes}}</span>
+									  		</div>
+									  		<div class="ball resplandor" #ballBottomStart></div>	
+										</div>
+									</div>
+									<div class="box phaseBox" id="flex-normal">
+										<div class="box singleBox" id="lineRoad">
+											<span class="statusTitle">Perfilamiento</span>
+											<canvas #sphere id="net" height="{{canvasHeight}}" width="{{canvasSphereWidth}}"></canvas>
+											<div class="cilinderSmall">
+												<div class="counter">
+													{{objPerfilamiento.rechazadosPerfilamiento}}
+												</div>
+											</div>
+											<div class="ball resplandor" #ballMiddleCenter></div>
+										</div>
+									</div>
+									<div class="box phaseBox" id="flex-small">
+										<div class="box singleBox" id="lineRoad">
+											<span class="statusTitle">Tasa</span>
+											<div class="cilinder">
+								  				<div class="faceCilinderTop" id="top"></div>
+								  				<div class="faceCilinder" id="front"></div>
+								  				<div class="faceCilinder" id="right"></div>
+								  				<div class="faceCilinder" id="left"></div>
+								  				<div class="faceCilinder" id="back"></div>
+								  				<div class="faceCilinderBottom" id="bottom"></div>
+								  			</div>
+											<div class="cilinderSmall">
+												<div class="counter">
+													{{objPerfilamiento.rechazadosTasa}}
+												</div>
+											</div>
+											<div class="ball resplandor" #ballMiddleEnd></div>
+										</div>
+										
+									</div>
+									<div class="box phaseBox">
+										<div class="box singleBox">
+											<span class="statusTitle">Otorgados</span>
+											<canvas #cilinder id="net" height="{{canvasHeight}}" width="{{canvasCilinderWidth}}"></canvas>
+											<div class="cilinderSmall">
+												<div class="counter">
+													{{objPerfilamiento.totalOtorgados}}
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+	<div class="loader"></div>
+</div>

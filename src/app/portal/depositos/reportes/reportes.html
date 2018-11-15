@@ -1,0 +1,61 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+     <div class="contenedor-general">
+          
+            <div class="row col-xs-12 pathNavegacion btn-regresar padding-menunavegacion" style="padding-left: 5%;">
+                    
+              <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                    
+             </div>
+
+          <div class="contenedor-tablas fondo-contenedores">
+               <div class="header-contenidos verde-03">
+                    <div class="principal">
+                         <img src="{{load_static}}/images/header/control.png">
+                         <div class="titulo">Reportes</div>
+                    </div>
+                    <div class="col-xs-3 end-xs reset-padding btnFormularios" >
+                        <a (click)="getAll()" class="btn btn-sm btn-success"> <i class="icon-file-text2 margin-left05em icon-btn-headers"></i> Exportar</a>
+                    </div>
+               </div>
+               <div class="contenido-principal busqueda-instituciones">
+
+                    <div class="registrosReportes">
+                         <table class="table">
+                              <thead>
+                                        <th class="text-center">Número de contratos de Depósito Azteca</th>
+                                        <th class="text-center">Número de operaciones de Depósito Azteca</th>
+                                        <th class="text-center">Monto de las operaciones de Depósito Azteca</th>
+                                        <th class="text-center">Canal donde se realizó la operación (Ventanilla, Banca Móvil, Bancoazteca.com, BEA)</th>
+                                        <!-- <th class="text-center">Estatus</th> -->
+                              </thead>
+                              
+                              <tbody>
+                                   <tr *ngFor="let reporte of Reportes">
+                                        <td>{{reporte.numCon}}</td>
+                                        <td>{{reporte.numOpe}}</td>
+                                        <td>{{reporte.montoOpe}}</td>
+                                        <td>{{reporte.canal}}</td>
+                                       
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+
+               </div>
+          </div>
+     </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+
+<style>
+    .link{
+        cursor: pointer;
+    }
+</style>

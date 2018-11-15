@@ -1,0 +1,32 @@
+.contenedor-btn-regresar {
+  width: calc( 80% + 34px);
+  width: -webkit-calc(80% + 34px);
+  width: -moz-calc(80% + 34px);
+  margin: 10px auto;
+}
+
+.contenedor-btn-regresar .btn-regresar{
+  height: 20px;
+  display: flex;
+}
+
+.contenedor-btn-regresar .btn-regresar .regresar {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  color: gray;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.contenedor-btn-regresar .btn-regresar .regresar img {
+  padding-right: 3px;
+}
+
+.card-header .btn-sm {
+  margin-top: .3rem !important;
+}
+
+.mat-input-element {
+    width: 97% !important;
+}

@@ -1,0 +1,106 @@
+.formularioBusquedaAlta{
+    width: 95%;
+    margin: 15px auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.formularioBusquedaAlta .busquedalabel{
+    margin: auto;
+    padding-right: 28px;
+    
+}
+
+.formularioBusquedaAlta .busquedainput{
+    width: 100%;
+    margin-top: 12px;
+}
+.classradio{
+    display: flex;
+}
+
+.classradio label{
+    padding-right: 10%;
+    display: table !important;
+}
+
+.right{
+    text-align: right;
+}
+
+#menuv {
+        border: 1px solid #d1d4d7;
+        border-width: 1px 1px 0 1px;
+}
+#menuv ul, li {
+        list-style-type: none;
+}
+
+#menuv li:nth-child(even) {
+   background-color: rgba(0, 0, 0, 0.05);
+}
+
+#menuv ul {
+    margin: 0;
+    padding: 0;
+    max-height: 250px;
+    min-height: 250px;
+    overflow: scroll;
+    border-bottom: 1px solid #d1d4d7;
+}
+
+#menuv li {
+        border-bottom: 1px solid #d1d4d7;
+}
+
+#menuv a {
+        text-decoration: none;
+        color:#2a2c36;
+        display: block;
+        padding: 8px 6px;
+}
+
+/* #menuv a:hover {
+    background: #e6e6e6;
+    opacity: 0.8;
+} */
+
+#menuv ul li:hover {
+    background: #e6e6e6;
+    opacity: 0.8;
+}
+
+.resetpadincar{
+    padding: 0px;
+    margin-top: -16px;
+}
+.minheight{
+    min-height: 500px !important;
+}
+
+.titleEditado{
+    text-align: start;
+    margin-left: 9px;
+    margin-bottom: 17px;
+}
+
+.licontratosdaz{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* justify-content: space-between; */
+    justify-content: space-around;
+}
+
+.botonesparametrizacion{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.marginbtn{
+    margin-right: 2%;
+}
+.colormasadd{
+    color: white;
+}

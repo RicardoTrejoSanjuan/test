@@ -1,0 +1,414 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2  row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 row middle-xs">
+
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-10 row center-xs">
+
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+
+
+
+                        <div class="card">
+                            <div class="card-header-formularios naranja-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>Canales
+                                    </div>
+                                  
+                                </div>
+                            </div>
+
+                            
+                            <div class="card-block minheight">
+
+                                    <div class="row">
+                                            <div class="col-sm-4 titleMenuizquiero">
+                                                <h4 class="card-title mb-0">{{deposito.name}}</h4>
+                                                <div class="small text-muted">RFC: {{deposito.rfcInstitucion}}</div>
+                                            </div>
+                                            <div class="col-sm-8 titleMenuderecho">
+                                                    <div class="small text-muted">Contrato DAZ: {{deposito.idContratoDaz}}</div>
+                                                    <div class="small text-muted">Cuenta: {{deposito.numCuenta}}</div>
+                                                    <div class="small text-muted">Clabe Interbancaria: {{deposito.ctosDazClave}}</div>
+                                            </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 center-xs">
+                                            <div class="card-block bodercardblock">
+
+                                                    
+                                              
+                                                <form [formGroup]="form" class="form-horizontal ng-pristine ng-valid">
+
+
+                                                        <div class="form-group row">
+                                                          
+                                                            <div class="col-md-12">
+
+                                                                    <div class="row col-md-12">
+                                                                            <div class="col-md-3" style="margin-bottom: 1%;">
+                                                                                    <label>Horario Operaciones</label>
+                                                                            </div>
+                                                                        </div>
+                                                                <div class="row col-xs-12">
+                                                                    <div class="col-md-1">
+                                                                            <label>De</label>
+                                                                    </div>
+
+                                                                        
+                                                                    <div class="col-md-5">
+                                                                 <select id="select"  [(ngModel)]="fechaInicial" name="fechaInicial"  (onSelectionChange)="setFormat(Horas1)" formControlName="horaInicial" class="form-control" size="1">
+
+                                                                        <option [ngValue]="undefined" selected>Seleccione</option>
+                                                                        <!-- <option *ngFor="let horas of Horas1" >
+                                                                                {{ horas.descHour }} -->
+
+                                                                        
+                                                                        <option value="00:00">00:00</option>
+                                                                        <option value="01:00">01:00</option>
+                                                                         <option value="02:00">02:00</option>    
+                                                                        <option value="03:00">03:00</option>        
+                                                                       <option value="04:00">04:00</option>
+                                                                       <option value="05:00">05:00</option>
+                                                                        <option value="06:00">06:00</option>    
+                                                                        <option value="07:00">07:00</option>        
+                                                                        <option value="08:00">08:00</option>
+                                                                        <option value="09:00">09:00</option>
+                                                                       <option value="10:00">10:00</option>
+                                                                       <option value="11:00">11:00</option>
+                                                                       <option value="12:00">12:00</option>
+                                                                       <option value="13:00">13:00</option>
+                                                                       <option value="14:00">14:00</option>
+                                                                       <option value="15:00">15:00</option>
+                                                                       <option value="16:00">16:00</option>
+                                                                       <option value="17:00">17:00</option>
+                                                                       <option value="18:00">18:00</option>
+                                                                       <option value="19:00">19:00</option>
+                                                                       <option value="20:00">20:00</option>
+                                                                       <option value="21:00">21:00</option> 
+                                                                       <option value="22:00">22:00</option>
+                                                                       <option value="23:00">23:00</option>
+                                                                       <option value="23:59">23:59</option>         
+                                                                      
+                                                                       
+
+                                                                      
+                                                           </select>
+                                                                    </div>
+                                                                    <div class="col-md-1">
+                                                                            <label>hasta</label>
+                                                                    </div>
+                                                                    <div class="col-md-5">
+                                                                            <!-- <label class="col-md-1 form-control-label" for="text-input">hasta</label> -->
+                                                                         
+
+                                                                            <select id="select"  [(ngModel)]="fechaFinal" name="fechaFinal" (onSelectionChange)="setFormat2(Horas2)"  formControlName="horaFinal"class="form-control" size="1">
+                                                                                  
+                                                                                    <option [ngValue]="undefined" selected>Seleccione</option>
+                                                                                    <!-- <option *ngFor="let horas2 of Horas2 ">
+                                                                                            {{ horas2.descHour }} -->
+                                                                                            <option value="00:00">00:00</option>
+                                                                                            <option value="01:00">01:00</option>
+                                                                                             <option value="02:00">02:00</option>    
+                                                                                            <option value="03:00">03:00</option>        
+                                                                                           <option value="04:00">04:00</option>
+                                                                                           <option value="05:00">05:00</option>
+                                                                                            <option value="06:00">06:00</option>    
+                                                                                            <option value="07:00">07:00</option>        
+                                                                                            <option value="08:00">08:00</option>
+                                                                                            <option value="09:00">09:00</option>
+                                                                                           <option value="10:00">10:00</option>
+                                                                                           <option value="11:00">11:00</option>
+                                                                                           <option value="12:00">12:00</option>
+                                                                                           <option value="13:00">13:00</option>
+                                                                                           <option value="14:00">14:00</option>
+                                                                                           <option value="15:00">15:00</option>
+                                                                                           <option value="16:00">16:00</option>
+                                                                                           <option value="17:00">17:00</option>
+                                                                                           <option value="18:00">18:00</option>
+                                                                                           <option value="19:00">19:00</option>
+                                                                                           <option value="20:00">20:00</option>
+                                                                                           <option value="21:00">21:00</option> 
+                                                                                           <option value="22:00">22:00</option>
+                                                                                           <option value="23:00">23:00</option>
+                                                                                           <option value="23:59">23:59</option>                                                                                                                       
+                                                                 </select>
+
+
+                                                                            
+                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                 <div class="row">
+                                                     <div class="col-md-5" style="border: 1px solid #d1d4d7;">
+
+                                                         <div class="form-group row" style="margin-bottom: 28%;">
+                                                                <label class="col-md-2 form-control-label" style="margin-top: 5%;" for="multiple-select">Canales</label>
+                                                                <div class="col-md-9">
+                                                                        <!-- <div  [ngClass]="{'not-clickable' : editaCampos }" class="busquedainput"  >
+                                                                                <md-input-container>
+                                                                                    <input style="width:96% !important" type="text" class="search-input" id="canales" style="margin-top: 5%;" mdInput type="text" [(ngModel)]="idcan"  [mdAutocomplete]="auto"  required [formControl]="institucionCtrl"
+                                                                                        [readonly]="isAvailable" required>
+                                                                                </md-input-container>
+                                                        
+                                                                                <md-autocomplete  #auto="mdAutocomplete">
+                                                                                    <md-option *ngFor="let inst of listaInstituciones | async" [value]="inst.descripcion"   (onSelectionChange)="getCuenta(inst)">
+                                                                                        {{ inst.descripcion }}
+                                                                                    </md-option>
+                                                                                </md-autocomplete>
+
+
+                                                                        </div> -->
+
+                                                                        <div  [ngClass]="{'not-clickable' : editaCampos }" class="busquedainput"  >
+                                                                        <select style="margin-top: 4%; margin-right: 4%;" id="select" name="select" (onSelectionChange)="sendCanales(can)" class="form-control" size="1" required [(ngModel)]="idcan" (change)="getCuenta(idcan)"  formControlName="institucionCtrl"  >
+                                                                            <option  [ngValue]="undefined" selected>Seleccione</option>
+                                                                            <option *ngFor="let can of canalesC"   [ngValue] ="can.idCanal">{{can.desCanal}}</option>
+                                                                           
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2">
+
+                                                    </div>
+                                                           
+                                                        <div class="col-md-5" style="border: 1px solid #d1d4d7;">
+
+                                                              <div class="form-group row" style="margin-bottom: 28%;">
+
+                                                             <label class="col-md-2 form-control-label" style="margin-top: 5%;">Sucursales</label>
+
+                                                             <div class="col-md-9">
+                                                                    <div [ngClass]="{'not-clickable' : editaCampos }" class="busquedainput">
+                                                                            <mat-input-container>
+                                                                                <input style="width:96% !important" type="text" class="search-input" matInput  id="sucursales" type="text" style="margin-top: 5%;" [matAutocomplete]="auto2" [(ngModel)]="idsuc"  required  [readonly] = "editaCampos == true"  [formControl]="clasSucursalesinstitucionCtrl2"
+                                                                                    [readonly]="isAvailable" required>
+                                                                            </mat-input-container>
+                                                    
+                                                                            <mat-autocomplete #auto2="matAutocomplete">
+                                                                                <mat-option *ngFor="let inst of SucursalesinstitucionCtrl2 | async" [value]="inst.descSucursal" [hidden] = "editaCampos"  (onSelectionChange)="getValues2Pred(inst)">
+                                                                                    {{ inst.descSucursal }}
+                                                                                </mat-option>
+                                                                            </mat-autocomplete>
+
+                                                                    </div>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+
+                                                        </div>
+
+                                                          
+                                                  
+
+                                                        <div class="form-actions alinbtn editbtnguardar" style="margin-top: 2%;">
+                                                                <button type="reset" class="btn btn-danger" (click)="cancelar()"> Cancelar</button>
+                                                            <button type="submit" class="btn btn-success"[disabled]="!form.valid" (click)="guardarCanal()">Guardar</button>
+                                                        </div>
+
+                                                    
+
+                                                        <div class="form-group row">
+                                                                <div class="col-md-12">
+                                                                    
+                                                                        <div class="scroll">
+                                                                                <table class="table">
+                                                                                    <thead>
+                                                                                        <th>Horario</th>
+                                                                                        <th>Canal</th>
+                                                                                        <th>Formato</th>
+                                                                                        <th>Acción</th>
+                                                                                    </thead>
+                                                                                    <tr *ngFor="let canal of consultaGeneral">
+                                                                                        <td>{{canal.horaApertura}} - {{canal.horaCierre}} </td>
+                                                                                        <td>{{canal.descCanal}}</td>
+                                                                                        <td>{{canal.descFormato}}</td>
+                                                                                        <td>
+                                                                                            <a style="margin-right: 6%;"   (click)="editar(canal)" class="btnDetalle" title="Editar">
+                                                                                                <span class="icon-pencil"></span>
+                                                                                            </a>
+
+                                                                                            <a (click)="eliminarcan(canal)" class="btnDetalle" title="Eliminar">
+                                                                                                <span class="icon-trash-o"></span>
+                                                                                            </a>
+                                                                                            
+
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                  
+                                                                                </table>
+                                                                            </div>
+
+                                                                </div>
+                                                            </div>
+
+
+
+                                                        
+                                                    </form>
+
+                                                    
+                                                    <!--/row-->
+                                                </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                            </div>
+
+                            
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+<app-dialog [(visible)]="showDialogAlert">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="showDialogAlert = !showDialogAlert;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="icon-cross" aria-hidden="true"></span>
+                </button>
+                <h4 class="modal-title custom_align" id="Heading">Aviso</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-block">
+                    <fieldset class="form-group">
+                        <label>¿Está seguro de que desea eliminar el registro?</label>
+                    </fieldset>
+    
+    
+                    <div class="modal-footer">
+                        <button (click)="showDialogAlert = !showDialogAlert; displayModal = displayModal;" type="button" class="btn btn-info">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+    
+                        <button (click)="eliminar();" type="submit" class="btn btn-danger">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-dialog>
+    
+
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<style>
+
+.form-group label {
+    display: block;
+}
+
+.minheight{
+    min-height: 500px !important;
+}
+
+.titleMenuizquiero{
+    text-align: start;
+    padding-left: 18px;
+    margin-bottom: 17px;
+}
+.titleMenuderecho{
+    margin-top: 6px;
+    text-align: left;
+}
+
+.bodercardblock{
+    border: 1px solid #d1d4d7;
+}
+
+.alinbtn{
+    text-align: right;
+}
+
+.alinradio{
+    display: flex;
+}
+.btninput{
+    display: flex;
+}
+.widthInput{
+    width: 20px;
+    float: left;
+    margin-right: 5px;
+}
+
+.marginRightRadio{
+    margin-right: 20px;
+}
+
+.flexbox{
+    display: flex;
+    align-items: center;
+}
+
+.flexboxPadding{
+    padding-right: 5px;
+    padding-left: 5px;
+}
+.not-clickable {
+   pointer-events: none;
+   cursor: default;
+}
+
+</style>

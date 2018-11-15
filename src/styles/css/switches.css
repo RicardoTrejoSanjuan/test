@@ -1,0 +1,144 @@
+
+/*
+swhicher
+*/
+
+[type="checkbox"], [type="radio"] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.switch.switch-icon {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: 48px;
+    height: 24px;
+    background-color: transparent;
+    cursor: pointer; }
+.switch.switch-icon .switch-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0; }
+.switch.switch-icon .switch-label {
+    position: relative;
+    display: block;
+    height: inherit;
+    font-family: FontAwesome;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: #fff;
+    border: 1px solid #d1d4d7;
+    border-radius: 2px;
+    -moz-transition: 0.15s ease-out;
+    -o-transition: 0.15s ease-out;
+    -webkit-transition: 0.15s ease-out;
+    transition: 0.15s ease-out;
+    -moz-transition-property: opacity background;
+    -o-transition-property: opacity background;
+    -webkit-transition-property: opacity background;
+    transition-property: opacity background; }
+.switch.switch-icon .switch-label::before,
+.switch.switch-icon .switch-label::after {
+    position: absolute;
+    top: 50%;
+    width: 50%;
+    margin-top: -.5em;
+    line-height: 1;
+    text-align: center;
+    -moz-transition: inherit;
+    -o-transition: inherit;
+    -webkit-transition: inherit;
+    transition: inherit; }
+.switch.switch-icon .switch-label::before {
+    right: 1px;
+    color: #d1d4d7;
+    content: attr(data-off); }
+.switch.switch-icon .switch-label::after {
+    left: 1px;
+    color: #fff;
+    content: attr(data-on);
+    opacity: 0; }
+.switch.switch-icon .switch-input:checked ~ .switch-label::before {
+    opacity: 0; }
+.switch.switch-icon .switch-input:checked ~ .switch-label::after {
+    opacity: 1; }
+.switch.switch-icon .switch-handle {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 1px solid #d1d4d7;
+    border-radius: 1px;
+    -moz-transition: left 0.15s ease-out;
+    -o-transition: left 0.15s ease-out;
+    -webkit-transition: left 0.15s ease-out;
+    transition: left 0.15s ease-out; }
+.switch.switch-icon .switch-input:checked ~ .switch-handle {
+    left: 26px; }
+.switch.switch-icon.switch-lg {
+    width: 56px;
+    height: 28px; }
+.switch.switch-icon.switch-lg .switch-label {
+    font-size: 12px; }
+.switch.switch-icon.switch-lg .switch-handle {
+    width: 24px;
+    height: 24px; }
+.switch.switch-icon.switch-lg .switch-input:checked ~ .switch-handle {
+    left: 30px; }
+.switch.switch-icon.switch-sm {
+    width: 40px;
+    height: 20px; }
+.switch.switch-icon.switch-sm .switch-label {
+    font-size: 8px; }
+.switch.switch-icon.switch-sm .switch-handle {
+    width: 16px;
+    height: 16px; }
+.switch.switch-icon.switch-sm .switch-input:checked ~ .switch-handle {
+    left: 22px; }
+.switch.switch-icon.switch-xs {
+    width: 32px;
+    height: 16px; }
+.switch.switch-icon.switch-xs .switch-label {
+    font-size: 7px; }
+.switch.switch-icon.switch-xs .switch-handle {
+    width: 12px;
+    height: 12px; }
+.switch.switch-icon.switch-xs .switch-input:checked ~ .switch-handle {
+    left: 18px; }
+.switch-pill .switch-label, .switch.switch-3d .switch-label,
+.switch-pill .switch-handle, .switch.switch-3d .switch-handle {
+    border-radius: 50em !important; }
+
+.switch-pill .switch-label::before, .switch.switch-3d .switch-label::before {
+    right: 2px !important; }
+
+.switch-pill .switch-label::after, .switch.switch-3d .switch-label::after {
+    left: 2px !important; }
+
+
+.switch-success > .switch-input:checked ~ .switch-label {
+    background: #4dbd74 !important;
+    border-color: #3a9d5d; }
+
+.switch-success > .switch-input:checked ~ .switch-handle {
+    border-color: #3a9d5d; }
+
+.switch-success-outline > .switch-input:checked ~ .switch-label {
+    background: #fff !important;
+    border-color: #4dbd74; }
+.switch-success-outline > .switch-input:checked ~ .switch-label::after {
+    color: #4dbd74; }
+
+.switch-success-outline > .switch-input:checked ~ .switch-handle {
+    border-color: #4dbd74; }
+
+.switch-success-outline-alt > .switch-input:checked ~ .switch-label {
+    background: #fff !important;
+    border-color: #4dbd74; }
+.switch-success-outline-alt > .switch-input:checked ~ .switch-label::after {
+    color: #4dbd74; }

@@ -1,0 +1,56 @@
+<div class="fondo-portal">
+  <div class="container-login">
+    <div class="box-login">
+      <form [formGroup]="userForm" (ngSubmit)="login()" novalidate>
+        <h3 class="rows-login">
+          Identifícate
+        </h3>
+
+        <h2 class="rows-login">
+          ¿Cuál es tu número de empleado?
+        </h2>
+        <div class="rows-login rows-flex">
+          <div class="icono naranja-01-ico">
+            <span class="icon-user"></span>
+          </div>
+          <div class="contenido">
+            <input type="text" id="user" placeholder="Usuario" formControlName="user" autocomplete="off" (keydown)="solonumeros($event)"
+            />
+          </div>
+        </div>
+
+        <h2 class="rows-login">
+          Token
+        </h2>
+        <div class="rows-login rows-flex">
+          <div class="icono naranja-01-ico">
+            <span class="icon-lock"></span>
+          </div>
+          <div class="contenido">
+            <input type="password" placeholder="Token" formControlName="token" maxlength="6" autocomplete="off" (keydown)="solonumeros($event)"
+            />
+          </div>
+        </div>
+
+        <div class="rows-login row-button">
+          <button id="contact-submit" name="submit" type="submit" class="button azul-01" data-submit="...Sending" [disabled]="!userForm.valid">
+            Entrar
+          </button>
+        </div>
+        <div class="rows-login sugerencia">
+          <ul>
+            <li>Se recomienda el uso adecuado de la aplicación, cualquier uso indebido será sancionado</li>
+          </ul>
+        </div>
+        <div class="row-message" *ngIf="showAlert">
+          <span>{{MsgAlert}}.</span>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="activateLoading" class="Loading">
+      <div class="loader"> <p class="loaderMsg"> {{msgloading}} </p></div>
+    </div>
+  </div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

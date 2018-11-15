@@ -1,0 +1,258 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs"></div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation">
+                        {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row container-graph">
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"
+                        *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-3" *ngIf="vistaActual === '' ">
+                        <div class="card content-graph">
+                            <div class="card-header tBlanco rosa-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-12 reset-padding">
+                                        <i class="icon-stats-bars margin-left05em"></i>
+                                        Filtros de búsqueda
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row center-xs center-sm center-lg graphs">
+                                <div class="col-xs-12">
+                                     <form class="filtros-busqueda">
+                                        <div class="row">
+                                            <div class="col-xs-12 text-left reset-padding">
+                                                <label>Productos</label>
+                                                 <select class="form-control" name="producto" (change)="changeProductos()" [(ngModel)]="idProducto">
+                                                    <option value="">Selecciona</option>
+                                                    <option *ngFor="let producto of productos" value="{{producto.idProducto}}">{{ producto.productos }}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-xs-12 reset-padding text-left">
+                                                <label class="lcenter">Institución</label>
+                                                <mat-input-container>
+                                                    <input 
+                                                           matInput 
+                                                           placeholder="" 
+                                                           type="text" 
+                                                           class="form-control"
+                                                           [matAutocomplete]="auto" 
+                                                           [formControl]="institucionCtrl" 
+                                                           [readonly]="isAvailable"
+                                                           (click)="clickInstituciones()"
+                                                           >
+                                                    <p *ngIf="objFiltrosHandler.anyoneSearchResult">No se encontró ninguna
+                                                        coindicencia</p>
+                                                </mat-input-container>
+
+                                                <mat-autocomplete #auto="matAutocomplete">
+                                                    <mat-option *ngFor="let institucion of listaInstituciones | async"
+                                                               [value]="institucion.name"
+                                                               (onSelectionChange)="asignarInstitucion(institucion)">
+                                                        {{ institucion.name }}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="row seleccion-type">
+                                            <div class="rosa-01-ico items-type"
+                                                 [ngClass]="{'active-type': objTipoPeriodo.diario}"
+                                                 (click)="SetTipoPeriodo('diario')">Diario
+                                            </div>
+                                            <div class="rosa-01-ico items-type"
+                                                 [ngClass]="{'active-type': objTipoPeriodo.mensual}"
+                                                 (click)="SetTipoPeriodo('mensual')">Mensual
+                                            </div>
+                                            <div class="rosa-01-ico items-type"
+                                                 [ngClass]="{'active-type': objTipoPeriodo.anual}"
+                                                 (click)="SetTipoPeriodo('anual')">Anual
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-xs-12 reset-padding text-left">
+                                                <label>Fecha Inicial</label>
+                                                <mat-input-container>
+
+                                                    <input
+                                                            [(ngModel)]="fechaInicial"
+                                                            name="fechaInicial"
+                                                            (ngModelChange)="SeleccionandoFecha(fechaInicial, 'inicial')"
+                                                            [max]="maxDate"
+                                                            mdInput
+                                                            [matDatepicker]="pickerInicial"
+                                                            placeholder=""
+                                                            disabled>
+                                                    <mat-datepicker-toggle matSuffix [for]="pickerInicial" [disabled]="isAvailable">></mat-datepicker-toggle>
+
+                                                </mat-input-container>
+                                                <mat-datepicker #pickerInicial></mat-datepicker>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-xs-12 reset-padding text-left">
+                                                <label>Fecha Final</label>
+                                                <mat-input-container>
+
+                                                    <input
+                                                            [(ngModel)]="fechaFinal"
+                                                            name="fechaFinal"
+                                                            (ngModelChange)="SeleccionandoFecha(fechaFinal, 'final')"
+                                                            [max]="maxDate"
+                                                            [min]="minDate"
+                                                            mdInput
+                                                            [matDatepicker]="pickerFinal"
+                                                            placeholder=""
+                                                            disabled>
+                                                    <mat-datepicker-toggle matSuffix [for]="pickerFinal" [disabled]="isAvailable">></mat-datepicker-toggle>
+
+                                                </mat-input-container>
+                                                <mat-datepicker #pickerFinal></mat-datepicker>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-9" *ngIf="vistaActual === '' ">
+                        <div class="card content-graph">
+                            <div class="card-header tBlanco rosa-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-stats-bars margin-left05em"></i>
+                                       Reportes Embudo de solicitudes
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row card-block graphs">
+                                <div class="col-xs-12" *ngIf="(vistaActual === '')">
+                                    <grafica-highchart #highStock (eventClick)="CargarGraficaPastel($event)" *ngIf='bandGrafica===true'></grafica-highchart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" *ngIf="(vistaActual === 'secondGraph') ||  (vistaActual === 'thirdGraph')">
+                        <div class="card content-graph">
+                            <div class="card-header tBlanco rosa-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-stats-bars margin-left05em"></i>
+                                        Reportes Embudo de solicitudes
+                                    </div>
+                                    <div class="col-xs-3 end-xs containet-btn-regresar">
+                                        <p (click)="Regresar('')" class="btn-regresar" *ngIf="vistaActual === 'secondGraph'">
+                                            <span class="icon-arrow-left"></span>
+                                            Regresar
+                                        </p>
+                                        <p (click)="Regresar('secondGraph')" class="btn-regresar" *ngIf="vistaActual === 'thirdGraph'">
+                                            <span class="icon-arrow-left"></span>
+                                            Regresar
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row card-block graphs">
+                                <div class="col-xs-3 container-table-data" *ngIf="vistaActual === 'secondGraph'">
+                                    <table class="tabla-categories">
+                                        <caption class="caption-center">Categorías</caption>
+                                        <tbody>
+                                            <tr *ngFor="let item of Categorias; let i = index" (click)="CargarTabla(item, true)">
+                                                <td>
+                                                    <div [ngStyle]="{'background-color': paletaColores[i]}" class="background"></div>
+                                                </td>
+                                                <td>{{item.name}}</td>
+                                                <td class="border-left">{{item.y}} %</td>
+                                            </tr>
+
+                                            <td></td>
+                                            <td>Total</td>
+                                            <td class="border-left">100 %</td>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-xs-9" *ngIf="vistaActual === 'secondGraph'">
+                                    <grafica-highchart #highChart (eventClick)="CargarTabla($event, false)"></grafica-highchart>
+                                </div>
+                                <div class="col-xs-12" *ngIf="vistaActual === 'thirdGraph'">
+                                    <div class="col-xs-12 graphs">
+                                        <div class="scroll marginleftable">
+                                            <table class="table tableScroll">
+                                                <thead>
+                                                <th >Razon Social</th>
+                                                <th>Cliente único</th>
+                                                <th>Nombre de empleado</th>
+                                                <th>Teléfono Móvil</th>
+                                                </thead>
+                                                <tbody>
+                                                <tr *ngFor="let empleado of pagedItems">
+                                                    <td >{{empleado.razonSocial}}</td>
+                                                    <td>{{empleado.clienteUnico}}</td>
+                                                    <td>{{empleado.nombre}}</td>
+                                                    <td>{{empleado.celular}}</td>
+                                                </tr>
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                        <div class="container">
+                                            <div class="text-end">
+                                                <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                        <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                                    </li>
+                                                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                        <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                                    </li>
+                                                    <li *ngFor="let page of pager.pages"
+                                                        [ngClass]="{active:pager.currentPage === page}">
+                                                        <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                                    </li>
+                                                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                        <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                                    </li>
+                                                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                        <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

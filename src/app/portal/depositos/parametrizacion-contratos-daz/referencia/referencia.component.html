@@ -1,0 +1,569 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-10 row center-xs">
+
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+
+
+
+                        <div class="card">
+                            <div class="card-header-formularios rosa-01">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-credit-card margin-left05em"></i>Referencias
+                                    </div>
+                                    <!-- <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                                        <a (click)="openForm()" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i> Nuevo</a>
+                                        <a (click)="reporte()" class="btn btn-sm btn-success"> <i class="icon-file-text2 margin-left05em icon-btn-headers"></i> Excel</a>
+                                    </div> -->
+                                </div>
+                            </div>
+
+
+                            <div class="card-block minheight">
+
+                                    <div class="row">
+                                            <div class="col-sm-4 titleMenuizquiero">
+                                                <h4 class="card-title mb-0">{{ObjectDepositos.name}}</h4>
+                                                <div class="small text-muted">RFC:{{ObjectDepositos.rfcInstitucion}}</div>
+                                            </div>
+                                            <div class="col-sm-8 titleMenuderecho">
+                                                    <div class="small text-muted">Contrato DAZ: {{ObjectDepositos.idContratoDaz}}</div>
+                                                    <div class="small text-muted">Cuenta: {{ObjectDepositos.numCuenta}}</div>
+                                                    <div class="small text-muted">Clabe Interbancaria: {{ObjectDepositos.ctosDazClave}}</div>
+                                            </div>
+                                    </div>
+
+                                    <div class="row" *ngIf="showBusqueda">
+                                        <div class="col-xs-12 center-xs">
+                                            <div class="card-block bodercardblock">
+
+                                                    <div class="card-block reset-paddig-referencia">
+                                                            <button type="button" class="btn btn-success btn-sm" (click)="nuevo()" [disabled]="bloqueaBoton">Nuevo</button>
+                                                    </div>
+
+                                                <div class="registos">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <th class="text-center">Referencia</th>
+                                                            <th class="text-center">Numérica</th>
+                                                            <th class="text-center">Prefijo</th>
+                                                            <th class="text-center">Tipo</th>
+                                                            <th class="text-center">Lectura</th>
+                                                            <th class="text-center">Fecha</th>
+                                                            <th class="text-center">Algoritmo</th>
+                                                            <th class="text-center">Importe</th>
+                                                            <th class="text-center">Acción</th>
+                                                            <th class="text-center">Uso Interbancario</th>
+                                                            
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of listReferencia">
+                                                                <td>{{item.referencia}}</td>
+                                                                <td>{{item.numerica}}</td>
+                                                                <td>{{item.prefijo}}</td>
+                                                                <td>{{item.tipo}}</td>
+                                                                <td>{{item.lectura}}</td>
+                                                                <td>{{item.fecha}}</td>
+                                                                <td>{{item.algoritmo}}</td>
+                                                                <td>{{item.importe}}</td>
+                                                                <td>
+                                                                    <a (click)="consultaReferenciaConf(item.idReferencia)" class="btnDetalle" title="Editar">
+                                                                        <span class="icon-pencil"></span>
+                                                                    </a>
+
+
+                                                                    <a (click)="showDialogAlert = !showDialogAlert; CargarIdReferencia(item.idReferencia)" class="btnDetalle" title="Eliminar">
+                                                                            <span class="icon-bin"></span>
+                                                                    </a>
+                                                                </td>
+                                                                <td>   <input type="checkbox" [(ngModel)]="item.pagoSpei" name="pagossp" (change)="modalUp(item)"  value="{{item.pagoPorSpei}}"></td>   
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row" *ngIf="showFomulario">
+                                        <div class="col-xs-12 center-xs">
+                                            <div class="card-block bodercardblock">
+
+                                                    <form #form="ngForm" (ngSubmit)="guardarReferncia()">
+
+
+                                                        <div class="form-group row">
+                                                            <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" [(ngModel)]="nombre" id="nombre" name="nombre" class="form-control" required validateEqual="nombre"  (keydown)="alfanumerico($event)"  #model="ngModel">
+
+                                                                <div [hidden]="model.valid || model.pristine" class="alert-dangerForm">
+                                                                        <div [hidden]="!model.hasError('required')">Campo requerido</div>
+                                                                        <!-- <div [hidden]="!model.hasError('pattern')">Solo alfabetos permitidos</div> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <label class="col-md-3 form-control-label" for="text-input">Tipo de Algoritmo</label>
+                                                            <div class="col-md-9">
+                                                                <select id="select" name="formasdecobro" class="form-control"  validateEqual="formasdecobro" required [(ngModel)]="formasdecobro" (change)="cambioAlgoritmo(formasdecobro)">
+                                                                    <option [ngValue]="undefined" selected>Seleccione</option>
+                                                                    <option *ngFor="let item of tipoAlgoritmo" [value]="item.idAlgoritmo" value="{{item.idAlgoritmo}}">{{item.descAlgoritmo}}</option>
+                                                                </select>
+                                                                <div [hidden]="model.valid || model.pristine" class="alert-dangerForm">
+                                                                        <div [hidden]="!model.hasError('required')">Campo requerido</div>
+                                                                        <!-- <div [hidden]="!model.hasError('pattern')">Solo alfabetos permitidos</div> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                             <label class="col-md-3 form-control-label">La referencia es</label>
+                                                            <div class="col-md-9 alinradio">
+                                                                <label class="radio-inline marginRightRadio" for="inline-radio1">
+                                                                        <input type="radio" [(ngModel)]="tiporeferencia" [checked]="tiporeferencia" [value]="1" (change)="lareferenciaes($event)" id="tiporeferencia" name="tiporeferencia" [disabled]="bloqueo">Numérica
+                                                                </label>
+                                                                <label class="radio-inline marginRightRadio" for="inline-radio2">
+                                                                        <input type="radio" [(ngModel)]="tiporeferencia" [checked]="tiporeferencia" [value]="2" (change)="lareferenciaes($event)" id="tiporeferencia" name="tiporeferencia" [disabled]="bloqueo">Alfanumérica
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row" >
+                                                                <label class="col-md-3 form-control-label">¿Tiene prefijo la referencia?</label>
+                                                               <div class="col-md-9 alinradio" >
+                                                                   <label class="radio-inline marginRightRadio" for="inline-radio1">
+                                                                        <input type="radio" [(ngModel)]="prefijoreferencia" [checked]="prefijoreferencia" [value]="1" (change)="ChangeTienePrefijo($event)" id="iprefijoreferencia" name="prefijoreferencia" [disabled]="bloqueo">Sí
+                                                                   </label>
+                                                                   <label class="radio-inline marginRightRadio" for="inline-radio2">
+                                                                        <input type="radio" [(ngModel)]="prefijoreferencia" [checked]="prefijoreferencia" [value]="2" (change)="ChangeTienePrefijo($event)" id="prefijoreferencia" name="prefijoreferencia" [disabled]="bloqueo">No
+                                                                   </label>
+                                                               </div>
+                                                        </div>
+
+
+                                                        <div class="form-group row" *ngIf="tieneprefijo">
+                                                            <label class="col-md-3 form-control-label" for="text-input">Valor de el Prefijo</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" [(ngModel)]="valorprefijo" (keydown)="validatorcampodinamico($event)" (change)="changeValorPrefijo(valorprefijo)" id="valorprefijo"   #model="ngModel" name="valorprefijo"  required validateEqual="valorprefijo" placeholder="" class="form-control" >
+
+                                                                                                                                <div [hidden]="model.valid || model.pristine" class="alert-dangerForm">
+                                                                                                                                        <div [hidden]="!model.hasError('required')">Campo requerido</div>
+                                                                                                                                        <!-- <div [hidden]="!model.hasError('pattern')">Solo alfabetos permitidos</div> -->
+                                                                                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div class="form-group row" *ngIf="tieneprefijo">
+                                                                <label class="col-md-3 form-control-label" for="text-input">Rango válido para el prefijo</label>
+                                                                <div class="col-md-9">
+                                                                    <div class="row">
+                                                                        <div class="form-group col-sm-6">
+                                                                            <label for="ccmonth">Rango de </label>
+                                                                            <input type="text" id="rango1prefijo" name="rango1prefijo" [(ngModel)]="rango1prefijo" (change)="changeValorPrefijo1(valorprefijo)" (keydown)="solonumero($event)"class="form-control" placeholder="0" pattern="[0-9]+"  #model="ngModel"required validateEqual="rango1prefijo" >
+
+
+                                                                                                                                   <div [hidden]="model.valid || model.pristine" class="alert-dangerForm">
+                                                                                                                                            <div [hidden]="!model.hasError('required')">Campo requerido</div>
+                                                                                                                                            <div [hidden]="!model.hasError('pattern')">Solo Numericos Permitidos</div>
+                                                                                                                                   </div>
+
+                                                                        </div>
+
+                                                                        <div class="form-group col-sm-6">
+                                                                            <label for="ccyear">A</label>
+                                                                            <input type="text" id="rango2prefijo" name="rango2prefijo" [(ngModel)]="rango2prefijo" class="form-control" placeholder="0" [disabled]="true">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+
+
+                                                        <div class="form-group row">
+                                                            <label class="col-md-3 form-control-label">Tipo de longitud</label>
+                                                            <div class="col-md-9 alinradio">
+                                                                <label class="radio-inline marginRightRadio" for="inline-radio1">
+                                                                        <input type="radio" [(ngModel)]="tipolongitud" [checked]="tipolongitud" [value]="true" (change)="ChangeTipoLongitud($event)" id="tipolongitud" name="tipolongitud" >Fija
+                                                                </label>
+                                                                <label class="radio-inline marginRightRadio" for="inline-radio2">
+                                                                        <input type="radio" [(ngModel)]="tipolongitud" [checked]="tipolongitud" [value]="false" (change)="ChangeTipoLongitud($event)" id="tipolongitud" name="tipolongitud" >Variable
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row" *ngIf="divtipodelongitud">
+                                                            <label class="col-md-3 form-control-label">¿Cuantas Posiciones?</label>
+                                                            <div class="col-md-9">
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-6">
+                                                                        <label for="ccmonth">Total Posiciónes </label>
+                                                                        <div class="btninput">
+                                                                            <input type="text" [(ngModel)]="totalposiciones" (keydown)="solonumero($event)" id="totalposicion" name="totalposicion" (keyup)="changeponderador2(totalposiciones)" class="form-control" placeholder="0" pattern="[0-9]+" #model="ngModel"required validateEqual="totalposiciones" >
+                                                    
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-2"> 
+                                                                        <div [hidden]="model.valid || model.pristine" class="alert-dangerForm">
+                                                                            <div [hidden]="!model.hasError('required')">Campo requerido</div>
+                                                                            <div [hidden]="!model.hasError('pattern')">Solo Numericos Permitidos</div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                      
+                                                        
+                     
+                                                    <div class="form-group row" *ngIf="!divtipodelongitud">
+                                                        <label class="col-md-3 form-control-label" for="text-input"> </label>
+                                                        <div class="col-md-9">
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-6">
+                                                                        <label for="ccmonth">Rango de </label>
+                                                                        <input type="text" [(ngModel)]="rango1variable" (keydown)="solonumero($event)" id="text-input1" name="text-input1" class="form-control" placeholder="0">
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-6">
+                                                                        <label for="ccyear">A</label>
+                                                                        <input type="text" [(ngModel)]="rango2variable" (keydown)="solonumero($event)" id="text-input2"   (keyup)="changeponderador2(rango2variable)" name="text-input2" class="form-control" placeholder="0">
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!-- <div class="form-group row">
+                                                        <label class="col-md-3 form-control-label">Tipo de lectura</label>
+                                                        <div class="col-md-9 alinradio">
+                                                           <label class="radio-inline marginRightRadio" for="inline-radio1">
+                                                                <input type="radio" [(ngModel)]="tipolectura" [checked]="tipolectura" [value]="true" (change)="ChangeTipoLectura()" id="tipolectura" name="tipolectura" >Izquierda/Derecha
+                                                           </label>
+                                                        </div>
+                                                    </div> -->
+
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 form-control-label">¿Validar fecha?</label>
+                                                        <div class="col-md-1 alinradio">
+                                                           <label class="radio-inline marginRightRadio" for="inline-radio1">
+                                                                <input type="radio" [(ngModel)]="validafecha" [checked]="validafecha" [value]="true" (change)="ChangeValidafecha()" id="validafecha" name="validafecha" [disabled]="bloqueo">Sí
+                                                           </label>
+                                                           <label class="radio-inline marginRightRadio" for="inline-radio2">
+                                                                   <input type="radio" [(ngModel)]="validafecha" [checked]="validafecha" [value]="false" (change)="ChangeValidafecha()" id="validafecha" name="validafecha" [disabled]="bloqueo">No
+                                                           </label>
+                                                        </div>
+
+                                                        <div class="col-md-3 alinradio" *ngIf="validafechaposicion && !bloqueo">
+
+                                                            <label for="ccmonth"> Formato de fecha</label>
+                                                            <div class="flexboxPadding">
+                                                                <select  [(ngModel)]="formatoFecha" class="form-control" style="width: 121px!important;" name="formatoFecha" id="formatoFecha">
+                                                                    <option value="undefined" selected>Seleccione</option>
+                                                                    <option value ="DDMMYYYY">DDMMYYYY</option>
+                                                                    <option value="DDMMYY">DDMMYY</option>
+                                                                    <option value="MMYYYY">MMYYYY</option>
+                                                                    <option value="MMYY">MMYY</option>
+                                                                    <option value="MMDDYYYY">MMDDYYYY</option>
+                                                                    <option value="MMDDYY">MMDDYY</option>
+                                                                </select>
+                                                            </div> 
+                                                        </div>
+                                                        <div class="col-md-5" *ngIf="validafechaposicion && !bloqueo">
+                                                            <div class="row"> 
+                                                                <div class="col-md-12 row"> 
+                                                                    <label class="col-md-4" for="ccmonth">Posición de</label>
+                                                                    <div class="btninput flexboxPadding col-md-8">
+                                                                        <input type="text" (keydown)="solonumero($event)" style="width: 100px!important" (change)="calculaFecha(formatoFecha)"  [(ngModel)]="validafechaposicionde" id="validafechaposicionde" name="validafechaposicionde" class="form-control" placeholder="0" pattern="[0-9]+" #model="ngModel"required validateEqual="validafechaposicionde">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 row">
+                                                                    <label class="col-md-4" for="ccmonth" >A </label>
+                                                                    <div class="btninput flexboxPadding col-md-8">
+                                                                        <input type="text" (keydown)="solonumero($event)" style="width: 100px!important" [(ngModel)]="validafechaposiciona" id="validafechaposiciona" name="validafechaposiciona" class="form-control"  placeholder="0" pattern="[0-9]+" #model2="ngModel"required validateEqual="validafechaposiciona">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                       
+                                                         <!-- patron de la fecha   ^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$ -->
+                                                            <div class="row">
+                                                                <div class="col-sm-2" style="margin-left: 12%;"> 
+                                                                    <div [hidden]="model.valid || model.pristine" class="alert-dangerForm">
+                                                                        <div [hidden]="!model.hasError('required')">Campo requerido</div>
+                                                                        <div [hidden]="!model.hasError('pattern')">Fecha No Valida</div>
+                                                                    </div>
+                                                                </div>
+                                                                    
+
+                                                                <div class="col-sm-4" style="margin-left: 7%;"> 
+                                                                    <div [hidden]="model2.valid || model2.pristine" class="alert-dangerForm">
+                                                                        <div [hidden]="!model2.hasError('required')">Campo requerido</div>
+                                                                        <div [hidden]="!model2.hasError('pattern')">Fecha No Valida</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 form-control-label">¿Validar el importe?</label>
+                                                        <div class="col-md-1 alinradio">
+                                                           <label class="radio-inline marginRightRadio" for="inline-radio1">
+                                                                   <input type="radio" [(ngModel)]="validaimporte" [checked]="validaimporte" [value]="true" (change)="ChangeValidaImporte()" id="validaimporte" name="validaimporte" [disabled]="bloqueo">Sí
+                                                           </label>
+                                                           <label class="radio-inline marginRightRadio" for="inline-radio2">
+                                                                   <input type="radio"  [(ngModel)]="validaimporte" [checked]="validaimporte" [value]="false" (change)="ChangeValidaImporte()" id="validaimporte" name="validaimporte" [disabled]="bloqueo">No
+                                                           </label>
+                                                        </div>
+                                                          <div class="col-md-3 alinradio" *ngIf="validaimporteposicion">
+<!-- 
+                                                            <label for="ccmonth"> Longitud del importe</label>
+                                                            <div class="btninput flexboxPadding">
+                                                                    <input type="text" (keydown)="solonumero($event)" [(ngModel)]="validaimportede" id="validaimportede" name="validaimportede" class="form-control" placeholder="0" pattern="[0-9]+" #model="ngModel">   
+                                                            </div>  -->
+
+
+                                                        </div>
+
+                                                        <div class="col-md-5 " *ngIf="validaimporteposicion">
+                                                            <div class="row">
+                                                                <div class="col-md-12 row">
+                                                                    <label class="col-md-4" for="ccmonth">Posición de</label>
+                                                                    <div class="btninput flexboxPadding col-md-8">
+                                                                        <input type="text" style="width: 100px!important" (keydown)="solonumero($event)" [(ngModel)]="validaimportede" id="validaimportede" name="validaimportede" class="form-control" placeholder="0" pattern="[0-9]+" #model="ngModel">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 row">
+                                                                    <label class="col-md-4" for="ccmonth" >A </label>
+                                                                    <div class="btninput flexboxPadding col-md-8">
+                                                                        <input type="text" style="width: 100px!important" (keydown)="solonumero($event)" [(ngModel)]="validaimportea" id="validaimportea" name="validaimportea" class="form-control"  placeholder="0" pattern="[0-9]+" #model2="ngModel">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 form-control-label">¿Se valida dígito verificador?</label>
+                                                        <div class="col-md-2 alinradio">
+                                                           <label class="radio-inline marginRightRadio" for="inline-radio1">
+                                                                   <input type="radio" [(ngModel)]="digitoverificador" [checked]="digitoverificador" [value]="true" (change)="ChangeDigitoVerificador()" id="digitoverificador" name="digitoverificador" [disabled]="bloqueo">Sí
+                                                           </label>
+                                                           <label class="radio-inline marginRightRadio" for="inline-radio2">
+                                                                   <input type="radio" [(ngModel)]="digitoverificador" [checked]="digitoverificador" [value]="false" (change)="ChangeDigitoVerificador()" id="digitoverificador" name="digitoverificador" [disabled]="bloqueo">No
+                                                           </label>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!-- <div class="form-group row" *ngIf="digitoverificadorposicion">
+
+                                                            <div class="col-md-5">
+
+                                                                    <label class="form-control-label">¿En qué posición de Derecha / Izquierda inician los ponderadores?</label>
+
+                                                            </div>
+                                                          
+
+
+                                                                <div class="col-md-5">
+                                                                <div class="row">
+                                  
+                                                                    <input type="text" (keydown)="solonumero($event)" [(ngModel)]="posicionponderador1" (keyup)="validatorcampomax1(posicionponderador1)" (keyup)="changeponderador2(posicionponderador1,posicionponderador2)" id="posicionponderador1" name="posicionponderador1" class="form-control" pattern="[0-9]+" #model="ngModel" required validate Equal="posicionponderador1" style="width: 147px;margin-left: 13.5%;">
+                                                                </div>
+
+                                                                <div class="row">
+
+                                                                        <div class="col-sm-4" style="margin-left: 13.5%;" > 
+                                                                                
+                                                                                                      <div [hidden]="model.valid || model.pristine" class="alert-dangerForm">
+                                                                                                       <div [hidden]="!model.hasError('required')">Campo requerido</div>
+                                                                                                       <div [hidden]="!model.hasError('pattern')">Solo Numericos Permitidos</div>
+                                                                                                        </div>
+                                                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                     </div> -->
+
+                                                     <!-- <div class="form-group row" *ngIf="digitoverificadorposicion">
+                                                        
+
+                                                            
+                                                        
+                                                         <div class="col-md-5">
+                                                               
+                                                            <label class=" form-control-label">¿En qué posición de Derecha / Izquierda terminan los ponderadores?</label>
+                                                       
+                                                        </div>
+                                                                   
+                                                            <div class="col-md-5">
+                                                                    <div class="row">
+                                                                    <input type="text" (keydown)="solonumero($event);" [(ngModel)]="posicionponderador2" (keyup)="validatorcampomax2(posicionponderador2)" (keyup)="changeponderador2(posicionponderador1,posicionponderador2)" id="posicionponderador2" name="posicionponderador2" class="form-control"  pattern="[0-9]+" #model="ngModel" required validateEqual="posicionponderador2" style="width: 147px;margin-left: 13.5%;">
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-4" style="margin-left: 13.5%;" > 
+                                                                           
+                                                                                                  <div [hidden]="model.valid || model.pristine" class="alert-dangerForm">
+                                                                                                   <div [hidden]="!model.hasError('required')">Campo requerido</div>
+                                                                                                   <div [hidden]="!model.hasError('pattern')">Solo Numericos Permitidos</div>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                
+                                                                                            </div>
+                                                        </div>
+
+                                                     </div> -->
+
+
+                                                        <div class="form-group row" *ngIf="mostrarlistaponderadores && digitoverificadorposicion">
+
+                                                            <div class="col-md-2">
+                                                                <label class="form-control-label"> Ponderadores </label>
+                                                            </div>
+                                                                <div class="col-md-10">
+                                                                    <div class="row">
+                                                                        <div class="form-group col-sm-9">
+                                                                            <div class="inputreferencia" *ngFor="let item of itemtotalponderadores">
+                                                                                <label class="labelreferencia">{{item.number}}</label>
+                                                                                <input style="width:43px;" *ngIf="!bloqueo" type="text" (keydown)="solonumero($event);" [(ngModel)]="item.value" id="{{item.value}}" name="{{item.value}}" [ngModelOptions]="{standalone: true}" class="form-control widthInput"  pattern="(^D)|[0-9]+" maxlength="{{numCaracter}}" #model="ngModel"required validateEqual="item.value" [disabled]="item.number == countPonderadores " >
+                                                                                <input style="width:43px;" *ngIf="bloqueo" type="text" (keydown)="solonumero($event);" [(ngModel)]="item.value" id="{{item.value}}" name="{{item.value}}" [ngModelOptions]="{standalone: true}" class="form-control widthInput"  pattern="(^D)|[0-9]+" maxlength="{{numCaracter}}" #model="ngModel"required validateEqual="item.value" [disabled]="item.number == countPonderadores || item.number == countPonderadores-1" >                                                                                
+                                                                            </div> 
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-5" style="margin-left: 13.5%;" > 
+                                                                            <div [hidden]="model.valid || model.pristine" class="alert-dangerForm">
+                                                                                <div [hidden]="!model.hasError('required')">Campo requerido</div>
+                                                                                <div [hidden]="!model.hasError('pattern')">Solo Numericos Permitidos</div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="form-actions alinbtn">
+                                                            <button type="reset" class="btn btn-danger" (click)="cancelarReferncia()"> Cancelar</button>
+                                                            <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Guardar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-dialog [(visible)]="showDialogAlert">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="showDialogAlert = !showDialogAlert;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="icon-cross" aria-hidden="true"></span>
+                </button>
+                <h4 class="modal-title custom_align" id="Heading">Referencia</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-block">
+                    <fieldset class="form-group">
+                        <label>¿Está seguro de que desea eliminar el registro?</label>
+                    </fieldset>
+    
+                    <div class="modal-footer">
+                        <button (click)="showDialogAlert = !showDialogAlert; modalFormulario = !modalFormulario;" type="button" class="btn btn-info">
+                            <i class="icon-cross icoBntModal"></i>&nbsp; Cancelar
+                        </button>
+            
+                    <button (click)="eliminarReferencia();showDialogAlert = !showDialogAlert;" type="submit" class="btn btn-danger">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Aceptar
+                        </button>
+                    </div>
+    
+                </div>
+            </div>
+            </div>
+    </app-dialog>
+
+
+
+    <app-dialog [(visible)]="modalSpei">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="modalSpei = !modalSpei;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="icon-cross" aria-hidden="true"></span>
+                </button>
+                <h4 class="modal-title custom_align" id="Heading">Referencia</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-block">
+                    <fieldset class="form-group">
+                        <label>¿Está seguro de que desea habilitar la referencia interbancaria?</label>
+                    </fieldset>
+    
+                    <div class="modal-footer">
+                        <button (click)="modalSpei = !modalSpei; cancelaSpei();" type="button" class="btn btn-info">
+                            <i class="icon-cross icoBntModal"></i>&nbsp; Cancelar
+                        </button>
+            
+                    <button (click)="guradaConSpei();modalSpei = !modalSpei;" type="submit" class="btn btn-danger">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Aceptar
+                        </button>
+                    </div>
+    
+                </div>
+            </div>
+            </div>
+    </app-dialog>
+
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

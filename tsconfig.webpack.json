@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "strictNullChecks": false,
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "paths": {
+      "@angular/*": ["node_modules/@angular/*"]
+    },
+    "baseUrl": "./",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "hammerjs",
+      "node"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/**/*.spec.ts",
+    "e2e/**/*.e2e.ts"
+  ],
+  "files": ["src/main.ts","src/polyfills.ts"],
+  "include": [
+    "src/app/login/login.module.ts",
+    "src/app/**/*.ts"
+  ],//lazy
+  "angularCompilerOptions": {
+    "skipMetadataEmit": true,
+    "entryModule": "./src/app/app.module#AppModule",
+    "genDir": "aot"
+  },
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}

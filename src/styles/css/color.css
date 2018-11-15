@@ -1,0 +1,151 @@
+.tBlanco{color: #fff; font-size: 19px;}
+.fOrange { color: #F79857 !important; }
+.fGreen { color: #3EB760 !important; }
+.fGris { color: #939393 !important; }
+
+/* - - - - - COLORES - - - - - - */
+	.rosa 		{ background-color: #FA9683; }
+	.naranja 	{ background-color: #F79857; }
+	.naranjaN 	{ background-color: #ed6f47; }
+	.azul 	 	{ background-color: #00C3CC; }
+	.verde 		{ background-color: #3EB760; }
+	.verdeD 	{ background-color: #25B79B; }
+	.verdeP 	{ background-color: #1f9c82; }
+	.verdeV 	{ background-color: #10A0A0; }
+	.blanco 	{ background-color: #FFFFFF; }
+	.cafe 		{ background-color: #D8967C; }
+	.azulD 	 	{ background-color: #0099DA; }
+	.cafeD 		{ background-color: #9C7465; }
+	.cafeC 		{ background-color: #BF906A; }
+	.cafeS 		{ background-color: #C47568; }
+	.rosaD 		{ background-color: #E8A59D; }
+/* - - - - - END COLORES - - - - - - */
+
+/* - - - - - LINKS - - - - - - */
+	.naranjaL{ color: #F97319; }
+	.cafeLink{ color: #9C7465; }
+	.ok{ color: #49B567; }
+/* - - - - - LINKS - - - - - - */
+
+
+
+/* COLORES DE PORTAL */
+/* Azul login*/
+.azul-01			{	background-color: #8EE1E5;	}
+.azul-01:hover		{	background-color: #16C4CC;	}
+/*Colores de menu de mesa de control*/
+.azul-02			{ 	background-color: #009BD8;	}
+.azul-02-active		{	background-color: #02779B;	}
+.azul-02-menu 		{   background-color: #3eb5db; color: #1289b3; }
+
+.azul-03			{    background-color: #3DB4D9;	}
+.azul-03-ico		{    background-color: #0B9ECA;	}
+.azul-03-active		{    background-color: #3DB4D9;	}
+.azul-03-menu		{ 	 background-color: #49c3ea; color: #0da2d2; }
+
+.azul-04			{	 background-color: #154A85; }
+.azul-04-ico		{    background-color: #3772AE;	}
+.azul-04-active		{    background-color: #0F3661;	}
+.azul-04-menu		{    background-color: #3772AD; color: #13427E; }
+.azul-head			{	 background-color: #28688E; }
+
+.azul-05			{	 background-color: #154A85; }
+.azul-05-ico		{    background-color: #0B819C;	}
+.azul-05-active		{    background-color: #1A96A9;	}
+.azul-05-menu		{	 background-color: #3BB6C8; color: #0E849E; }
+
+.verde-01			{ 	background-color: #44B764;	}
+.verde-01-active	{ 	background-color: #1D8932;	}
+.verde-01-menu		{	background-color: #7CC68B; color: #2F9F4A;}
+
+.verde-02			{	background-color: #1FA59C;	}
+.verde-02-active	{	background-color: #1A827B;	}
+.verde-02-menu		{	background-color: #64c6b3; color: #1b827b; }
+
+.verde-03-ico 		{	 background-color: #0b9090;	}
+.verde-03-active 	{	background-color: #0E8484;	}
+
+/* Colores de solicitudes */
+.verde-04 			{    background-color: #55CEB7;	}
+.verde-04-ico 		{    background-color: #16B69B;	}
+.verde-04-active 	{    background-color: #00AF87;	}
+
+.verde-05			{    background-color: #7AC488;	}
+.verde-05-ico		{    background-color: #4CC261;	}
+.verde-05-active	{    background-color: #7AC488;	}
+
+.verde-06			{    background-color: #5ACEB7;	}
+.verde-06-ico		{    background-color: #2CBB9F;	}
+.verde-06-active	{    background-color: #1B947C;	}
+.verde-06-menu		{ 	 background-color: #5ACEB7;	color: #1F9A83;  }
+
+.verde-07			{    background-color: #79E0CF;	}
+.verde-07-ico		{    background-color: #47CEB7;	}
+.verde-07-active	{    background-color: #22B79D;	}
+.verde-07-menu		{	 background-color: #65d5c0; color: #24b79d;}
+
+.verde-08			{    background-color: #31B464;	}
+.verde-08-ico		{    background-color: #31B464;	}
+.verde-08-active	{    background-color: #31B464;	}
+
+.naranja-01			{    background-color: #FCB578;	}
+.naranja-01-ico		{    background-color: #F79857 !important;	}
+.naranja-01-active	{    background-color: #D67635;	}
+.naranja-01-menu	{    background-color: #F4B164; color: #BC6E0B;}
+
+.naranja-02			{    background-color: #FCB578;	}
+.naranja-02-ico		{    background-color: #FFA75E;	}
+.naranja-02-active	{    background-color: #FCB578;	}
+
+.naranja-03			{    background-color: #CC8B28;	}
+.naranja-03-ico		{    background-color: #A16F22;	}
+.naranja-03-active	{    background-color: #FCB578;	}
+.naranja-03-menu	{	background-color: #d0a769; color: #a16f24;}
+
+.naranja-04			{    background-color: #FCB578;	}
+.naranja-04-ico		{    background-color: #F79857;	}
+.naranja-04-active	{    background-color: #FF7E34;	}
+.naranja-04-menu	{    background-color: #fdd2ad; color: #e4813e;}
+
+.rojo-01			{    background-color: #FA9683;	}
+.rojo-01-ico		{    background-color: #F47B5E;	}
+.rojo-01-active		{    background-color: #FF593F;	}
+.rojo-01-menu		{	background-color: #f19c89; color: #f55137; }
+
+.rojo-03			{    background-color: #D0603D;	}
+.rojo-03-ico		{    background-color: #ED6F47;	}
+.rojo-03-active		{    background-color: #A54D31;	}
+.rojo-03-menu		{    background-color: #EE6E47; color: #D33807;}
+
+.rosa-01			{    background-color: #F99D8C;	}
+.rosa-01-ico		{    background-color: #FF8873;	}
+.rosa-01-active		{    background-color: #F1725B;	}
+.rosa-01-ico-fondo  {  	 background-color: #ff8873; }
+.rosa-01-menu 		{	 background-color: #f79887; color: #f1725b;}
+
+.rosa-02			{    background-color: #E0A791;	}
+.rosa-02-ico		{    background-color: #D6957B;	}
+.rosa-02-active		{    background-color: #E0A791;	}
+
+.rosa-03			{    background-color: #E1A895;	}
+.rosa-03-ico		{    background-color: #DA9781;	}
+.rosa-03-active		{    background-color: #BC7C65;	}
+.rosa-03-menu		{	 background-color: #E2A895; color: #BC7B65;}
+
+.cafe-01			{    background-color: #AF8D82;	}
+.cafe-01-ico		{    background-color: #73564B;	}
+.cafe-01-active		{    background-color: #614338;	}
+.cafe-01-menu		{    background-color: #b08e84; color: #7b594e;	}
+
+.negro-01			{    background-color: rgb(0, 0, 0);	}
+.negro-01-ico		{    background-color: rgba(0, 0, 0, 0.72);	}
+
+
+
+/* Verde Header bandejas #3EB760*/
+.verde-03			{	 background-color: #10A0A0;	}
+.verde-03-ico		{	 background-color: #0b9090;	}
+.verde-03-active	{	 background-color: #0E8484;	}
+
+.verde-09			{	 background-color: #04b273;	}
+.rojo-02			{    background-color: #ff3964;	}

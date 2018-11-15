@@ -1,0 +1,10 @@
+<ul>
+    <li *ngFor="let item of _listDocuments" class="menu-opcion {{item.claseFondo}}" (click)="changeDocument(item)">
+        <div class="icono {{item.claseico}}">
+            <img src="{{load_static}}/images/mesa-control-expedientes/{{item.icon}}">
+        </div>
+        <div class="titulo-texto ">
+            {{item.name}}
+        </div>
+    </li>
+</ul>

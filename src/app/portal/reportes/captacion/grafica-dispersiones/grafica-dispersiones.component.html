@@ -1,0 +1,182 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs"></div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row container-graph">
+
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menu">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card content-graph">
+                            <div class="card-header tBlanco" style="background-color: #4CC261;">
+                                <div class="row">
+                                    <div class="col-xs-9">
+                                        <i class="icon-coins margin-left05em"></i>
+                                        Dispersiones por institución
+                                    </div>
+                                    <div class="col-xs-3 end-xs containet-btn-regresar">
+                                        <a  (click)="openForm()" class="btn btn-sm btn-success" *ngIf="mostrarBoton" > <i class="icon-file-text2 margin-left05em icon-btn-headers"></i> Exportar</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="box1" >
+                                    <div class="tleft mt">Productos</div>
+                                </div>
+                                <div class="box1">
+                                    <div class="tleft mt">Instituciones</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="box1">
+                                    <div class="tleft mt">
+                                        <select class="select-producto" [(ngModel)]="idProducto" (change)="onChange()">
+                                            <option value="">Selecciona</option>
+                                            <option *ngFor="let producto of productos" value="{{producto.idProducto}}">{{ producto.productos }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="box1">
+                                    <div class="tleft mt">
+                                        <mat-input-container>
+                                            <input type="text" matInput type="text" [matAutocomplete]="auto" [formControl]="institucionCtrl" [readonly]="isAvailable" (click)="clickInstituciones()">
+                                        </mat-input-container>
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let institucion of listaInstituciones | async" [value]="institucion.nombre" (onSelectionChange)="obtenerDispersiones(institucion,true)">
+                                                {{ institucion.nombre }}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row graficacentrada">
+                            <div class="col-xs-12 graphs">
+                                <grafica-highchart></grafica-highchart>
+                            </div>
+                        </div>
+                        <!-- <div class="row card-block center-xs center-sm center-lg" >
+
+                                        <div class="col-xs-1 aic">
+                                                        <span>Productos</span>
+                                        </div>
+                                        <div class="col-xs-11 text-left">
+                                                <select class="select-producto" [(ngModel)]="idProducto" (change)="onChange()">
+                    <option value="">Selecciona</option>
+                    <option *ngFor="let producto of productos" value="{{producto.idProducto}}">{{ producto.productos }}</option>
+                </select>
+                                        </div>
+                        </div>
+
+                        <div class="row card-block center-xs center-sm center-lg" [ngClass]="{'graphs': showHighChartComponent}">
+
+                                                <div class="col-xs-1">
+                                                                <span>Institución</span>
+                                                </div>
+                                                <div class="col-xs-11 text-left">
+                                                        <md-input-container>
+                                                                <input type="text" mdInput type="text" [mdAutocomplete]="auto" [formControl]="institucionCtrl" [readonly]="isAvailable" (click)="clickInstituciones()">
+                                                        </md-input-container>
+                                                        <md-autocomplete #auto="mdAutocomplete">
+                                                                <md-option *ngFor="let institucion of listaInstituciones | async" [value]="institucion.nombre" (onSelectionChange)="obtenerDispersiones(institucion)">
+                                                                {{ institucion.nombre }}
+                                                                </md-option>
+                                                        </md-autocomplete>
+                                                </div>
+                                        <div class="col-xs-12 graphs" *ngIf="showHighChartComponent" id="grafica-credito">
+                                                <grafica-highchart></grafica-highchart>
+                                        </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</div>
+<app-dialog [(visible)]="modalFormulario">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" class="close" data-dismiss="modal" type="button"
+                        (click)="closeForm()">
+                    <span aria-hidden="true" class="icon-cross"></span>
+                </button>
+                <h4 class="modal-title custom_align" id="Heading">Elija rango de fechas</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-block">
+                <form [formGroup]="formulario"  (ngSubmit)="descargar()" >
+                    <fieldset class="form-group">
+                        <label>Seleccione</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-user icon-formulario"></i>
+                            </span>
+                            <select name="" id="" class="form-control" (change)="habilitarFecha()" formControlName="parametro">
+                                <option value="">Seleccione</option>
+                                <option value="0">HISTORICO</option>
+                                <option value="1">RANGO FECHAS</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formulario.controls.parametro"></control-messages>
+                    </fieldset>
+                    <fieldset class="form-group" *ngIf="bandFechas">
+                        <label>Fecha Inicio</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-user icon-formulario"></i>
+                            </span>
+                            <input class="form-control" type="date" name="txtNombre" class="form-control col-xs-3 col-sm-3 col-md-3 center-xs" formControlName="fechaInicio" (change)="asignarFecha()">
+                        </div>
+                        <control-messages [control]="formulario.controls.fechaInicio"></control-messages>
+                    </fieldset>
+                    <fieldset class="form-group" *ngIf="bandFechas && fechaIn">
+                            <label>Fecha Final</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-user icon-formulario"></i>
+                            </span>
+                            <input class="form-control" type="date" name="txtNombre" min="{{minFecha}}" class="form-control col-xs-3 col-sm-3 col-md-3 center-xs" formControlName="fechaFin">
+                        </div>
+                        <control-messages [control]="formulario.controls.fechaFin"></control-messages>
+                    </fieldset>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" name="btnGuardar" id="guardar"  >
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Aceptar
+                        </button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </app-dialog>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

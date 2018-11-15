@@ -1,0 +1,235 @@
+<header>
+</header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <!-- Detalle de datos generales de la session y modulo -->
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs"></div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <!-- Contenedor del area de trabajo de la grafica -->
+        <div class="row container-graph">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+
+
+            <div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+
+
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card-header tBlanco" style="background-color: #0b9dcb;">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-bookmark3 margin-left05em"></i> Transaccionalidad
+                                    </div>
+                                    <div class="col-xs-3 end-xs reset-padding btnFormularios">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-block">
+
+                            </div>
+                            <div class="form-group row"  style="flex-wrap:wrap;">
+
+                                <div class="col-md-12">
+                                    <div class="row" style="justify-content:space-evenly;">
+                                        <div class="btninput" style="display: flex;
+                                        align-items: center;
+                                        padding: 5px 10px;
+                                        min-width: 150px;
+                                        max-width: 200px;">
+                                            <label style="margin-right: 4%;">Canal</label>
+                                            <div>
+                                                <select class="form-control " [(ngModel)]="canal" name="" id="">
+                                                        <option  value="undefined" selected> Seleccione</option>
+                                                        <option *ngFor="let can of canales"  value="{{can.idCanal}}">{{can.desCanal}}</option>
+                                                   </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="btninput" style="  width: 40%;
+                                        min-width: 200px;
+                                        max-width: 264px;
+                                        display: flex;
+                                        align-items: center;
+                                        padding: 5px 10px;">
+                                            <label style="margin-right: 4%;"> Empresa</label>
+                                            <select class="form-control" (change)="consultaContrato(empresa);"  [(ngModel)]="empresa" name="" id="">
+                                                        <option value="undefined" selected> Seleccione</option>
+                                                        <option *ngFor="let emp of empresas"  value="{{emp.idInstitucion}}">{{emp.nomInstitucion}}</option>
+                                                   </select>
+                                        </div>
+
+                                        <div class="btninput" style="width: 40%;
+                                        display: flex;
+                                        align-items: center;
+                                        padding: 5px 10px;
+                                        min-width: 200px;
+                                        max-width: 212px;">
+                                            <label style="margin-right: 4%;"> Contrato</label>
+                                            <select class="form-control " [(ngModel)]="contrato" name="" id="">
+                                                        <option value="undefined" selected> Seleccione</option>
+                                                        <option *ngFor="let con of contratos"  value="{{con.idContrato}}">{{con.idContrato}}</option>
+                                                   </select>
+
+                                        </div>
+
+                                        <div class="btninput" style=" width: 20%;
+                                        display: flex;
+                                        align-items: center;
+                                        min-width: 153px;
+                                        max-width: 176px;
+                                        padding: 5px 10px;">
+                                            <label style="margin-right: 4%;"> De:</label>
+                                            <input type="date" [min]="minFechaNacimiento" [(ngModel)]="fechaInicio" [max]="maxFechaNacimiento" name="fechaNac" class="form-control">
+                                        </div>
+
+
+                                        <div style="width: 20%;
+                                        display: flex;
+                                        align-items: center;
+                                        max-width: 153px;
+                                        min-width: 176px;
+                                        padding: 5px 10px;" >
+                                            <label style="margin-right: 4%;"> A:</label>
+                                            <input type="date" [min]="minFechaNacimiento" [(ngModel)]="fechaFin" [max]="maxFechaNacimiento" name="fechaNac" class="form-control">
+
+                                        </div>
+
+
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a style=" margin-top: 5%;" (click)="printExcel50(49)" class="btn btn-sm btn-success"> <i class="icon-file-text2 margin-left05em icon-btn-headers"></i>Excel</a> 
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <a style=" margin-top: 5%; margin-right: 42%;" (click)="consreferenciasdaz()" class="btn btn-sm btn-success">&nbsp;Buscar</a>
+                                        </div>
+
+
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+
+                            <br>
+
+
+                            <div class="row card-block">
+                                <div class="col-xs-12">
+
+                                    <div>
+                                        <table class="table">
+                                            <thead>
+                                                <th class="text-center" (click)="mainNombres('nomCteRazonSocial')">
+                                                       
+                                                                Empresa
+                                                                <span *ngIf="asc && columna === 'nomCteRazonSocial'" class="icon-sort-asc"></span>
+                                                                <span *ngIf="desc && columna === 'nomCteRazonSocial'" class="icon-sort-desc"></span> 
+                                                                <span *ngIf="def" class="icon-sort"></span> 
+                                                            </th>        
+
+                                                <th class="text-center" (click)="mainSort('cuentaC')">Cuenta
+                                                    <span *ngIf="asc && columna === 'cuentaC'" class="icon-sort-asc"></span>
+                                                    <span *ngIf="desc && columna === 'cuentaC'" class="icon-sort-desc"></span> 
+                                                    <span *ngIf="def" class="icon-sort"></span> </th>
+
+
+                                                <th class="text-center" (click)="mainSort('idContrato')">Contrato
+                                                    <span *ngIf="asc && columna === 'idContrato'" class="icon-sort-asc"></span>
+                                                    <span *ngIf="desc && columna === 'idContrato'" class="icon-sort-desc"></span> 
+                                                    <span *ngIf="def" class="icon-sort"></span></th>
+
+                                                <th class="text-center" (click)="mainNombres('canal')">Canal 
+                                                    <span *ngIf="asc && columna === 'canal'" class="icon-sort-asc"></span>
+                                                    <span *ngIf="desc && columna === 'canal'" class="icon-sort-desc"></span> 
+                                                    <span *ngIf="def" class="icon-sort"></span></th>
+
+
+
+                                                <th class="text-center" (click)="mainDates('dateSort')">Fecha de Transacción  
+                                                    <span *ngIf="asc && columna === 'dateSort'" class="icon-sort-asc"></span>
+                                                    <span *ngIf="desc && columna === 'dateSort'" class="icon-sort-desc"></span> 
+                                                    <span *ngIf="def" class="icon-sort"></span></th>
+
+
+
+                                                <th class="text-center" (click)="mainSort('numOpRea')">Núm Operaciones Realizadas 
+                                                    <span *ngIf="asc && columna === 'numOpRea'" class="icon-sort-asc"></span>
+                                                    <span *ngIf="desc && columna === 'numOpRea'" class="icon-sort-desc"></span>
+                                                    <span *ngIf="def" class="icon-sort"></span></th>
+
+
+                                                <th class="text-center" (click)="mainSort('montoOper')">Monto por las Operaciones Realizadas
+                                                    <span *ngIf="asc && columna === 'montoOper'" class="icon-sort-asc"></span>
+                                                    <span *ngIf="desc && columna === 'montoOper'"class="icon-sort-desc"></span>
+                                                    <span *ngIf="def" class="icon-sort"></span></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let sort of objSorter | slice:0:50">
+                                                    <td>{{sort.nomCteRazonSocial}}</td>
+                                                    <td>{{sort.cuentaC}}</td>
+                                                    <td>{{sort.idContrato}}</td>
+                                                    <td>{{sort.canal}}</td>
+                                                    <td>{{sort.fechaOpera}}</td>
+                                                    <td>{{sort.numOpRea}}</td> 
+                                                    <td>{{sort.montoOper}}</td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

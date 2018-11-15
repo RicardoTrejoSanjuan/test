@@ -1,0 +1,12 @@
+<div class="container-avatar">
+     <div class="foto">
+          <img [src]="fotoCliente" alt="Foto Usuario"/>
+     </div>
+     <div class="datos-usuario">
+          <div class="datos">
+               <p *ngIf="folio !== null">Folio {{folio}}</p>
+               <p class="nombre"><b>{{nombreUsuario}}</b></p>
+               <p>{{empresa}}</p>
+          </div>
+     </div>
+</div>

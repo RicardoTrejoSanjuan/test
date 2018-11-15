@@ -1,0 +1,28 @@
+<!-- col-xs-12 col-sm-3 col-md-3 col-lg-3 -->
+
+<div class="row rowTituloHeader">
+
+  <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs boxTitiloHeader">
+<p class="tituloheader">PortalBig </p>
+  </div>
+
+  <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+
+      <div class="col-xs-3 start-xs iconoHerader">
+      <img id="logo" alt="Banco Azteca" class="iconoHerader" />
+      </div>
+
+      <div class="col-xs-9 end-xs closeSesion">
+
+        <span class="nombre" *ngIf="haspermiso()">{{getFullName}}</span>
+
+
+        <a routerLink="/logout"  class="boxCerrar iconswitch">
+          <span class="icon-switch icomoonSwitch"></span>
+        </a>
+
+      </div>
+
+  </div>
+
+</div>

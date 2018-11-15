@@ -1,0 +1,215 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-3 col-sm-2 col-md-2 boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-9 col-sm-10 col-md-10 row center-xs">
+
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card full-height">
+                            <div class="card-header-formularios cafe-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-coins margin-left05em"></i>Configuración de productos para {{institucion.razonSocial}}
+                                    </div>
+                                    <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                                        <a (click)="mostrarFormularioProducto()" class="btn btn-sm btn-success"> 
+                                            <i class="icon-plus icon-btn-headers"></i>&nbsp;&nbsp;Nuevo
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-block">
+                                <table class="table">
+                                    <thead>
+                                        <th>Producto</th>
+                                        <th>Tipo Nomina</th>
+                                        <th>Periodicidad de Pago</th>
+                                        <th>Editar</th>
+                                        <th>Eliminar</th>
+                                    </thead>
+                                    <tr *ngFor="let item of productosInstitucion">
+                                        <td>{{item.producto !== null && item.producto !== "" ? item.producto : "---"}}</td>
+                                        <td>{{item.tipoNomina !== null && item.tipoNomina !== "" ? item.tipoNomina : "---"}}</td>
+                                        <td>{{item.periodicidadPago !== null && item.periodicidadPago !== "" ? item.periodicidadPago : "---"}}</td>
+                                        <td>
+                                             <a (click)="consultarDetalleProducto(item)">
+                                                <span class="icon-pencil-square text-inverse update-icon"></span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                             <a (click)="asignarValoresEliminar(item)">
+                                                <span class="icon-trash text-inverse delete-icon"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="productosInstitucion.length === 0">
+                                        <td colspan="5">
+                                            <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="text-end" *ngIf="paginadorProductos.pages && paginadorProductos.pages.length">
+                                    <ul class="pagination">
+                                        <li [ngClass]="{disabled:paginadorProductos.currentPage === 1}">
+                                            <a (click)="setPagePaginator(1,paginadorProductos.rango,paginadorProductos.total)">Inicio</a>
+                                        </li>
+                                        <li [ngClass]="{disabled:paginadorProductos.currentPage === 1}">
+                                            <a (click)="setPagePaginator(paginadorProductos.currentPage - 1,paginadorProductos.rango,paginadorProductos.total)">Anterior</a>
+                                        </li>
+                                        <li *ngFor="let page of paginadorProductos.pages" [ngClass]="{active:paginadorProductos.currentPage === page}">
+                                            <a (click)="setPagePaginator(page,paginadorProductos.rango,paginadorProductos.total)">{{page}}</a>
+                                        </li>
+                                        <li [ngClass]="{disabled:paginadorProductos.currentPage === paginadorProductos.totalPages}">
+                                            <a (click)="setPagePaginator(paginadorProductos.currentPage + 1,paginadorProductos.rango,paginadorProductos.total)">Siguiente</a>
+                                        </li>
+                                        <li [ngClass]="{disabled:paginadorProductos.currentPage === paginadorProductos.totalPages}">
+                                            <a (click)="setPagePaginator(paginadorProductos.totalPages,paginadorProductos.rango,paginadorProductos.total)">Último</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-dialog [(visible)]="formularioProductoActivo">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="formularioProductoActivo = false">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Configuración productos</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formularioProducto" (ngSubmit)="crearProducto(formularioProducto.getRawValue())" novalidate>
+                    
+                    <div class="col-xs-12 form-group">
+                        <label>Producto*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <select name="slctProducto" id="producto" class="form-control" formControlName="producto" [ngClass]="{'element-disabled': !esCreacionProducto}">
+                                <option value="">Selecciona un producto</option>
+                                <option *ngFor="let prod of catalogoProducto" value="{{prod.idProducto}}">{{prod.producto}}</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formularioProducto.controls.producto"></control-messages>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                        <label>Tipo de nomina*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-folder-open icon-formulario"></i>
+                            </span>
+                            <select name="slctProducto" id="tipoNomina" class="form-control" formControlName="tipoNomina">
+                                <option value="">Selecciona un tipo de nomina</option>
+                                <option *ngFor="let nom of catalogoTipoNomina" value="{{nom.idTipoNomina}}">{{nom.tipoNomina}}</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formularioProducto.controls.tipoNomina"></control-messages>
+                    </div>
+
+                    <div class="col-xs-12 form-group">
+                        <label>Periodicidad de pago*</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-calendar icon-formulario"></i>
+                            </span>
+                            <select name="slctProducto" id="periodicidad" class="form-control" formControlName="periodicidad">
+                                <option value="">Selecciona una periodicidad</option>
+                                <option *ngFor="let period of catalogoPeriodicidad" value="{{period.idPeriodicidad}}">{{period.periodicidad}}</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formularioProducto.controls.periodicidad"></control-messages>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button (click)="formularioProductoActivo = false;" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary" [disabled]="!formularioProducto.valid" *ngIf="!esCreacionProducto">
+                            <i class="icon-pencil-square-o icoBntModal"></i>&nbsp;&nbsp;Editar
+                        </button>
+                        <button type="submit" class="btn btn-success" [disabled]="!formularioProducto.valid" *ngIf="esCreacionProducto">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</app-dialog>
+
+<app-dialog [(visible)]="formularioEliminarActivo">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="formularioEliminarActivo = false">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Administración productos</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form (ngSubmit)="eliminarProducto()" novalidate>
+                    
+                    <div class="col-xs-12 form-group">
+                        <h6>Esta apunto de eliminar el producto "{{productoEliminar.producto}}" de la institución, ¿Desea continuar con la acción?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button (click)="formularioEliminarActivo = false;" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</app-dialog>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

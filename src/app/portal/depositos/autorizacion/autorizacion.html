@@ -1,0 +1,126 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+     <div class="contenedor-general">
+          
+            <div class="row col-xs-12 pathNavegacion btn-regresar padding-menunavegacion" style="padding-left: 5%;">
+                    
+              <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                    
+             </div>
+
+          <div class="contenedor-tablas fondo-contenedores">
+               <div class="header-contenidos verde-03">
+                    <div class="principal">
+                         <img src="{{load_static}}/images/header/control.png">
+                         <div class="titulo">Autorización</div>
+                    </div>
+                    <div></div>
+               </div>
+               <div class="contenido-principal busqueda-instituciones">
+
+                        <div class="card-block">
+                            
+                         
+                            
+                        </div>
+
+
+                    <div class="registos scroll" style="border: 1px solid #dad1d1;">
+                         <table class="table">
+                              <thead>
+                                        <th class="text-center">Cuenta / Razon social</th>
+                                        <th class="text-center">Número de Cuenta</th>
+                                        <th class="text-center">Clabe Interbancaria</th>
+                                        <th class="text-center">Estatus</th>
+                                        <th class="text-center">Activar</th>
+                              </thead>
+                              <tbody>
+                                   <tr *ngFor="let item of objListAutorizacion">
+                                        <td>{{item.nomCteRazonSocial}}</td>
+                                        <td>{{item.numCuenta}}</td>  
+                                        <td>{{item.ctosDazClabe}}</td>  
+                                        <td>{{item.descStatus}}</td>
+                                        <td> 
+                                            <a (click)="activar(item)" class="btnDetalle" title="Activar">
+                                                <span class="icon-checkmark btnactivar"></span>
+                                            </a>
+                                        </td>
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+
+
+                    <div class="card-block">
+                        
+                     
+                        
+                    </div>
+
+
+                    <div class="row" *ngIf="shoTable">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal ng-pristine ng-valid">
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 form-control-label">Autorizar Servicio</label>
+                                                <div class="col-md-9 classradio">
+                                                    <label class="radio-inline" for="inline-radio1">
+                                                        <input type="radio" [(ngModel)]="activarRadio" [checked]="activarRadio" [value]="true" (change)="Changeradio($event)" id="inline-radio1" name="inline-radios" >Sí
+                                                    </label>
+                                                    <label class="radio-inline" for="inline-radio2">
+                                                        <input type="radio" [(ngModel)]="activarRadio" [checked]="activarRadio" [value]="false" (change)="Changeradio($event)" id="inline-radio2" name="inline-radios" >No
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                    </div>
+
+                    <div class="row" *ngIf="shoTable">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-block">
+
+                                            <div class="card-footer right">
+                                                    <!-- <button type="submit" class="btn btn-sm btn-primary">Action</button>
+                                                    <button type="button" class="btn btn-sm btn-danger">Action</button>
+                                                    <button type="button" class="btn btn-sm btn-warning">Action</button>
+                                                    <button type="button" class="btn btn-sm btn-info">Action</button> -->
+                                                    <button type="button" class="btn btn-sm btn-success" (click)="actualizarestatus()" [disabled]="activarBtnActualizar">Actualizar</button>
+                                            </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                    </div>
+
+                    
+
+                    
+
+               </div>
+          </div>
+     </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+
+<style>
+    .link{
+        cursor: pointer;
+    }
+</style>

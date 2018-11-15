@@ -1,0 +1,89 @@
+/* Alto del card block al 100% del tamaño de la pantalla */
+.full-height { height: 100%; overflow-y: scroll; }
+/* Color del texto para los iconos de tareas */
+.text-inverse { color: #7C7E87; }
+/* Se disminuye la opacidad al pasar el raton sobre el elemento que posee la clase */
+.text-inverse:hover {opacity: .8;}
+.update-icon:hover {color: #00B1DE;}
+.delete-icon:hover {color: #ED2B3B;}
+/* Tamaño modificado de los iconos dentros de un form-group addon */
+.small-icon { font-size: 20px !important; }
+/* Alineacion en el eje vertical para los botones de accion */
+#columnaConsultar input[type="submit"] {margin-top: 23px;}
+/* Muestra las etiquetas label como bloques para su manipulacion */
+.form-group label {display: block !important;}
+/* Alineacion de caja de texto que funge como caja de busquedas */
+.form-busqueda .content-input {margin: 0 !important;}
+/* Asignacion de estilo para un elemento desabilitado */
+.element-disabled {
+    opacity: 0.7;
+    cursor: default;
+    pointer-events: none;
+}
+/* Cuando un elemento es invalido con respecto a las validaciones */
+.element-invalid { color: #D8293A; border: 1px solid #FE112C !important;}
+/* Tamaño y apariencia del label que se utiliza como titulo de una tabla */
+label.table-title {font-size: 1.25rem; font-weight: 300;}
+/* Leyenda que indica cuantos creitos existen activos*/
+p.leyenda-creditos { font-size: 23px; font-weight: 300; }
+/* Numero de creditos, que resalta dentro de la leyenda de creditos */
+i.numero-creditos { font-weight: 600; }
+/* Linea recta que divide el buscador de los datos de configuracion */
+hr.separador-mantenimiento {border-color: #9EA2A4 !important;opacity: .55}
+/* Bordes de los datos de configuracion para poder diferenciar las secciones */
+.config-plazo,.config-salario {border: 1px solid #9EA2A4;padding: 15px 35px;opacity: .80}
+/*.Tamaño de la etiqueta que muestra el estatus actual de un elemento en una tabla */
+.tag {font-size: 100% !important;}
+/* Formato del mensaje que se muetsra cuando la consulta no devuelve ningun registro */
+.resultado-vacio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #10a0a0;
+}
+
+#copyRadioButton label {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;  
+    margin-top: 15px;
+    /*margin-bottom: 0 !important;*/
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#copyRadioButton label span {
+  display:block;
+  text-align: center;
+  line-height: 50px;
+  font-size: 1.25rem;
+}
+
+#copyRadioButton label input {
+  position:absolute;
+  top:-50px;
+  display: none;
+}
+
+#copyRadioButton .radio-selected {
+  color: #EDECF4;
+  border: 1px solid #4ECD81;
+  background-color: #4dbd74;
+}
+
+#copyRadioButton .radio-label {
+  border: 1px solid #C3C3CA;
+  background-color: buttonface;
+}
+
+#copyRadioButton .radio-label:hover {
+  opacity: .8;
+}
+
+#copyRadioButton .radio-disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  color: graytext;
+  background-color: buttonface;
+}

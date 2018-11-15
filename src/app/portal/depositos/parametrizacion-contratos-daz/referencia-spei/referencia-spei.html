@@ -1,0 +1,167 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-10 row center-xs">
+
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+
+
+
+                        <div class="card">
+                            <div class="card-header-formularios verde-05-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-credit-card margin-left05em"></i>Referencia SPEI
+                                    </div>
+                                    <!-- <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                                        <a (click)="openForm()" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i> Nuevo</a>
+                                        <a (click)="reporte()" class="btn btn-sm btn-success"> <i class="icon-file-text2 margin-left05em icon-btn-headers"></i> Excel</a>
+                                    </div> -->
+                                </div>
+                            </div>
+
+                            
+                            <div class="card-block minheight">
+
+                                    <div class="row">
+                                            <div class="col-sm-4 titleMenuizquiero">
+                                                <h4 class="card-title mb-0">Municipio Prueba Uno</h4>
+                                                <div class="small text-muted">xxsxxxx3233</div>
+                                            </div>
+                                            <div class="col-sm-8 titleMenuderecho">
+                                                    <div class="small text-muted">Contrato DAZ: 1000123</div>
+                                            </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 center-xs">
+                                            <div class="card-block bodercardblock">
+
+
+
+                                                    <div class="card">
+                                                            <div class="card-header">
+                                                                <strong>Formulario referencia</strong>
+                                                            </div>
+                                                            <div class="card-block">
+                                                                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal ng-pristine ng-valid" [formGroup]="formulario" (ngSubmit)="saveForm(formulario.value)" novalidate>
+
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-3 form-control-label" for="contratodaz">Contrato DAZ</label>
+                                                                        <div class="col-md-9">
+                                                                            <input type="text" id="contratodaz" name="contratodaz" class="form-control" formControlName="contratodaz">
+                                                                            <!-- <span class="help-block">This is a help text</span> -->
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-3 form-control-label" for="contratodaz">Fecha de Vencimiento</label>
+                                                                        <div class="col-md-9">
+                                                                                <mat-input-container>
+                                                                                    <input  formControlName="fecha" matInput [matDatepicker]="picker1" [max]="maxDate" name="fechaVencimiento" type="text">
+                                                                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                                                </mat-input-container>
+                                                                                <mat-datepicker #picker1></mat-datepicker>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row">
+                                                                            <label class="col-md-3 form-control-label" for="importepago">Importe Pago</label>
+                                                                            <div class="col-md-9">
+                                                                                <input type="text" id="importepago" name="importepago" class="form-control" formControlName="importepago">
+                                                                                <!-- <span class="help-block">This is a help text</span> -->
+                                                                            </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row">
+                                                                            <label class="col-md-3 form-control-label" for="descripcion">Descripción</label>
+                                                                            <div class="col-md-9">
+                                                                                <input type="text" id="descripcion" name="descripcion" class="form-control" formControlName="descripcion">
+                                                                                <!-- <span class="help-block">This is a help text</span> -->
+                                                                            </div>
+                                                                    </div>
+
+
+                                                                    <div class="form-group row">
+                                                                            <label class="col-md-3 form-control-label" for="descripcion">Digito Verificador</label>
+                                                                            <div class="col-md-9">
+                                                                                <input type="text" id="descripcion" name="descripcion" class="form-control" formControlName="digitoverificador">
+                                                                                <!-- <span class="help-block">This is a help text</span> -->
+                                                                            </div>
+                                                                    </div>
+
+
+                                                                     <div class="card-footer alinbtn">
+                                                                        <button type="submit" class="btn btn-success" [disabled]="!formulario.valid">
+                                                                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                                                                        </button>
+                                                                    </div>
+
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            </div>
+
+                            
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

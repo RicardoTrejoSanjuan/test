@@ -1,0 +1,299 @@
+<style>
+
+    input[type=date]::-webkit-outer-spin-button,
+
+    input[type=date]::-webkit-inner-spin-button {
+
+        -webkit-appearance: none;
+
+        margin: 0;
+
+    }
+
+
+
+    input[type=date] {
+        font-family:Roboto,"Helvetica Neue",sans-serif;
+        -moz-appearance:textfield;
+
+    }
+
+</style>
+<header></header>
+
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-9 col-sm-10 col-md-10 col-xs-offset-3 col-sm-offset-2 col-md-offset-2">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xs-3 col-sm-2 col-md-2 boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-9 col-sm-10 col-md-10">
+                <div class="card">
+                    <div class="card-header naranja-01-ico">
+                        <div class="row">
+                            <div class="col-xs-12 reset-padding">
+                                <i class="icon-user margin-left05em"></i>
+                                Datos básicos
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <form [formGroup]="formulario" (ngSubmit)="guardarDatosBasicos()" novalidate>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-4 form-group">
+                                    <label>Número de empleado*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-key icon-formulario"></i>
+                                        </span>
+                                        <input type="text" name="txtNumEmpleado" id="numEmpleado" class="form-control" formControlName="numEmpleado" OnlyAlfanumerico="true" maxlength="8" [ngClass]="{'invalid-form-control': !formulario.controls.numEmpleado.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.numEmpleado"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-12 form-group">
+                                    <label>Nombre(s)*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-user icon-formulario"></i>
+                                        </span>
+                                        <input type="text" name="txtNombre" id="nombre" class="form-control" formControlName="nombre" OnlyAlfanumerico="true" [ngClass]="{'invalid-form-control': !formulario.controls.nombre.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.nombre"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-12 form-group">
+                                    <label>Apellido paterno</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-male icon-formulario"></i>
+                                        </span>
+                                        <input type="text" name="txtApPaterno" id="apPaterno" class="form-control" formControlName="apPaterno" OnlyAlfanumerico="true" [ngClass]="{'invalid-form-control': !formulario.controls.apPaterno.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.apPaterno"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-12 form-group">
+                                    <label>Apellido materno</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-female icon-formulario"></i>
+                                        </span>
+                                        <input type="text" name="txtApMaterno" id="apMaterno" class="form-control" formControlName="apMaterno" OnlyAlfanumerico="true" [ngClass]="{'invalid-form-control': !formulario.controls.apMaterno.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.apMaterno"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-12 form-group">
+                                    <label>Fecha de nacimiento*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-calendar icon-formulario"></i>
+                                        </span>
+                                        <input type="date" [min]="minFechaNacimiento" [max]="maxFechaNacimiento" name="fechaNac" formControlName="fechaNac" class="form-control">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.fechaNac"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-12 form-group">
+                                    <label>País de nacimiento*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-map icon-formulario"></i>
+                                        </span>
+                                        <select name="slctPaisNac" id="paisNac" class="form-control" formControlName="paisNac" (change)="consultarEntidadNacimiento()" [ngClass]="{'invalid-form-control': !formulario.controls.paisNac.valid}">
+                                            <option value="">Seleccione</option>
+                                            <option *ngFor="let pais of listaPaisesNac" value="{{pais.idPais}}">{{pais.nombre}}</option>
+                                        </select>
+                                    </div>
+                                    <control-messages [control]="formulario.controls.paisNac"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom" *ngIf="entidadValida">
+                                <div class="col-xs-12 form-group">
+                                    <label>Entidad federativa de nacimiento</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-map-marker icon-formulario"></i>
+                                        </span>
+                                        <select name="slctEntidadNac" id="entidadNac" class="form-control" formControlName="entidadNac">
+                                            <option value="">Seleccione</option>
+                                            <option *ngFor="let entidad of listaEntidadesNac" value="{{entidad.idEstado}}">{{entidad.estado}}</option>
+                                        </select>
+                                    </div>
+                                    <control-messages [control]="formulario.controls.entidadNac"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-12 form-group">
+                                    <label>Nacionalidad*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-flag icon-formulario"></i>
+                                        </span>
+                                        <select name="slctNacionalidad" id="nacionalidad" class="form-control" formControlName="nacionalidad" [ngClass]="{'invalid-form-control': !formulario.controls.nacionalidad.valid}">
+                                            <option value="">Seleccione</option>
+                                            <option *ngFor="let nacionalidad of listaCatNacionalidad" value="{{nacionalidad.idNacionalidad}}">{{nacionalidad.nacionalidad}}</option>
+                                        </select>
+                                    </div>
+                                    <control-messages [control]="formulario.controls.nacionalidad"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-6 form-group">
+                                    <label>Documento*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-flag icon-formulario"></i>
+                                        </span>
+                                        <select name="slctDocumento" id="tipoDocumento" class="form-control" formControlName="tipoDocumento" (change)="documentos()" [ngClass]="{'invalid-form-control': !formulario.controls.tipoDocumento.valid}">
+                                            <option value="null">Selecciona</option>
+                                            <option *ngFor="let documento of listaDocumento" value="{{documento.idDocumento}}">{{documento.documento}}</option>
+                                        </select>
+                                    </div>
+                                    <control-messages [control]="formulario.controls.tipoDocumento"></control-messages>
+                                </div>
+                                <div class="col-xs-6 form-group" *ngIf="bandDoc">
+                                    <label>Tipo de Documento*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-flag icon-formulario"></i>
+                                        </span>
+                                        <select name="slctTipoDocumento" id="documento" class="form-control" formControlName="documento" (change)="asignarDatosDocumentos()" [ngClass]="{'invalid-form-control': !formulario.controls.documento.valid}" >
+                                            <option value="null">Selecciona</option>
+                                            <option *ngFor="let tipo of tipoDocumentos" value="{{tipo.idTipoDoc}}">{{tipo.documento}}</option>
+                                        </select>
+                                    </div>
+                                    <control-messages [control]="formulario.controls.documento"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom" *ngIf="bandFolio">
+                                <div class="col-xs-12 form-group">
+                                    <label>Folio de identificación*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-id-card icon-formulario"></i>
+                                        </span>
+                                        <input type="text" name="txtFolioID" id="folioID" class="form-control" formControlName="folioID" OnlyAlfanumerico="true" maxlength="20" minlength="4"[ngClass]="{'invalid-form-control': !formulario.controls.folioID.valid}" >
+                                    </div>
+                                    <control-messages [control]="formulario.controls.folioID"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom" *ngIf="bandDoc">
+                                <div class="col-xs-12 form-group">
+                                    <label>Vigencia*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-calendar icon-formulario"></i>
+                                        </span>
+                                        <input type="date" [min]="minFechaVigencia" name="fechaVigencia" formControlName="fechaVigencia" class="form-control">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.fechaVigencia"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-12 form-group">
+                                    <label>CURP*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-address-book icon-formulario"></i>
+                                        </span>
+                                        <input type="text" name="txtCurp" id="curp" class="form-control" formControlName="curp" OnlyAlfanumerico="true" [ngClass]="{'invalid-form-control': !formulario.controls.curp.valid}" maxlength="18">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.curp"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-12 form-group">
+                                    <label>RFC*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-id-badge icon-formulario"></i>
+                                        </span>
+                                        <input type="text" name="txtRfc" id="rfc" class="form-control" formControlName="rfc" OnlyAlfanumerico="true" [ngClass]="{'invalid-form-control': !formulario.controls.rfc.valid}" maxlength="13">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.rfc"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-6 form-group">
+                                    <label>Teléfono celular</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-id-badge icon-formulario"></i>
+                                        </span>
+                                        <input type="text" name="txtTelefono" id="telefono" class="form-control" formControlName="telefono" OnlyNumber="true" [ngClass]="{'invalid-form-control': !formulario.controls.telefono.valid}" maxlength="10" minlength="7">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.telefono"></control-messages>
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label>Compañía celular</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-id-badge icon-formulario"></i>
+                                        </span>
+                                        <select name="slctCompaniaTel" id="companiaTel" class="form-control" formControlName="companiaTel" [ngClass]="{'invalid-form-control': !formulario.controls.companiaTel.valid}">
+                                            <option value="0">Seleccione</option>
+                                            <option *ngFor="let companiaTel of listaCatCompaniaTelefonica" value="{{companiaTel.idCompaniaTelefonica}}">{{companiaTel.companiaTelefonica}}</option>
+                                        </select>
+                                    </div>
+                                    <control-messages [control]="formulario.controls.companiaTel"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row row-margin-bottom">
+                                <div class="col-xs-12 form-group">
+                                    <label>Correo electrónico</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter">
+                                            <i class="icon-id-badge icon-formulario"></i>
+                                        </span>
+                                        <input type="text" name="txtEmail" id="email" class="form-control" formControlName="email" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" [ngClass]="{'invalid-form-control': !formulario.controls.email.valid}">
+                                    </div>
+                                    <control-messages [control]="formulario.controls.email"></control-messages>
+                                </div>
+                            </div>
+                            <div class="row end-xs">
+                                <!--<div class="col-xs-2 text-center reset-padding">
+                    <i class="icon-floppy-disk icoBntModal"></i><input type="submit" name="btnGuardar" id="guardar" class="btn btn-success" value="Guardar" [disabled]="!formulario.valid">
+                                           </div>-->
+                                <button type="submit" class="btn btn-success" name="btnGuardar" id="guardar" [disabled]="!formulario.valid" >
+                                    <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

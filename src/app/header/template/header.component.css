@@ -1,0 +1,38 @@
+.rowTituloHeader{
+    height: 60px;
+    background-color: #F3F3F3;
+    /*border-bottom: 1px solid #d1d4d7;*/
+}
+.boxTitiloHeader{
+    background-color:#165332;
+}
+.tituloheader{
+    color: white;
+    font-size: 2em;
+}
+.HeaderContendPrincipal{
+    display: flex;
+}
+.iconswitch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: -10px;
+    margin-left: 10px;
+}
+
+.closeSesion{
+    display: flex;
+    flex-direction: row;
+}
+
+a {
+    text-decoration: none;
+    color: #333333;
+}
+
+.nombre{
+    margin: 0 5%;
+    font-weight: bold;
+    color: #6b6b6b;
+}

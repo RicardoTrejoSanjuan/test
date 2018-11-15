@@ -1,0 +1,170 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+        
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row rowSubMenuHeader">
+            <div class="col-xs-9 col-sm-12 col-md-12 row center-xs">  
+                <div class="row col-xs-12 center-xs row-menu-general">
+
+                    <div class="col-xs-12">
+                    
+                        <div class="card">
+                            <div class="card-header" id="verde">
+                                <i class="icon-credit-card"></i>Tarjetas Infinite
+                            </div>
+                            <div class="card-block">
+                                
+                                <form #loginForm="ngForm">  
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <select class="form-control" id="tipo" [(ngModel)]="tipoTarjeta" name="tipoTarjeta" required="false">
+                                                <option selected  value="">Seleccione</option>
+                                                <option  value="INFINITE">Infinite</option>
+                                                <option value="INFINITE VIP">Infinite VIP</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <input class="form-control" type="text" id="busqueda" [(ngModel)]="nombreCuenta"  name="cuenta" required="true" placeholder="Escribe el nombre, cuenta o número de tarjeta">
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <button  class="boton" id="verde" (click)="buscar(nombreCuenta, tipoTarjeta)"> Buscar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+                            </div>
+
+                            <div class="card-block" *ngIf="showTable">
+                                <table class="table">
+                                    <thead>
+                                        <th>Nombre</th>
+                                        <th>Cuenta</th>
+                                        <th>País</th>
+                                        <th>Canal</th>
+                                        <th>Sucursal</th>
+                                        <th>Folio</th>
+                                        <th>Tarjeta</th>
+                                        <th>Tipo Tarjeta</th>
+                                        <th>Movimientos</th>
+                                        <th>Saldo</th>
+                                    </thead>
+                                    <tr *ngFor="let servicio of arrayServicios">
+                                        <td>
+                                            <label *ngIf="servicio.fc_NOMBRE_EMPLEADO!==null">{{servicio.fc_NOMBRE_EMPLEADO}}</label>
+                                            <label *ngIf="servicio.fc_APELLIDO_PAT_EMPLEADO!==null">{{servicio.fc_APELLIDO_PAT_EMPLEADO}}</label>
+                                            <label *ngIf="servicio.fc_APELLIDO_MAT_EMPLEADO!==null">{{servicio.fc_APELLIDO_MAT_EMPLEADO}}</label>
+                                        </td>
+                                        <td>{{servicio.fc_NUMERO_CUENTA}}</td>
+                                        <td>{{servicio.fi_ID_PAIS_CU}}</td>
+                                        <td>{{servicio.fi_ID_CANAL_CU}}</td>
+                                        <td>{{servicio.fi_ID_SUCURSAL_CU}}</td>
+                                        <td>{{servicio.fi_FOLIO_CU}}</td>
+                                        <td>{{servicio.finoplasticoasignado}}</td>
+                                        <td>{{servicio.fc_TIPO_TARJETA}}</td>
+                                        <td><a class="colorBread" (click)="Movimientos(servicio)" title="Editar"><i class="icon-list4"></i> </a></td>
+                                        <td> <a class="colorBread" (click)="Saldo(servicio);"
+                                                title="Editar"><i class="icon-moneybag"></i> </a></td>
+                                     </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<app-dialog [(visible)]="showDialog"  *ngIf="showDialog">
+    <div class="modal-content">
+
+        <div class="card-header" id="verde">
+            <i class="icon-credit-card"></i>Balance de Tarjetas
+        </div>
+
+        <div class="card-block" id="modalContent">
+             <!--<div class="row">
+                <div class="col-xs-12">
+                    
+                </div>
+             </div>-->
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6" >
+                    <div id="modal-elements">{{dataModal.nombre}}</div>
+                    <div id="modal-elements">CU: {{dataModal.cu}}</div>
+                </div>
+                <div class="col-xs-6" >
+                    <div id="modal-elements">Tarjeta:{{dataModal.cardNumber}}</div>
+                    <div id="modal-elements">Cuenta:{{dataModal.cuenta}}</div>
+                </div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Fecha de operación:</div>
+                <div class="col-xs-6">{{dataModal.dateOperation}}</div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Saldo disponible:</div>
+                <div class="col-xs-6">{{dataModal.availableBalance}}</div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Limite de crédito:</div>
+                <div class="col-xs-6">{{dataModal.creditLimit}}</div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Saldo al corte:</div>
+                <div class="col-xs-6">{{dataModal.cutBalance}}</div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Fecha de corte:</div>
+                <div class="col-xs-6">{{dataModal.cutDate}}</div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Pago mínimo:</div>
+                <div class="col-xs-6">{{dataModal.minimumPayment}}</div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Monto de intéres del pago:</div>
+                <div class="col-xs-6">{{dataModal.nonInterestPayment}}</div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Fecha de pago:</div>
+                <div class="col-xs-6">{{dataModal.paymentDate}}</div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Saldo real:</div>
+                <div class="col-xs-6">{{dataModal.realBalance}}</div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Crédito retenido:</div>
+                <div class="col-xs-6">{{dataModal.retainedCredit}}</div>
+            </div>
+            <div class="row" id="modal-elements">
+                <div class="col-xs-6">Créduto utilizado:</div>
+                <div class="col-xs-6">{{dataModal.usedCredit}}</div>
+            </div>
+        </div>
+    </div>
+</app-dialog>
+
+<app-dialog [(visible)]="showDialogError"  >
+    <p>{{msj}}</p>
+</app-dialog>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

@@ -1,0 +1,320 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row end-xs">
+            <div class="col-xs-10">
+                <div class="pathNavegacion text-left">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row wrapAllHeight center-xs">
+            <div class="col-xs-2">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-10">                
+                <div class="card wrapAllHeightCard">
+                    <div class="card-header-formularios azul-05-ico">
+                        <div class="row">
+                            <div class="col-xs-9 reset-padding header-title">
+                                <i class="icon-file-text margin-left05em"></i>Folios de remesa
+                            </div>
+                            <div class="col-xs-3 reset-padding header-title align-flex-end">
+                                <a class="btn btn-sm btn-success" (click)="abrirFormularioFolio()"> 
+                                    <i class="icon-plus icon-btn-headers"></i>&nbsp;&nbsp;Nuevo
+                                </a>
+                                <a class="btn btn-sm btn-secondary" *ngIf="foliosFiltrados.length > 0" (click)="exportarDatosModulo()"> 
+                                    <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Exportar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block wrapAllHeightGraphic scroll-card">
+                        <div class="form-group" [ngClass]="{'element-disabled': foliosFiltrados.length === 0}">
+                            <label>Buscador</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" name="busqueda" placeholder="Folio..." class="form-control" [(ngModel)]="cadena" (keyup)="filtrarFolios(cadena)">
+                            </div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <th>ID folio</th>
+                                <th>Tarjetas</th>
+                                <th>Otorgante</th>
+                                <th>Receptor</th>
+                                <th>Movimiento</th>
+                                <th>Estatus</th>
+                                <th>Fecha recepción</th>
+                                <th>Detalle</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let folio of foliosFiltrados | slice: manejadorPaginas.init : manejadorPaginas.final">
+                                    <td>{{folio.idFolio}}</td>
+                                    <td>{{folio.numTarjeta}}</td>
+                                    <td>{{folio.otorgante}}</td>
+                                    <td>{{folio.receptor}}</td>
+                                    <td>{{folio.tipoMov}}</td>
+                                    <td>
+                                        <span class="tag" [ngClass]="{'tag-success': folio.idStatus === 2,'tag-primary': folio.idStatus === 1,'tag-danger': folio.idStatus === 3 || folio.idStatus === 4}">
+                                            {{folio.status !== null ? folio.status : "Sin estatus"}}
+                                        </span>
+                                    </td>
+                                    <td>{{folio.fechaRecibido !== null ? folio.fechaRecibido : "--"}}</td>
+                                    <td>
+                                         <a (click)="consultarDetalleFolio(folio)" [ngClass]="{'button-disabled': folio.idStatus !== 1 && folio.idStatus !== 2}">
+                                            <span class="icon-search text-inverse update-icon"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="foliosFiltrados.length === 0">
+                                    <td colspan="8">
+                                        <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ng2-table #tablaFolios (update)="actualizarTablaFolios($event)" *ngIf="mostrarPaginadorTabla"></ng2-table>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-dialog [(visible)]="mostrarFormularioFolio">
+    <div class="modal-content">
+        <div class="modal-header"><!-- inicia el encabezado de la ventana -->
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cerrarFormularioFolio()">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Solicitud de un folio</h4>
+        </div><!-- termina el encabezado de la ventana -->
+        <div class="modal-body"><!-- inicia el cuerpo de la ventana -->
+            <div class="card-block">
+                <form [formGroup]="formularioSolicitudFolio" (ngSubmit)="crearSolicitudFolio(formularioSolicitudFolio.getRawValue())" enctype="multipart/form-data" novalidate>
+                    <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <label>Tipo de movimiento*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <select id="movimiento" class="form-control" formControlName="idTipoMovimiento" (change)="asignarPosiblesReceptores()"
+                                [ngClass]="{'element-invalid': formularioSolicitudFolio.controls.idTipoMovimiento.invalid && (formularioSolicitudFolio.controls.idTipoMovimiento.dirty || formularioSolicitudFolio.controls.idTipoMovimiento.touched)}">
+                                    <option value="">Selecciona un movimiento</option>
+                                    <option *ngFor="let movimiento of listaTiposMovimiento" value="{{movimiento.idTipoMov}}">{{movimiento.descripcion}}</option>
+                                </select>
+                            </div>
+                            <control-messages [control]="formularioSolicitudFolio.controls.idTipoMovimiento"></control-messages>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>Otorga</label>
+                            <div class="input-group element-disabled">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>                               
+                                <select id="otorgante" class="form-control" formControlName="idOtorgante">
+                                    <option value="">Selecciona un responsable</option>
+                                    <option value="{{responsable.idResponsable}}">{{responsable.nombre}}&nbsp;{{responsable.apPaterno}}&nbsp;{{responsable.apMaterno}}</option>
+                                </select>
+                            </div>
+                            <control-messages [control]="formularioSolicitudFolio.controls.idOtorgante"></control-messages>
+                        </div>
+                        <div class="col-xs-6 form-group" [ngClass]="{'element-disabled': listaResponsablesFiltrados.length === 0}">
+                            <label>Recibe*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <select id="receptor" class="form-control" formControlName="idReceptor" 
+                                [ngClass]="{'element-invalid': formularioSolicitudFolio.controls.idReceptor.invalid && (formularioSolicitudFolio.controls.idReceptor.dirty || formularioSolicitudFolio.controls.idReceptor.touched)}">
+                                    <option value="">Selecciona un responsable</option>
+                                    <option *ngFor="let responsable of listaResponsablesFiltrados" value="{{responsable.idResponsable}}">{{responsable.nombre}}&nbsp;{{responsable.apPaterno}}&nbsp;{{responsable.apMaterno}}</option>
+                                </select>
+                            </div>
+                            <control-messages [control]="formularioSolicitudFolio.controls.idReceptor"></control-messages>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <label>Comentario*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" id="comentario" class="form-control" formControlName="comentarios" OnlyAlfanumerico="true" placeholder="Escribe un comentario..." 
+                                [ngClass]="{'element-invalid': formularioSolicitudFolio.controls.comentarios.invalid && (formularioSolicitudFolio.controls.comentarios.dirty || formularioSolicitudFolio.controls.comentarios.touched)}">
+                            </div>
+                            <control-messages [control]="formularioSolicitudFolio.controls.comentarios"></control-messages>
+                        </div>
+                    </div>
+                                        
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="contenedor-tabs">
+                                <div class="encabezado-tabs">
+                                    <div class="tab" (click)="showContentTabOne()" [ngClass]="{'active-tab': manejadorTabs.showTabOne,'inactive-tab': !manejadorTabs.showTabOne}">
+                                        <i class="icon-list-alt"></i>&nbsp;<span>Elegir tarjetas</span>
+                                    </div>
+                                    <div class="tab" (click)="showContentTabTwo()" [ngClass]="{'active-tab': manejadorTabs.showTabTwo,'inactive-tab': !manejadorTabs.showTabTwo}">
+                                        <i class="icon-upload"></i>&nbsp;<span>Subir archivo</span>
+                                    </div>
+                                </div>
+                                <div class="cuerpo-tabs borde-contenedor-tabs">
+                                    <div class="contenedor-cuerpo-tabs">
+                                        <div class="contenido" *ngIf="manejadorTabs.showTabOne">
+                                            <div class="row">
+                                                <div class="col-xs-12 form-group">
+                                                    <label>Filtrar por remesa</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-star icon-formulario"></i>
+                                                        </span>
+                                                        <select id="remesa" class="form-control" [(ngModel)]="remesa" [ngModelOptions]="{standalone: true}" (change)="consultarTarjetasDisponiblesPorRemesa(remesa)">
+                                                            <option value="">Selecciona una remesa</option>
+                                                            <option *ngFor="let lote of listaLotesTarjetas" value="{{lote.numRemesa}}">
+                                                                Remesa:&nbsp;{{lote.numRemesa}}&nbsp;Tarjetas:&nbsp;{{lote.total}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-6 caja-tarjetas">
+                                                    <div class="encabezado-caja-tarjetas">
+                                                        <span class="titulo-caja">Disponibles</span>
+                                                        <a (click)="seleccionarConjuntoTarjetas()" class="link-icon">
+                                                            <span class="icon-angle-double-right text-inverse"></span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="cuerpo-caja-tarjetas">
+                                                        <ul>
+                                                            <li *ngFor="let tarjeta of listaTarjetasDisponibles">
+                                                                <span>{{tarjeta}}</span>
+                                                                <a (click)="seleccionarTarjeta(tarjeta)" class="link-icon">
+                                                                    <span class="icon-plus-circle text-inverse"></span>
+                                                                </a>
+                                                            </li>
+                                                            <li *ngIf="listaTarjetasDisponibles.length === 0">
+                                                                <span>Ninguna tarjeta disponible</span>
+                                                            </li>
+                                                        </ul>                                                            
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6 caja-tarjetas">
+                                                    <div class="encabezado-caja-tarjetas">
+                                                        <span class="titulo-caja">Seleccionadas</span>
+                                                        <a (click)="descartarConjuntoTarjetas()" class="link-icon">
+                                                            <span class="icon-trash-o text-inverse"></span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="cuerpo-caja-tarjetas">
+                                                        <ul>
+                                                            <li *ngFor="let tarjeta of listaTarjetasSeleccion">
+                                                                <span>{{tarjeta}}</span>
+                                                                <a (click)="descartarTarjeta(tarjeta)" class="link-icon">
+                                                                    <span class="icon-times-circle text-inverse"></span>
+                                                                </a>
+                                                            </li>
+                                                            <li *ngIf="listaTarjetasSeleccion.length === 0">
+                                                                <span>Ninguna tarjeta seleccionada</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row end-xs">
+                                                <div class="col-xs-12">
+                                                    Número de tarjetas: <span>{{numeroTarjetasSeleccion}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="contenido" *ngIf="manejadorTabs.showTabTwo">
+                                            <div class="row">
+                                                <div class="col-xs-8 subir-archivo">
+                                                    <input type="file" (change)="asignarArchivoTarjetas($event)" #archivoTarjetas accept=".xls,.xlsx">
+                                                </div>
+                                                <div class="col-xs-4 form-group">
+                                                    <label>Número de tarjetas*</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-star icon-formulario"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control" formControlName="numeroTarjetas" OnlyNumber="true"
+                                [ngClass]="{'element-invalid': formularioSolicitudFolio.controls.numeroTarjetas.invalid && (formularioSolicitudFolio.controls.numeroTarjetas.dirty || formularioSolicitudFolio.controls.numeroTarjetas.touched)}">
+                                                    </div>
+                                                    <control-messages [control]="formularioSolicitudFolio.controls.numeroTarjetas"></control-messages>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer"><!-- inicia el pie de la ventana -->
+                        <button (click)="cerrarFormularioFolio()" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success" [disabled]="!formularioSolicitudFolio.valid" 
+                        [ngClass]="{'button-disabled': !formularioSolicitudFolio.valid}">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Solicitar
+                        </button>
+                    </div><!-- termina el pie de la ventana -->
+                </form>
+            </div>
+        </div><!-- termina el cuerpo de la ventana -->
+    </div>
+</app-dialog>
+
+<app-dialog [(visible)]="mostrarModalConfirmacion">
+    <div class="modal-content">
+        <div class="modal-header"><!-- inicia el encabezado de la ventana -->
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cerrarModalConfirmacion()">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Confirmar operación</h4>
+        </div><!-- termina el encabezado de la ventana -->
+        <div class="modal-body"><!-- inicia el cuerpo de la ventana -->
+            <div class="card-block">
+                <form (ngSubmit)="solicitarFolio()" novalidate>
+                    <div class="row center-xs">
+                        <div class="col-xs-10">
+                            <h5>Estas apunto de solicitar un nuevo folio, pero antes debes asegurarte de que los datos son los correctos.</h5> 
+                            <h5>¿Desea continuar con la operación?</h5>
+                        </div>
+                    </div>
+                    <div class="modal-footer"><!-- inicia el pie de la ventana -->
+                        <button (click)="cerrarModalConfirmacion()" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                        </button>
+                    </div><!-- termina el pie de la ventana -->
+                </form>
+            </div>
+        </div><!-- termina el cuerpo de la ventana -->
+    </div>
+</app-dialog>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

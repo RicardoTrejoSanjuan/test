@@ -1,0 +1,26 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+    <div class="contenedor-general">
+        <!-- BANDEJAS DE RECEPCION DE SOLICITUDES -->
+        <return [model]="'./mesa-control2'" [value]="true" [classActive]="false"></return>
+        <div class="contenedor-tablas fondo-contenedores">
+            <div class="header-contenidos verde-03">
+                <div class="principal">
+                    <img src="{{load_static}}/images/header/control.png">
+                    <div class="titulo">Asesor Central</div>
+                </div>
+                <div></div>
+            </div>
+            <tab *ngIf="tabs" [listTabs]="tabs" [_currentlyTab]="currentlytab" (setCurrentlyTab)="changeTab($event)"></tab>
+            <workQueue class="contenido-principal" *ngIf="resultRequest" [_currentlyTab]="currentlytab" [_search]="textSearch" [_flagSeaarch]="true"
+                [_columns]="columns" [_resultRequest]="resultRequest" (setPageParent)="setPage($event)"
+                (setSearchParent)="setSearch($event)" (getRecordParent)="getRecord($event)"></workQueue>
+        </div>
+        <!-- FIN BANDEJAS DE RECEPCION DE SOLICITUDES -->
+    </div>
+</div>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

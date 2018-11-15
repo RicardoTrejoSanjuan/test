@@ -1,0 +1,539 @@
+<style type="text/css">
+
+.tabs-contratos {
+width: 95%;
+margin: 0 auto;
+}
+
+.tabs-contratos section {
+width: 100%;
+display: none;
+padding: 10px 0;
+
+-webkit-animation-name: content;
+        animation-name: content;
+-webkit-animation-direction: normal;
+        animation-direction: normal;
+-webkit-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+-webkit-animation-timing-function: ease-in-out;
+        animation-timing-function: ease-in-out;
+-webkit-animation-iteration-count: 1;
+        animation-iteration-count: 1;
+
+border-top: 2px solid #dcdcdc;
+}
+
+.tabs-contratos input {
+  display: none;
+}
+
+.tabs-contratos label {
+  color: #bbb;
+  cursor: pointer;
+  display: inline-block;
+  margin: 20px 0 0 0;
+  padding: 10px 20px;
+  font-weight: 600;
+  text-align: center;
+  border-top: 2px solid #dcdcdc;
+  border-left: 2px solid #dcdcdc;
+  transition: all 0.5s ease-in-out;
+
+  -webkit-animation-name: content;
+        animation-name: content;
+-webkit-animation-direction: normal;
+        animation-direction: normal;
+-webkit-animation-duration: 0.4s;
+        animation-duration: 0.4s;
+-webkit-animation-timing-function: ease-in-out;
+        animation-timing-function: ease-in-out;
+-webkit-animation-iteration-count: 1;
+        animation-iteration-count: 1;
+}
+
+.tabs-contratos label:hover {
+    color: #555;
+    background: rgb(0,0,0,0.05);
+}
+
+.tabs-contratos label:before {
+  font-family: "icomoon";
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+.tabs-contratos label[for*='1']:before { content: '\e925'; }
+.tabs-contratos label[for*='2']:before { content: '\e969'; }
+
+input:checked + label {
+  color: #555;
+  background: rgb(0,0,0,0.03);
+  border-top: 2px solid orange;
+}
+
+#tab1:checked ~ #content1,
+#tab2:checked ~ #content2 {
+  display: block;
+}
+
+.table-section {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.table thead th {
+    vertical-align: middle;
+}
+
+/*@media screen and (max-width: 650px) {
+  .tabs-contratos label {
+    font-size: 0;
+  }
+  .tabs-contratos label:before {
+    margin: 0;
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .tabs-contratos label {
+    padding: 15px;
+  }
+}*/
+
+
+@-webkit-keyframes content {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(5%);
+            transform: translateY(5%);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0%);
+            transform: translateY(0%);
+  }
+}
+
+@keyframes content {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(5%);
+            transform: translateY(5%);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0%);
+            transform: translateY(0%);
+  }
+}
+
+</style>
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs"></div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row container-graph">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                <div class="col-xs-12">
+                    <div class="card content-graph" *ngIf="!showTable">
+                        <div class="card-header naranja-01-ico tBlanco" >
+                            <div class="row">
+                                <div class="col-xs-9 reset-padding" *ngIf="currentView">
+                                    <i class="icon-user margin-left05em"></i>Empleados por Institución {{reportesEmpleados}}
+                                </div>
+                                <div class="col-xs-9 reset-padding" *ngIf="!currentView">
+                                    <i class="icon-user margin-left05em"></i>{{nombreInstitucion}} - {{solicitudesTotales}} solicitudes
+                                </div>
+                               
+                                <div class="col-xs-3 end-xs containet-btn-regresar">
+                                    <p  (click)="regresar()" *ngIf="!currentView"
+                                        class="btn-regresar">
+                                        <span class="icon-arrow-left"></span>
+                                        Regresar 
+                                    </p> &nbsp;&nbsp;
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px;" *ngIf="!currentView">
+                            <!-- INICIO DE LA COLUMNA IZQUIERDA -->
+                            <div class="col-md-8">
+                                <div class="container-resume-card">
+                                    <div class="resume-card">
+                                        <span id="cuantity">{{solicitudesActivas}}&nbsp;<i>({{solicitudesActivas | PorcentajeSolicitudes:solicitudesTotales}})</i></span>
+                                        <p class="text-muted">Total solicitudes en espera</p>
+                                    </div>
+                                    <div class="status-resume-card">
+                                        <div class="resume-card status-card" *ngFor="let item of solicitudesEstatus;let i = index;">
+                                            <div class="index-bar" [ngStyle]="{'background-color': paletaColores[ i + ((item[3] === 9 || item[3] === 801) ? 2 : 1)]}"></div>
+                                            <p class="text-muted">{{item[0]}}</p>
+                                            <span>{{item[1]}}</span>
+                                        </div>
+                                    </div>
+                                    <!-- <hr class="separator-card"> -->
+                                </div>
+                            </div>
+                            <!-- FIN DE LA COLUMNA IZQUIERDA -->
+
+                            <!-- INICIO DE LA COLUMNA DERECHA -->
+                            <div class="col-md-4">
+                                <div class="container-resume-card" *ngIf="solicitudesFinalizadas !== null && solicitudesFinalizadas !== undefined">
+                                    <div class="resume-card" style="margin: 10px 0;">
+                                        <span id="cuantity">{{solicitudesFinalizadas}}&nbsp;<i>({{solicitudesFinalizadas | PorcentajeSolicitudes:solicitudesTotales}})</i></span>
+                                        <p class="text-muted">Total solicitudes finalizadas</p>
+                                    </div>
+                                    <!-- <hr class="separator-card"> -->
+                                    <div class="status-resume-card">
+                                        <div class="col-sm-8">
+                                            <div class="row" style="justify-content: center;">
+                                                <div class="resume-card detail-request" id="captacion">
+                                                    <span>{{solicitudesXcaptacion}}</span>
+                                                    <p class="text-muted">Por captación</p>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 5px;">
+                                                <div class="col-sm-6" style="border-top: 1px solid #c5c5c5;">
+                                                    <div class="resume-card detail-request" id="pendiente" style="margin: 5px 0;text-align: center;">
+                                                        <span>{{solicitudesPendientes[1]}}</span>
+                                                        <p class="text-muted">Pendientes</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6" style="border-top: 1px solid #c5c5c5;">
+                                                    <div class="resume-card detail-request" id="totales" style="margin: 5px 0;text-align: center;">
+                                                        <span>{{solicitudesXcaptacion - solicitudesPendientes[1]}}</span>
+                                                        <p class="text-muted">Finalizadas</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4" style="display: flex; align-items: center;justify-content: center;">
+                                            <div class="resume-card detail-request" id="enlace">
+                                                <span>{{solicitudesXenlace}}</span>
+                                                <p class="text-muted">Por enlace</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FIN DE LA COLUMNA DERECHA -->
+                        </div>
+
+                        <div class="row" style="margin: 20px 0;" *ngIf="currentView">
+                            <div class="col-md-12">
+                                <div class="container-card">
+                                   <div class="item-card" *ngFor="let item of reportesEstatus">
+                                        <p class="text-muted">{{item.descripcion}}</p>
+                                        <span>{{item.cantidad}}</span>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row card-block graph80">
+                            <div class="col-xs-4">
+                                <div class="row" *ngIf="currentView && showTableInst">
+                                    <div class="col-md-12" style="display:flex;justify-content: flex-end;align-items: center;font-size: 16px;font-weight: 400;">
+                                        <p style="font-weight: 600;">Filtrar por:</p>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="radio" name="tipo"  (click)="cargarPrimeraGrafica(null)" checked>TODO
+                                        &nbsp;&nbsp;
+                                        <input type="radio" name="tipo" (click)="cargarPrimeraGrafica(1)" >BIG
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="currentView && showTableInst">
+                                    <input type="text" name="busqueda" [(ngModel)]="strBusqueda" class="form-control" placeholder="Buscar institución" (keyup)="FiltrarInts(strBusqueda)" style="margin: 10px 0px;">
+                                </div>
+                                <div class="row" style="overflow: auto;max-height: 90%;border: 1px solid #dedede;">
+                                    <table class="tabla-categories" *ngIf="currentView && showTableInst">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">Nombre institución</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of lista; let i = index" (click)="cargarSegundaGrafica(item)">
+                                                <td>
+                                                    <div [ngStyle]="{'background-color': (item.color !== null) ? item.color : '#eee', 'width': '20px', 'height': '20px', 'border-radius': '50%', 'margin': '0px auto'}"></div>
+                                                </td>
+                                                <td>{{item.name}}</td>
+                                                <td class="border-left">{{item.total}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="tabla-categories" *ngIf="!currentView && showTableInst">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">Estatus solicitudes</th>
+                                                <th>Cantidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of reportesEstatus2; let i = index" (click)="cargarTabla(item)">
+                                                <td>
+                                                    <div [ngStyle]="{'background-color': paletaColores[i], 'width': '20px', 'height': '20px', 'border-radius': '50%', 'margin': '0px auto'}"></div>
+                                                </td>
+                                                <td>{{item[0]}}</td>
+                                                <td class="border-left">{{item[1]}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p *ngIf="lista.length === 0 && showTableInst" style="font-size: 18px;font-weight: 400;margin: 15px auto;">No se encontro ningún resultado</p>
+                                </div>
+                                <br>
+                                <a (click)="getAll(1)" class="btn btn-sm btn-secondary pull-left" style="margin: 10px 0;" *ngIf="!currentView"> 
+                                    <i class="icon-file-text2 margin-left05em icon-btn-headers" ></i> Exportar Excel
+                                </a>
+                            </div>
+
+                            <div class="col-xs-8 graphs" style="margin: auto 0;">
+                                <grafica-highchart #graficaComponent (eventClick)="consultar($event)"></grafica-highchart>
+                            </div>
+                            <!--- Termina tabla -->
+                        </div>
+                    </div>
+                    <!---->
+
+                    <div class="card content-graph" *ngIf="showTable">
+
+                        <!-- Inicio header -->
+                        <div class="card-header naranja-01-ico tBlanco" >
+                            <div class="row">
+                                <div class="col-xs-9 reset-padding">
+                                    <i class="icon-user margin-left05em"></i>{{nombreEstatus}} DE {{nombreInstitucion}}
+                                </div>
+                                <div class="col-xs-3 end-xs containet-btn-regresar">
+                                    <p  (click)="regresarTabla()" class="btn-regresar">
+                                        <span class="icon-arrow-left"></span>&nbsp;Regresar
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Fin header -->
+                        <!--- Inicia tabla -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tabs-contratos" *ngIf="pagedItems.length > 0">
+
+                                    <input id="tab2" type="radio" name="tabs" *ngIf="nombreEstatus==='APERTURA DE CUENTA FINALIZADA'" (click)="cambiarVista(1)">
+                                    <label for="tab2" class="pull-right" *ngIf="nombreEstatus==='APERTURA DE CUENTA FINALIZADA'">Gráfica</label>
+    
+                                    <input id="tab1" type="radio" name="tabs" checked (click)="cambiarVista(0)">
+                                    <label for="tab1" class="pull-right">Tabla</label>
+                                    
+                                    <section id="content1" class="pull-right">
+
+                                    <div class="table-section"> <!-- INICIA CONTENEDOR FLEX TABLA -->
+
+                                        <div style="flex-basis: 30%;">
+                                            <table class="table" style="margin: 0px; white-space: nowrap;">
+                                                    <thead>
+                                                        <th>Nombre de empleado</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let servicio of pagedItems">
+                                                            <td>{{servicio.nombreEmpl+" "+servicio.apPaternoEmpl+" "+servicio.apMaternoEmpl}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- Inicia la tabla -->
+                                        <div *ngIf="isTableView" style="flex-basis: 70%;overflow-x: scroll;">
+                                            <table class="table" style="margin: 0px; white-space: nowrap;">
+                                                    <thead>
+                                                        <!-- <th class="colFixedNombre">Nombre empleado</th> -->
+                                                        <th>Fecha Nacimiento</th>
+                                                        <!--apertura cuenta finalizada-->
+                                                        <th *ngIf="nombreEstatus==='APERTURA DE CUENTA FINALIZADA'">Número Cuenta</th>
+                                                        <th *ngIf="nombreEstatus==='APERTURA DE CUENTA FINALIZADA'">Plastico Asignado</th>
+                                                        <th *ngIf="nombreEstatus==='APERTURA DE CUENTA FINALIZADA'">Asesor</th>
+                                                        <!--pendiente apertura de cuenta-->
+                                                        <th *ngIf="nombreEstatus==='PENDIENTE APERTURA DE CUENTA'">Asesor</th>
+                                                        <!--expediente mesa de control-->
+                                                        <th *ngIf="nombreEstatus==='EXPEDIENTE EN MESA DE CONTROL'">Número Celular</th>
+                                                        <th *ngIf="nombreEstatus==='EXPEDIENTE EN MESA DE CONTROL'">Número Cuenta</th>
+                                                        <th *ngIf="nombreEstatus==='EXPEDIENTE EN MESA DE CONTROL'">Plastico Asignado</th>
+                                                        <th *ngIf="nombreEstatus==='EXPEDIENTE EN MESA DE CONTROL'">Fecha Solicitud Mesa</th>
+                                                        <th *ngIf="nombreEstatus==='EXPEDIENTE EN MESA DE CONTROL'">Asesor</th>
+                                                        <!--pendiente activacion de tarjeta-->
+                                                        <th *ngIf="nombreEstatus==='PENDIENTE ACTIVACIÓN DE TARJETA'">Número Cuenta</th>
+                                                        <th *ngIf="nombreEstatus==='PENDIENTE ACTIVACIÓN DE TARJETA'">Número Tarjeta</th>
+                                                        <th *ngIf="nombreEstatus==='PENDIENTE ACTIVACIÓN DE TARJETA'">Fecha Solicitud Mesa</th>
+                                                        <th *ngIf="nombreEstatus==='PENDIENTE ACTIVACIÓN DE TARJETA'">Fecha Liberación Mesa</th>
+                                                        <th *ngIf="nombreEstatus==='PENDIENTE ACTIVACIÓN DE TARJETA'">Asesor</th>
+                                                        <!--solicitud devuelta-->
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Número Cuenta</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Número Tarjeta</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Identificación Oficial</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Nombre Identificación</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Vigencia Identificación</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Firma Identificación</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Domicilio Comprobante</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Vigencia Comprobante</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Solicitud Apertura Cuenta</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Carátula Nómina</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Aviso Privacidad</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Consulta Buró Crédito</th>
+                                                        <th *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">Asesor</th>
+                                                        <!--proceso validacion-->
+                                                        <th *ngIf="nombreEstatus==='PROCESO DE VALIDACIÓN'">Asesor</th>
+                                                    </thead>
+                                                    <tr *ngFor="let servicio of pagedItems">
+                                                        <!-- <td class="colFixedNombre">{{servicio.nombreEmpl+" "+servicio.apPaternoEmpl+" "+servicio.apMaternoEmpl}}</td> -->
+                                                        <td>{{servicio.fechaNaci}}</td>
+                                                        <td *ngIf="nombreEstatus==='APERTURA DE CUENTA FINALIZADA'">{{servicio.numCuenta}}</td>
+                                                        <td *ngIf="nombreEstatus==='APERTURA DE CUENTA FINALIZADA'">{{servicio.plasticoAsig}}</td>
+                                                        <td *ngIf="nombreEstatus==='APERTURA DE CUENTA FINALIZADA'">
+                                                            <span [hidden]="servicio.nomAsesor!==null">{{servicio.nomAsesor}}</span> <span [hidden]="servicio.apPAsesor!==null">{{servicio.apPAsesor}}</span><span [hidden]="servicio.apMAsesor!==null">{{servicio.apMAsesor}}</span>
+                                                        </td>
+                                                        <!--pendiente apertura de cuenta-->
+                                                        <td *ngIf="nombreEstatus==='PENDIENTE APERTURA DE CUENTA'">
+                                                             <span [hidden]="servicio.nomAsesor!==null">{{servicio.nomAsesor}}</span> <span [hidden]="servicio.apPAsesor!==null">{{servicio.apPAsesor}}</span><span [hidden]="servicio.apMAsesor!==null">{{servicio.apMAsesor}}</span>
+                                                        </td>
+                                                        <!--expediente mesa de control-->
+                                                        <td *ngIf="nombreEstatus==='EXPEDIENTE EN MESA DE CONTROL'">{{servicio.celular}}</td>
+                                                        <td *ngIf="nombreEstatus==='EXPEDIENTE EN MESA DE CONTROL'">{{servicio.numCuenta}}</td>
+                                                        <td *ngIf="nombreEstatus==='EXPEDIENTE EN MESA DE CONTROL'">{{servicio.plasticoAsig}}</td>
+                                                        <td *ngIf="nombreEstatus==='EXPEDIENTE EN MESA DE CONTROL'">{{servicio.fechaIngresoMC}}</td>
+                                                        <td *ngIf="nombreEstatus==='EXPEDIENTE EN MESA DE CONTROL'">
+                                                             <span [hidden]="servicio.nomAsesor!==null">{{servicio.nomAsesor}}</span> <span [hidden]="servicio.apPAsesor!==null">{{servicio.apPAsesor}}</span><span [hidden]="servicio.apMAsesor!==null">{{servicio.apMAsesor}}</span>
+                                                        </td>
+                                                        <!--pendiente activacion de tarjeta-->
+                                                        <td *ngIf="nombreEstatus==='PENDIENTE ACTIVACIÓN DE TARJETA'">{{servicio.numCuenta}}</td>
+                                                        <td *ngIf="nombreEstatus==='PENDIENTE ACTIVACIÓN DE TARJETA'">{{servicio.plasticoAsig}}</td>
+                                                        <td *ngIf="nombreEstatus==='PENDIENTE ACTIVACIÓN DE TARJETA'">{{servicio.fechaIngresoMC}}</td>
+                                                        <td *ngIf="nombreEstatus==='PENDIENTE ACTIVACIÓN DE TARJETA'">{{servicio.fechaLiberacionMC}}</td>
+                                                        <td *ngIf="nombreEstatus==='PENDIENTE ACTIVACIÓN DE TARJETA'">
+                                                             <span [hidden]="servicio.nomAsesor!==null">{{servicio.nomAsesor}}</span> <span [hidden]="servicio.apPAsesor!==null">{{servicio.apPAsesor}}</span><span [hidden]="servicio.apMAsesor!==null">{{servicio.apMAsesor}}</span>
+                                                        </td>
+                                                        <!--solicitud devuelta-->
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">{{servicio.numCuenta}}</td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">{{servicio.plasticoAsig}}</td>
+
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">
+                                                            <span *ngIf="servicio.fotografiaIdentOficial===0" class="simboloSD">x</span>
+                                                            <span *ngIf="servicio.fotografiaIdentOficial===1" class="simboloSD">✓</span>
+                                                        </td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">
+                                                            <span *ngIf="servicio.nombreIdentOficial===0" class="simboloSD">x</span>
+                                                            <span *ngIf="servicio.nombreIdentOficial===1" class="simboloSD">✓</span>
+                                                        </td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">
+                                                            <span *ngIf="servicio.vigenciaIdentOficial===0" class="simboloSD">x</span>
+                                                            <span *ngIf="servicio.vigenciaIdentOficial===1" class="simboloSD">✓</span>
+                                                        </td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">
+                                                            <span *ngIf="servicio.firmaIdentOficial===0" class="simboloSD">x</span>
+                                                            <span *ngIf="servicio.firmaIdentOficial===1" class="simboloSD">✓</span>
+                                                        </td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">
+                                                            <span *ngIf="servicio.domicilioCompDomicilio===0" class="simboloSD">x</span>
+                                                            <span *ngIf="servicio.domicilioCompDomicilio===1" class="simboloSD">✓</span>
+                                                        </td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">
+                                                            <span *ngIf="servicio.vigenciaCompDomicilio===0" class="simboloSD">x</span>
+                                                            <span *ngIf="servicio.vigenciaCompDomicilio===1" class="simboloSD">✓</span>
+                                                        </td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">
+                                                            <span *ngIf="servicio.solicApertCuenta===0" class="simboloSD">x</span>
+                                                            <span *ngIf="servicio.solicApertCuenta===1" class="simboloSD">✓</span>
+                                                        </td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">
+                                                            <span *ngIf="servicio.caratulaNomina===0" class="simboloSD">x</span>
+                                                            <span *ngIf="servicio.caratulaNomina===1" class="simboloSD">✓</span>
+                                                        </td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">
+                                                            <span *ngIf="servicio.avisoPrivacidad===0" class="simboloSD">x</span>
+                                                            <span *ngIf="servicio.avisoPrivacidad===1" class="simboloSD">✓</span>
+                                                        </td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'">
+                                                            <span *ngIf="servicio.consBuroCredito===0" class="simboloSD">x</span>
+                                                            <span *ngIf="servicio.consBuroCredito===1" class="simboloSD">✓</span>
+                                                        </td>
+                                                        <td *ngIf="nombreEstatus==='SOLICITUD DEVUELTA'" > <span [hidden]="servicio.nomAsesor!==undefined">{{servicio.nomAsesor}}</span> <span [hidden]="servicio.apPAsesor!==undefined">{{servicio.apPAsesor}}</span><span [hidden]="servicio.apMAsesor!==undefined">{{servicio.apMAsesor}}</span> </td>
+                                                        <!--proceso validacion-->
+                                                        <td *ngIf="nombreEstatus==='PROCESO DE VALIDACIÓN'">  <span [hidden]="servicio.nomAsesor!==undefined">{{servicio.nomAsesor}}</span> <span [hidden]="servicio.apPAsesor!==undefined">{{servicio.apPAsesor}}</span><span [hidden]="servicio.apMAsesor!==undefined">{{servicio.apMAsesor}}</span> </td>
+                                                    </tr>
+                                            </table>
+                                        </div>
+                                        <!-- Termina la tabla -->
+                                    </div> <!-- TERMINA CONTENEDOR FLEX TABLA -->
+                                    <!-- Inicia el paginado -->
+                                    <ul *ngIf="pager.pages && pager.pages.length" class="pagination pull-right">
+                                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                            <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                        </li>
+                                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                            <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                        </li>
+                                        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                            <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                        </li>
+                                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                            <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                        </li>
+                                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                            <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                        </li>
+                                    </ul>
+                                    <!--- Termina el paginado -->
+
+                                    <a (click)="getAll(2)" class="btn btn-sm btn-secondary pull-left" style="margin: 10px 0;"> 
+                                        <i class="icon-file-text2 margin-left05em icon-btn-headers" ></i>Exportar Excel
+                                    </a>
+
+                                    </section>
+
+                                    <section id="content2" class="pull-right" *ngIf="nombreEstatus==='APERTURA DE CUENTA FINALIZADA'">
+                                        <!-- INICIA GRAFICA REPORTE POR DIA -->
+                                        <div class="content-graph" *ngIf="!isTableView">
+                                            <grafica-highchart #graficaComponent ></grafica-highchart>
+                                        </div>
+                                        <!-- TERMINA GRAFICA REPORTE POR DIA -->
+                                    </section>
+
+                                </div>
+                           </div>
+                        </div>
+                        <!--- Termina tabla -->
+                    </div>
+                    <!---->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

@@ -1,0 +1,5 @@
+<div class="tabs-item-top">
+    <li *ngFor="let tab of listTabs" class="tabs" [ngClass]="{'tabs-active' : tab.status }" (click)="changeTab(tab)">
+        {{tab.title}}
+    </li>
+</div>

@@ -1,0 +1,162 @@
+<header></header>
+<div class="fondo-mesa-control">
+        <div class="contenedor-general">
+             
+               <div class="row col-xs-12 pathNavegacion btn-regresar padding-menunavegacion" style="padding-left: 5%;">
+                       
+                 <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                       
+                </div>
+   
+             <div class="contenedor-tablas fondo-contenedores">
+                  <div class="header-contenidos verde-03">
+                       <div class="principal">
+                            <img src="{{load_static}}/images/header/control.png">
+                            <div class="titulo">Centralización de cuentas activación de servicio </div>
+                       </div>
+                       <div></div>
+                  </div>
+                  <div class="contenido-principal busqueda-instituciones">
+   
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="box1 col-xs-6" >
+                                    <div class="tleft mt">Tipo de estructura</div>
+                                </div>
+                                <div class="box1 col-xs-5">
+                                    <div class="tleft mt">Institución</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter" style="height: 36px;">
+                                            <i class="icon-user icon-formulario"></i>
+                                        </span>
+                                        <select name="estructura" id="estructura" class="form-control" [formControl]="estructuraCtrl" (change)="activarBoton()">
+                                            <option value="0">Seleccione</option>
+                                            <option *ngFor="let item of estructuras" value="{{item.idTipoEstructura}}">{{item.descTipoEstructura}}</option> 
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-5 form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon alignJustifyCenter" style="height: 36px;">
+                                            <i class="icon-office icon-formulario"></i>
+                                        </span>
+                                        <mat-input-container style=" width: 95.5%; ">
+                                            <input style="width:94% !important; margin-left: 0px; height: 20px ; margin-top: 0px;" type="text" class="search-input" autofocus matInput type="text" id="inst" [matAutocomplete]="auto" [formControl]="institucionCtrl"  OnlyAlfanumerico="true">
+                                        </mat-input-container>
+        
+                                        <mat-autocomplete #auto="matAutocomplete" >
+                                            <mat-option *ngFor="let inst of listaInstituciones"  [value]="inst.name" (onSelectionChange)="buscarCuentas(inst)">
+                                                {{inst.name}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 form-group">
+                                    <button type="submit" class="btn btn-success" (click)="buscar()" [disabled]="!boton">
+                                        <i class=" icoBntModal"></i>Buscar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scroll col-xs-12" >
+                            <table class="table"   id="cont1">
+                                <thead>
+                                    <th class="text-center">Cuenta</th>
+                                    <th class="text-center">Titular</th>
+                                    <th class="text-center">Estatus</th>
+                                    <th class="text-center">Activar</th>
+                                </thead>
+                                <tr *ngFor="let item of pagedItems ">
+                                    <td>{{item.numeroCuenta}}</td>
+                                    <td>{{inst.name}}</td>
+                                    <td> 
+                                        <span class="tag tag-success " *ngIf="item.status===1">Activo</span> <span class="tag tag-default" *ngIf="item.status===0">Inactivo</span>
+                                    </td>
+                                    <td> 
+                                        <input type="checkbox" name="" id="" [readonly]="true" [(ngModel)]="item.status" (change)="actualizarStatus($event,item)" >
+                                       
+                                    </td>
+                                </tr>
+                                <!--<tr *ngFor="let item of ojbContainer">
+                                    <td>{{item.numCuenta}}</td>
+                                    <td>{{item.Titular}}</td>
+                                    <td> 
+                                            <a style="margin-right: 6%;"  *ngIf="!item.status" (click)="actualizarStatus(1,item)" class="btnDetalle" title="Activar">
+                                                <span class="icon-checkmark ok"></span>
+                                            </a>
+                                            <a (click)="actualizarStatus(2,item)" *ngIf="item.status" class="btnDetalle" title="Desactivar">
+                                                <span class="icon-cross bad"></span>
+                                            </a>
+                                        </td>
+                                        <td> 
+                                            <span class="tag tag-success " *ngIf="item.status">Activo</span> <span class="tag tag-default" *ngIf="!item.status">Inactivo</span>
+                                            
+                                        </td>
+                                </tr>-->
+                            </table>
+                        </div>
+                        <div class="container">
+                            <div class="text-end">
+                                <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                        <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                    </li>
+                                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                        <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                    </li>
+                                    <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                        <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                    </li>
+                                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                        <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                    </li>
+                                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                        <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                  </div>
+             </div>
+        </div>
+   </div>
+
+<app-dialog [(visible)]="showDialogAlert">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button (click)="showDialogAlert = !showDialogAlert; buscarCuentas(inst)" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Aviso</h4>
+        </div>
+        <div class="modal-body">
+            <div class="card-block">
+                <fieldset class="form-group">
+                    <label>¿Está seguro de que desea Activar/Desactivar el servicio de Centralización de cuentas?</label>
+                </fieldset>
+
+
+                <div class="modal-footer">
+                    <button (click)="showDialogAlert = !showDialogAlert; buscarCuentas(inst)" type="button" class="btn btn-info">
+                        <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                    </button>
+
+                    <button (click)="activar();" type="submit" class="btn btn-danger">
+                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-dialog>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+

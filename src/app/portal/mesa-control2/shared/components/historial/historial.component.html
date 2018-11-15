@@ -1,0 +1,22 @@
+<div class="col-xs-12 container-docs container-historial" *ngIf="visible">
+    <table class="tabla-categories tabla-center">
+        <caption class="caption-center">Historial de Cambios</caption>
+        <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Apellido Paterno</td>
+                <td>Apellido Materno</td>
+                <td>Fecha de Nac.</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let historia of historialNombres" matTooltip="Asesor: {{historia.nombreAsesor +' - '+ historia.usuarioCreacion +' '+ historia.fechaCreacion}}"
+            [matTooltipPosition]="'above'">
+                <td> {{historia.nombreEmpleado}} </td>
+                <td> {{historia.apellidoPaternoEmpleado}} </td>
+                <td> {{historia.apellidoMaternoEmpleado}} </td>
+                <td> {{historia.fechaNacimientoEmpleado}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,199 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12   main-general">
+        <div class="row">
+			<div class="col-xs-9 col-sm-10 col-md-10 col-xs-offset-3 col-sm-offset-2 col-md-offset-2">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+		</div>
+        <div class="row ">
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 ">
+                        <div class="card">
+                            <div class="card-header-formularios rojo-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-home margin-left05em"></i>Datos del hogar
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <ul >
+                                    <li>
+                                        <div class="text-muted" style="text-align:left !important"><strong>{{empleado.nombreEmpleado}} {{empleado.apPaternoEmp}} {{empleado.apMaternoEmp}}</strong></div>
+                                        <div class="text-muted" style="text-align:left !important">ID <strong>{{empleado.idEmpleado}}</strong></div>
+                                        <div class="text-muted" style="text-align:left !important">CU <strong>{{empleado.cu}}</strong></div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-block">
+                                <form [formGroup]="formulario" (ngSubmit)="guardarDatosHogar()" novalidate>
+                                    <div class="row row-margin-bottom">
+		            			    <div class="col-xs-12 form-group">
+                                        <label>Codigo Postal*</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon alignJustifyCenter">
+                                                <i class="icon-location icon-formulario"></i>
+                                            </span>
+                                            <input type="text" class="form-control" formControlName="codigoPostal" OnlyNumber="true"  (keyup)="consultarCP()" maxlength="5">
+                                        </div>
+                                        <control-messages [control]="formulario.controls.codigoPostal"></control-messages>
+                                    </div>
+                                    </div>
+
+                                    <div class="row row-margin-bottom">
+		            			    <div class="col-xs-12 form-group">
+                                        <label>País</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon alignJustifyCenter">
+                                                <i class="icon-flag icon-formulario"></i>
+                                            </span>
+                                            <select id="select" name="select" class="form-control" size="1"  formControlName="pais" (change)="consultarEstado()" >
+                                                <option value="0">Seleccione</option>
+                                                <option *ngFor="let item of paises" value="{{item.idPais}}" >{{item.nombre}}</option>
+                                            </select>
+                                        </div>
+                                        <control-messages [control]="formulario.controls.pais"></control-messages>
+                                    </div>
+                                    </div>
+
+                                    <div class="row row-margin-bottom">
+		            			    <div class="col-xs-12 form-group">
+                                        <label>Estado</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon alignJustifyCenter">
+                                                <i class="icon-map icon-formulario"></i>
+                                            </span>
+                                            <select id="select" name="select" class="form-control" size="1" formControlName="estado"  (change)="consultarMunicipio()">
+                                                <option value="0">Seleccione</option>
+                                                <option *ngFor="let item of estados" value="{{[item.edoID]}}">{{item.descEdo}}</option>
+                                            </select>
+                                        </div>
+                                        <control-messages [control]="formulario.controls.estado"></control-messages>
+                                    </div>
+	                                </div>
+
+                                    <div class="row row-margin-bottom">
+		            			    <div class="col-xs-12 form-group">
+                                        <label>Delegación/Municipio</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon alignJustifyCenter">
+                                                <i class="icon-map-pin icon-formulario"></i>
+                                            </span>
+                                            <select id="select" name="select" class="form-control" size="1" formControlName="delmun" (change)="consultarColonia(false)">
+                                                <option value="0">Seleccione</option>
+                                                <option *ngFor="let item of municipios" value="{{item.poblacionID}}">{{item.descPoblacion}}</option>
+                                            </select>
+                                            
+                                        </div>
+                                        <control-messages [control]="formulario.controls.delmun"></control-messages>
+                                    </div>
+	                                </div>
+
+                                    <div class="row row-margin-bottom">
+		            			    <div class="col-xs-12 form-group ">
+                                        <label>Colonia</label>
+                                        <div class="input-group ">
+                                            <span class="input-group-addon alignJustifyCenter" style="height:33px !important">
+                                                <i class="icon-direction icon-formulario"></i>
+                                            </span>
+
+                                        <mat-input-container>
+                                            <input style="width:97% !important; height: 17px;" type="text" [matAutocomplete]="auto" matInput class="form-control !important" formControlName="colonia" (keyup)="consultarColonia(true)">
+                                        </mat-input-container>
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let inst of colonias " [value]="inst.descColonia">
+                                                {{ inst.descColonia }}
+                                            </mat-option>
+                                        </mat-autocomplete>
+
+                                        </div>
+                                        <control-messages [control]="formulario.controls.colonia"></control-messages>
+                                    </div>
+	                                </div>
+
+                                    <div class="row row-margin-bottom">
+		            			    <div class="col-xs-12 form-group">
+                                        <label>Calle</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon alignJustifyCenter">
+                                                <i class="icon-direction icon-formulario"></i>
+                                            </span>
+                                            <input type="text" class="form-control" formControlName="calle">
+                                        </div>
+                                        <control-messages [control]="formulario.controls.calle"></control-messages>
+                                    </div>
+	                                </div>
+
+                                    <div class="row row-margin-bottom">
+		            			    <div class="col-xs-12 form-group">
+                                        <label>Número Exterior</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon alignJustifyCenter">
+                                                <i class="icon-hashtag icon-formulario"></i>
+                                            </span>
+                                            <input type="text" class="form-control" formControlName="numExt" OnlyAlfanumerico="true" maxlength="6">
+                                        </div>
+                                        <control-messages [control]="formulario.controls.numExt"></control-messages>
+                                    </div>
+	                                </div>
+
+                                    <div class="row row-margin-bottom">
+		            			    <div class="col-xs-12 form-group">
+                                        <label>Número Interior</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon alignJustifyCenter">
+                                                <i class="icon-hashtag icon-formulario"></i>
+                                            </span>
+                                            <input type="text" class="form-control" formControlName="numInt" OnlyAlfanumerico="true" maxlength="6">
+                                        </div>
+                                        <control-messages [control]="formulario.controls.numInt"></control-messages>
+                                    </div>
+	                                </div>
+
+                                    <div class="row row-margin-bottom">
+		            			    <div class="col-xs-12 form-group">
+                                        <label>Tipo de vivienda</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon alignJustifyCenter">
+                                                <i class="icon-home icon-formulario"></i>
+                                            </span>
+                                            <select id="select" name="select" class="form-control" size="1" formControlName="tipoVivienda">
+                                                <option value="0">Seleccione</option>
+                                                <option *ngFor="let item of viviendas" value="{{item.idTipoVivienda}}">{{item.descripcion}}</option>
+                                            </select>
+                                        </div>
+                                        <control-messages [control]="formulario.controls.tipoVivienda"></control-messages>
+                                    </div>
+	                                </div>
+
+                                    <div class="row end-xs">
+                                        <button type="submit" class="btn btn-success" [disabled]="!formulario.valid" >
+                                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                                        </button>
+                                    </div>
+                                </form>        
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+	<div class="loader"></div>
+</div>

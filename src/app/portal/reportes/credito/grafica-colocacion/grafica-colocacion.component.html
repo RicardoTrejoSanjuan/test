@@ -1,0 +1,152 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+	<div class="col-xs-12 main-general">
+		<!-- Detalle de datos generales de la session y modulo -->
+		<div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+		<!-- Contenedor del area de trabajo de la grafica -->
+		<div class="row container-graph">
+			<div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+				<ul class="nav">
+					<li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+						<div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+					</li>
+				</ul>
+			</div>
+			<div class="row col-xs-9 col-sm-9 col-md-10 center-xs">
+                <div class="col-xs-4">
+					<div class="card content-graph">
+						<div class="card-header tBlanco verde-05-ico">
+							<div class="row">
+								<div class="col-xs-12 reset-padding">
+									<i class="icon-stats-bars margin-left05em"></i>
+									Filtros de búsqueda
+								</div>
+							</div>
+						</div>
+						<div class="card-block">
+							<form>
+								<div class="row seleccion-type">
+									<div class="verde-05-ico items-type" [ngClass]="{'active-type': ctrlHandler.tipoGrafica}" (click)="SetTipoGrafica('creditos')">Número de Créditos</div>
+									<div class="verde-05-ico items-type" [ngClass]="{'active-type': !ctrlHandler.tipoGrafica}" (click)="SetTipoGrafica('capital')">Capital</div>
+								</div>
+
+								<br>
+								<div class="row">
+									<div class="col-xs-12 reset-padding text-left">
+										<label>Institución</label>
+										<!--
+										<div style="display: flex;">
+											<md-input-container>
+		                                        <input type="text" mdInput placeholder="" type="text" [mdAutocomplete]="auto" [formControl]="colocacionCtrl">
+		                                    </md-input-container>
+											<div style="display: flex; align-items: center; height: 32px;" (click)="BuscarInstitucion(null)"><span class="icon-cross" style="font-size: 15px; color: gray;"></span></div>
+										</div>
+										-->
+										<mat-input-container>
+											<input type="text" matInput placeholder="" type="text" [matAutocomplete]="auto" [formControl]="colocacionCtrl">
+										</mat-input-container>
+
+	                                    <mat-autocomplete #auto="matAutocomplete">
+	                                         <mat-option *ngFor="let institucion of listaInstituciones | async" [value]="institucion.nombre" (onSelectionChange)="BuscarProductos(institucion)">
+	                                         {{ institucion.nombre }}
+	                                         </mat-option>
+	                                    </mat-autocomplete>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-xs-12 reset-padding text-left">
+										<label>Producto</label>
+										<select class="form-control" name="idProducto" [(ngModel)]="idProducto" (ngModelChange)="SeleccionarProducto()">
+											<option value="">Selecciona</option>
+										    <option
+												*ngFor="let producto of listaProductosInst"
+												value="{{producto.idProducto}}">{{ producto.productos }}</option>
+										</select>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-xs-12 reset-padding text-left">
+										<label>Fecha Inicial</label>
+										<mat-input-container>
+
+	                                        <input
+	                                            [(ngModel)]="fechaInicial"
+	                                            name="fechaInicial"
+	                                            (ngModelChange)="SeleccionandoFecha(fechaInicial, 'inicial')"
+	                                            [max]="maxDate"
+	                                            matInput
+	                                            [matDatepicker]="pickerInicial"
+	                                            placeholder=""
+	                                            disabled>
+											<mat-datepicker-toggle matSuffix [for]="pickerInicial"></mat-datepicker-toggle>
+
+	                                    </mat-input-container>
+	                                    <mat-datepicker #pickerInicial></mat-datepicker>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-xs-12 reset-padding text-left">
+										<label>Fecha Final</label>
+										<mat-input-container>
+
+											<input
+												[(ngModel)]="fechaFinal"
+												name="fechaFinal"
+												(ngModelChange)="SeleccionandoFecha(fechaFinal, 'final')"
+												[max]="maxDate"
+												[min]="minDate"
+												matInput
+												[matDatepicker]="pickerFinal"
+												placeholder=""
+												disabled>
+											<mat-datepicker-toggle matSuffix [for]="pickerFinal"></mat-datepicker-toggle>
+
+										</mat-input-container>
+										<mat-datepicker #pickerFinal></mat-datepicker>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-8">
+					<div class="card content-graph">
+						<div class="card-header tBlanco verde-05-ico">
+							<div class="row">
+								<div class="col-xs-12 reset-padding">
+                                	<i class="icon-stats-bars margin-left05em"></i>
+                                	Reportes Colocacion de Créditos General
+                                </div>
+							</div>
+						</div>
+						<div class="col-xs-12 graphs">
+							<!-- <grafica-highchart #graficaColocacion (eventClick)="CambiarGrafica($event)"></grafica-highchart> -->			
+							<grafica-highchart #graficaColocacion></grafica-highchart>
+						</div>
+					</div>
+				</div>
+
+            </div>
+		</div>
+	</div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

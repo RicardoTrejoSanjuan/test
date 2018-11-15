@@ -1,0 +1,94 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row end-xs">
+            <div class="col-xs-10">
+                <div class="pathNavegacion text-left">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row wrapAllHeight center-xs">
+            <div class="col-xs-2">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-10">                
+                <div class="card wrapAllHeightCard">
+                    <div class="card-header-formularios azul-05-ico">
+                        <div class="row">
+                            <div class="col-xs-12 reset-padding header-title">
+                                <i class="icon-dollar margin-left05em"></i>Tarjetas de remesa
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block wrapAllHeightGraphic scroll-card">
+
+                        <section class="contenedor-responsable justify-flex-center">
+                            <div class="tarjeta-general disponibles">
+                                <div class="estatus">Disponibles</div>
+                                <div class="cantidad">{{responsableData.disponibles}}</div>
+                            </div>
+                            <div class="tarjeta-general devueltas">
+                                <div class="estatus">Devueltas</div>
+                                <div class="cantidad">{{responsableData.devueltas}}</div>
+                            </div>
+                            <div class="tarjeta-general entregadas">
+                                <div class="estatus">Entregadas</div>
+                                <div class="cantidad">{{responsableData.entregadas}}</div>
+                            </div>
+                            <div class="tarjeta-general pendientes-distribuir">
+                                <div class="estatus">Pendientes de distribuir</div>
+                                <div class="cantidad">{{responsableData.pendDistribuir}}</div>
+                            </div>
+                            <div class="tarjeta-general pendientes-devolver">
+                                <div class="estatus">Pendientes de devolver</div>
+                                <div class="cantidad">{{responsableData.pendDevolver}}</div>
+                            </div>
+                        </section>
+
+                        <section class="contenedor-responsable">
+                            <div class="tarjeta-general responsable">
+                                <div class="estatus">Responsable</div>
+                                <div class="cantidad">{{responsableData.nombre}}</div>
+                            </div>
+                            <div class="tarjeta-general manager">
+                                <div class="estatus">Manager</div>
+                                <div class="cantidad">{{responsableData.manager}}</div>
+                            </div>
+                            <div class="tarjeta-general busqueda">
+                                <label class="fecha-busqueda-header">Fecha de busqueda</label>
+                                <mat-input-container>
+                                    <input [(ngModel)]="fechaBusqueda" (ngModelChange)="asignarFechaBusqueda()" matInput [matDatepicker]="fBusquedaTarjetas" [min]="minFechaGeneral" [max]="maxFechaGeneral" name="fechaBusquedaTarjetas" disabled>
+                                    <mat-datepicker-toggle matSuffix [for]="fBusquedaTarjetas" [disabled]="isAvailable"></mat-datepicker-toggle>
+                                </mat-input-container>
+                                <mat-datepicker #fBusquedaTarjetas></mat-datepicker>
+                            </div>
+                        </section>
+                        
+                        <section class="row wrapAllHeightGraphicSection">
+                            <div class="col-xs-12 genericFullHeight">
+                                <grafica-highchart></grafica-highchart>
+                            </div>
+                        </section>
+                        
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

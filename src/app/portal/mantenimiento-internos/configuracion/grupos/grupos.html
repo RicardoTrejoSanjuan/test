@@ -1,0 +1,287 @@
+<header></header>
+
+<!-- Tabla Principal -->
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <!-- Detalle de datos generales de la session y modulo -->
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs"></div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <!-- Contenedor del area de trabajo de la grafica -->
+        <div class="row container-graph">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+
+                        <div class="col-xs-12">
+                                <div class="card">
+
+                        <div class="card-header tBlanco" style="background-color: #614338;">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-object-group margin-left05em"></i>
+                                       Grupos
+                                    </div>
+                                    <div class="col-xs-3 end-xs reset-padding btnFormularios">
+										<a (click)="mostrarFormularioModal()" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i>&nbsp;Nuevo</a>
+									</div>
+                                </div>
+                            </div>
+
+                            <div class="row card-block">
+								<div class="col-xs-12 row">
+									<input type="text" [(ngModel)]="strBusqueda" name="busqueda" class="form-control col-xs-12"  placeholder="Buscar" (keyup)="Filtrargrupos(strBusqueda)">
+								</div>
+
+                            </div>
+
+
+
+                            <div class="row card-block">
+								<div class="col-xs-12">
+									<div>
+										<table class="table">
+											<thead>
+												<th class="text-center" (click)="SortTableByNumber('idGrupo')">ID</th>
+												<th class="text-center" (click)="SortTableByString('descripcion')">DESCRIPCION</th>
+												<th class="text-center">STATUS</th>
+                                                <th class="text-center">EDITAR</th>
+                                                <th class="text-center">LISTA</th>
+                                                <th class="text-center">ELIMINAR</th>
+											</thead>
+											<tbody>
+												<tr *ngFor="let grupos of Grupo| slice:ph.init:ph.final">
+													<td>{{grupos.idGrupo}}</td>
+                                                    <td>{{grupos.descripcion}}</td>
+                                                    <td>{{grupos.status}}</td>
+													<td>
+														<a (click)="mostrarDetalleModal(grupos)" class="btnDetalle" title="Ver detalle">
+		                                                    <span class="icon-pencil3"></span>
+		                                                </a>
+                                                    </td>
+                                                    <td>
+														<a (click)="consultaId(grupos)" class="btnDetalle" title="Ver detalle">
+		                                                    <span class="icon-list-ul"></span>
+		                                                </a>
+													</td>
+													<td>
+														<a (click)="eliminarips(grupos)" class="btnDetalle" title="Ver detalle">
+		                                                    <span class="icon-trash-o"></span>
+		                                                </a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div>
+										<ng2-table #tablagrupos (update)="ActualizarTabla($event)">
+										</ng2-table>
+									</div>
+								</div>
+							</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal editar -->
+<app-dialog [(visible)]="displayModal">
+	<div class="modal-content">
+	    <div class="modal-header">
+	        <button (click)="displayModal = !displayModal;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	            <span class="icon-cross" aria-hidden="true"></span>
+	        </button>
+	        <h4 class="modal-title custom_align" id="Heading">Grupos</h4>
+	    </div>
+	    <div class="modal-body">
+	        <div class="card-block">
+	            <form [formGroup]="formulario" (ngSubmit)="saveForm()" novalidate>
+
+	                <fieldset class="form-group" >
+	                    <label>Id Grupo</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formulario"></i>
+	                        </span>
+	                        <input type="text" class="form-control"  formControlName="idGrupo">
+	                    </div>
+	                    <control-messages [control]="formulario.controls.idGrupo"></control-messages>
+	                </fieldset>
+
+	                <fieldset class="form-group">
+	                    <label>Descripcion</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formulario"></i>
+	                        </span>
+	                        <input type="text" class="form-control" formControlName="descripcion">
+	                    </div>
+	                    <control-messages [control]="formulario.controls.descripcion"></control-messages>
+	                </fieldset>
+
+
+                    <fieldset class="form-group">
+	                    <label>Estatus</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-hammer icon-formulario"></i>
+	                        </span>
+
+                    <select id="select" name="select" class="form-control" size="1" formControlName="status">
+                        <option value="1">Activo</option>
+                    </select>
+
+                </div>
+                <control-messages [control]="formulario.controls.status"></control-messages>
+            </fieldset>
+
+	                <div class="modal-footer">
+	                    <button (click)="displayModal = !displayModal;" type="button" class="btn btn-info">
+	                        <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+	                    </button>
+
+	                    <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid" *ngIf="editItem">
+	                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Editar
+	                    </button>
+
+	                    <!-- <button (click)="displayModal = !displayModal; showDialogAlert = !showDialogAlert;" type="button" class="btn btn-danger" [disabled]="!formulario.valid" *ngIf="editItem">
+	                        <span class="icon-bin2 icoBntModal"></span>&nbsp;&nbsp;Eliminar
+	                    </button> -->
+
+	                    <button type="submit" class="btn btn-success" [disabled]="!formulario.valid" *ngIf="saveItem">
+	                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+	                    </button>
+	                </div>
+
+	            </form>
+	        </div>
+	    </div>
+	</div>
+</app-dialog>
+
+<!-- Modal Advertencia -->
+<app-dialog [(visible)]="showDialogAlert">
+	<div class="modal-content">
+        <div class="modal-header">
+            <button (click)="showDialogAlert = !showDialogAlert;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Aviso</h4>
+        </div>
+        <div class="modal-body">
+            <div class="card-block">
+                <fieldset class="form-group">
+                    <label>¿Está seguro de que desea eliminar el registro?</label>
+                </fieldset>
+
+
+                <div class="modal-footer">
+                    <button (click)="showDialogAlert = !showDialogAlert; displayModal = displayModal;" type="button" class="btn btn-info">
+                        <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                    </button>
+
+                	<button (click)="deleteForm();" type="submit" class="btn btn-danger">
+                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+	</div>
+</app-dialog>
+
+<!-- Modal Lista -->
+<app-dialog [(visible)]="displayModal2">
+	<div class="modal-content" style="width: fit-content; overflow:auto;">
+	    <div class="modal-header">
+	        <button (click)="displayModal2 = !displayModal2;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	            <span class="icon-cross" aria-hidden="true"></span>
+	        </button>
+	        <h4 class="modal-title custom_align" id="Heading">Lista de parametros</h4>
+	    </div>
+	    <div class="modal-body">
+
+            <div class="col-xs-12">
+                <div class="card">
+
+
+
+            <div class="row card-block">
+                <div class="col-xs-12">
+                    <div>
+                        <table class="table">
+                            <thead>
+                                <th class="text-center">ID PARAMETRO</th>
+                                <th class="text-center">ID GRUPO</th>
+                                <th class="text-center">GRUPO</th>
+                                <th class="text-center">PARAMETRO</th>
+                                <th class="text-center">VALOR</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let grupoid of grupoId| slice:ph2.init:ph2.final">
+                                    <td>{{grupoid.idParametro}}</td>
+                                    <td>{{grupoid.idGrupo}}</td>
+                                    <td>{{grupoid.grupo}}</td>
+                                    <td>{{grupoid.parametro}}</td>
+                                    <td>{{grupoid.valor}}</td>
+                                    <!-- <td>
+                                        <a (click)="mostrarDetalleModal(grupoid)" class="btnDetalle" title="Ver detalle">
+                                            <span class="icon-pencil3"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a (click)="mostrarDetalleModal(grupoid)" class="btnDetalle" title="Ver detalle">
+                                            <span class="icon-list-ul"></span>
+                                        </a>
+                                    </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <ng2-table #tablalistas (update)="ActualizarTabla2($event)">
+                        </ng2-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+	    </div>
+	</div>
+</app-dialog>
+
+
+
+
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+<div class="loader"></div>
+</div>

@@ -1,0 +1,66 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+	<div class="col-xs-12 main-general">
+		<!-- Detalle de datos generales de la session y modulo -->
+		<div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+		<!-- Contenedor del area de trabajo de la grafica -->
+		<div class="row container-graph">
+			<div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+				<ul class="nav">
+					<li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+						<div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+					</li>
+				</ul>
+			</div>
+			<div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+				<div class="row col-xs-12 center-xs row-menu-general">
+					<div class="col-xs-12">
+						<div class="card content-graph">
+							<div class="card-header tBlanco cafe-01-ico">
+								<div class="row">
+									<div class="col-xs-9 reset-padding">
+                                    	<i class="icon-stats-bars margin-left05em"></i>
+                                    	<span *ngIf="!mostrarDetalle">Balance</span>
+                                    	<span *ngIf="mostrarDetalle">Balance por institución</span>
+	                                </div>
+	                                <div class="col-xs-3 end-xs containet-btn-regresar">
+	                                    <p  *ngIf="mostrarDetalle"
+	                                        (click)="regresar()"
+	                                        class="btn-regresar">
+	                                        <span class="icon-arrow-left"></span>
+	                                        Regresar
+	                                    </p>
+	                                </div>
+								</div>
+							</div>
+							<div class="row card-block center-xs center-sm center-lg graphs">
+								
+								<div class="col-xs-12">
+									<grafica-highchart (eventClick)="seleccionarPunto($event)"></grafica-highchart>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

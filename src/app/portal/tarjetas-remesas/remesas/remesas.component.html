@@ -1,0 +1,172 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row end-xs">
+            <div class="col-xs-10">
+                <div class="pathNavegacion text-left">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row wrapAllHeight center-xs">
+            <div class="col-xs-2">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-10">                
+                <div class="card wrapAllHeightCard">
+                    <div class="card-header-formularios azul-05-ico">
+                        <div class="row">
+                            <div class="col-xs-9 reset-padding header-title align-flex-start">
+                                <i class="icon-money margin-left05em"></i>Remesas activas
+                            </div>
+                            <div class="col-xs-3 reset-padding header-title align-flex-end">
+                                <a class="btn btn-sm btn-success" (click)="abrirFormularioRecepcion()"> 
+                                    <i class="icon-plus icon-btn-headers"></i>&nbsp;&nbsp;Recepcionar
+                                </a>
+                                <a class="btn btn-sm btn-secondary" *ngIf="remesasFiltradas.length > 0" (click)="exportarDatosModulo()"> 
+                                    <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Exportar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block wrapAllHeightGraphic scroll-card">
+
+                        <div class="form-group" [ngClass]="{'element-disabled': remesasFiltradas.length === 0}">
+                            <label>Buscador</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" name="busqueda" placeholder="Remesa..." class="form-control" [(ngModel)]="cadena" (keyup)="filtrarRemesas(cadena)">
+                            </div>
+                        </div>
+
+                        <div class="tabla">
+                            <table class="table">
+                                <thead>
+                                    <th class="text-center">ID solicitud</th>
+                                    <th class="text-center"># Remesa</th>
+                                    <th class="text-center"># Tarjetas</th>
+                                    <th class="text-center">Tipo de tarjeta</th>
+                                    <th class="text-center">Estatus</th>
+                                    <th class="text-center">Fecha carga</th>
+                                    <th class="text-center">Fecha expiración</th>
+                                    <th class="text-center">Detalle</th>
+                                </thead>
+                                <tr *ngFor="let remesa of remesasFiltradas | slice:pagesHandler.init:pagesHandler.final">
+                                    <td>{{remesa.idSolicitud}}</td>
+                                    <td>{{remesa.numRemesa}}</td>
+                                    <td>{{remesa.numTarjetas}}</td>
+                                    <td>{{remesa.tipoTarjeta}}</td>
+                                    <td>
+                                        <span class="tag" [ngClass]="{'tag-success': remesa.status === 1,'tag-danger': remesa.status === 0}">
+                                            {{remesa.descStatus}}
+                                        </span>
+                                    </td>
+                                    <td>{{remesa.fechaCarga}}</td>
+                                    <td>{{remesa.fechaExpiracion}}</td>
+                                    <td>
+                                         <a (click)="consultarDetalleRemesa(remesa)">
+                                            <span class="icon-search text-inverse update-icon"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="remesasFiltradas.length === 0">
+                                    <td colspan="9">
+                                        <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="paginador text-end" *ngIf="mostrarPaginadorTabla">
+                            <ng2-table #tablaremesas (update)="actualizarTablaRemesas($event)"></ng2-table>  
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-dialog [(visible)]="mostrarFormularioRecepcionar">
+    <div class="modal-content">
+        <div class="modal-header"><!-- inicia el encabezado de la ventana -->
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cerrarFormularioRecepcion()">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Recepcionar una remesa</h4>
+        </div><!-- termina el encabezado de la ventana -->
+        <div class="modal-body"><!-- inicia el cuerpo de la ventana -->
+            <div class="card-block">
+                <form [formGroup]="formularioRecepcionRemesa" (ngSubmit)="crearRecepcionRemesa(formularioRecepcionRemesa.getRawValue())" novalidate>
+                     <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <label>Número de remesa*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" id="comentario" class="form-control" formControlName="numeroRemesa" placeholder="XXXXXX-XXXX-XXXX-XX" 
+                                [ngClass]="{'element-invalid': formularioRecepcionRemesa.controls.numeroRemesa.invalid && (formularioRecepcionRemesa.controls.numeroRemesa.dirty || formularioRecepcionRemesa.controls.numeroRemesa.touched)}">
+                            </div>
+                            <control-messages [control]="formularioRecepcionRemesa.controls.numeroRemesa"></control-messages>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>Número de guia*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" id="comentario" class="form-control" formControlName="numeroGuia" OnlyNumber="true" placeholder="XXXXXXXXXX" 
+                                [ngClass]="{'element-invalid': formularioRecepcionRemesa.controls.numeroGuia.invalid && (formularioRecepcionRemesa.controls.numeroGuia.dirty || formularioRecepcionRemesa.controls.numeroGuia.touched)}">
+                            </div>
+                            <control-messages [control]="formularioRecepcionRemesa.controls.numeroGuia"></control-messages>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>Número de solicitud*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <select id="receptor" class="form-control" formControlName="numeroSolicitud" 
+                                [ngClass]="{'element-invalid': formularioRecepcionRemesa.controls.numeroSolicitud.invalid && (formularioRecepcionRemesa.controls.numeroSolicitud.dirty || formularioRecepcionRemesa.controls.numeroSolicitud.touched)}">
+                                    <option value="">Selecciona una solicitud</option>
+                                    <option *ngFor="let solicitud of listaSolicitudes" value="{{solicitud.idSolicitud}}">
+                                    Solicitud:&nbsp;{{solicitud.idSolicitud}}&nbsp;-&nbsp;Fecha:&nbsp;{{solicitud.fechaSolicitud}}
+                                    </option>
+                                </select>
+                            </div>
+                            <control-messages [control]="formularioRecepcionRemesa.controls.numeroSolicitud"></control-messages>
+                        </div>
+                    </div>
+                     
+                    <div class="modal-footer"><!-- inicia el pie de la ventana -->
+                        <button (click)="cerrarFormularioRecepcion()" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success" [disabled]="!formularioRecepcionRemesa.valid" [ngClass]="{'button-disabled': !formularioRecepcionRemesa.valid}">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Recepcionar
+                        </button>
+                    </div><!-- termina el pie de la ventana -->
+                </form>
+            </div>
+        </div><!-- termina el cuerpo de la ventana -->
+    </div>
+</app-dialog>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

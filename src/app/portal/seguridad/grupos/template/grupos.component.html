@@ -1,0 +1,230 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-9 col-sm-10 col-md-10 row center-xs">
+
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+
+
+
+                        <div class="card">
+                            <div class="card-header-formularios cafe-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>Lista de Grupos
+                                    </div>
+                                    <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                                        <a (click)="openForm()" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i> Nuevo</a>
+                                        <a (click)="pruebas()" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i> Prubas</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-block">
+                                <div class="scroll">
+                                    <table class="table">
+                                        <thead>
+                                            <th>Grupo</th>
+                                            <th>Descripción</th>
+                                            <th>Estatus</th>
+                                            <th>Editar</th>
+                                        </thead>
+                                        <tr *ngFor="let item of pagedItems">
+                                            <td>{{item.idGrupo}}</td>
+                                            <td>{{item.descripcion}}</td>
+                                            <td>
+                                                <span class="tag tag-success" *ngIf="item.status === 1" >Activo</span>
+                                                <span class="tag tag-danger" *ngIf="item.status !== 1" >Inactivo</span>
+                                            </td>
+                                            <td>
+                                                 <a (click)="detalle(item)" class="btnDetalle">
+                                                    <span class="icon-search"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="container">
+                                    <div class="text-end">
+                                        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                            <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                            </li>
+                                            <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                            </li>
+                                            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                                <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                            </li>
+                                            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                            </li>
+                                            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<app-dialog [(visible)]="modalFormulario">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="modalFormulario = !modalFormulario;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="icon-cross" aria-hidden="true"></span>
+                </button>
+                <h4 class="modal-title custom_align" id="Heading">Grupos</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="card-block">
+                    <form [formGroup]="formulario" (ngSubmit)="saveEditForm()" novalidate>
+
+                        <fieldset class="form-group">
+                            <label>Id Grupo</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-link icon-formulario"></i>
+                                </span>
+                                <input type="text" class="form-control" formControlName="idGrupo">
+                            </div>
+                            <control-messages [control]="formulario.controls.idGrupo"></control-messages>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <label>Descripción</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-link icon-formulario"></i>
+                                </span>
+                                <input type="text" class="form-control" formControlName="descripcion">
+                            </div>
+                            <control-messages [control]="formulario.controls.descripcion"></control-messages>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <label>Estatus</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-hammer icon-formulario"></i>
+                                </span>
+
+                                <select id="select" name="select" class="form-control" size="1" formControlName="status">
+                                    <option value="">Por favor seleccione</option>
+                                    <option value="0">Inactivo</option>
+                                    <option value="1">Activo</option>
+                                </select>
+
+                            </div>
+                            <control-messages [control]="formulario.controls.status"></control-messages>
+                        </fieldset>
+
+                        <div class="modal-footer">
+                            <button (click)="modalFormulario = !modalFormulario;" type="button" class="btn btn-info">
+                                <i class="icon-cross icoBntModal"></i>&nbsp; Cancelar
+                            </button>
+
+                            <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid" *ngIf="editDelete">
+                                <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Editar
+                            </button>
+
+                            <button (click)="modalFormulario = !modalFormulario; showDialogAlert = !showDialogAlert;" type="button" class="btn btn-danger" [disabled]="!formulario.valid" *ngIf="editDelete">
+                                <span class="icon-bin2 icoBntModal"></span>&nbsp; Eliminar
+                            </button>
+
+                            <button type="submit" class="btn btn-success" [disabled]="!formulario.valid" *ngIf="save">
+                                <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                            </button>
+                        </div>
+
+
+                    </form>
+                </div>
+
+
+
+            </div>
+            </div>
+</app-dialog>
+
+<app-dialog [(visible)]="showDialogAlert">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button (click)="showDialogAlert = !showDialogAlert;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Aviso</h4>
+        </div>
+        <div class="modal-body">
+            <div class="card-block">
+                <fieldset class="form-group">
+                    <label>¿Está seguro de que desea eliminar el registro?</label>
+                </fieldset>
+
+                <div class="modal-footer">
+                    <button (click)="showDialogAlert = !showDialogAlert; modalFormulario = !modalFormulario;" type="button" class="btn btn-info">
+                        <i class="icon-cross icoBntModal"></i>&nbsp; Cancelar
+                    </button>
+
+                <button (click)="delete();showDialogAlert = !showDialogAlert;" type="submit" class="btn btn-danger">
+                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Aceptar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        </div>
+</app-dialog>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

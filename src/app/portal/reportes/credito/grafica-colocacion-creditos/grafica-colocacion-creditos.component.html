@@ -1,0 +1,366 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <!-- Detalle de datos generales de la session y modulo -->
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs"></div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <!-- Contenedor del area de trabajo de la grafica -->
+        <div class="row container-graph">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-4">
+                        <div class="card">
+                            <div class="card-header tBlanco" style="background-color: #FF8873;">
+                                <div class="row">
+                                    <div class="col-xs-12 reset-padding">
+                                        <i class="icon-stats-bars margin-left05em"></i>
+                                        Filtros de búsqueda
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row card-block card-block-margin-top-mod center-xs center-sm center-lg">
+                                <div class="col-xs-12 text-left reset-padding">
+                                    <label>Productos</label>
+                                     <select class="form-control" [(ngModel)]="idProducto" (change)="onChange()">
+                                        <option value="">Selecciona un producto</option>
+                                        <option *ngFor="let producto of productos" value="{{producto.idProducto}}">{{ producto.productos }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-xs-12 text-left reset-padding">
+                                    <label class="mt">Institución</label>
+                                    <mat-input-container>
+                                        <input type="text" matInput type="text" [matAutocomplete]="auto" [formControl]="institucionCtrl" [readonly]="isAvailable" (click)="clickInstituciones()">
+                                    </mat-input-container>
+                                    <!-- <p *ngIf="objFiltrosHandler.anyoneSearchResult">No se encontró ninguna coindicencia</p> -->
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                         <mat-option *ngFor="let institucion of listaInstituciones | async" [value]="institucion.name" (onSelectionChange)="asignarInstitucion(institucion)">
+                                         {{ institucion.name }}
+                                         </mat-option>
+                                        </mat-autocomplete>
+                                   <!--  <md-autocomplete #auto="mdAutocomplete">
+                                         <md-option *ngFor="let institucion of listaInstituciones | async" [value]="institucion.name" (onSelectionChange)="buscarProductos(institucion)">
+                                         {{ institucion.name }}
+                                         </md-option>
+                                    </md-autocomplete> -->
+                                </div>
+                                   
+<!--                                 <div class="col-xs-12 text-left reset-padding" *ngIf="objFiltrosHandler.institucionSelected" style="padding-bottom: 6px;">
+                                    <label>Productos de la institución</label>
+                                    <select class="form-control" (change)="asignarProducto($event.target.value)">
+                                        <option value="">Selecciona</option>
+                                        <option *ngFor="let producto of listaProductosInst" value="{{producto.idProducto}}">{{ producto.productos }}</option>
+                                    </select>
+                                </div> -->
+                                   
+                                <div class="col-xs-12 text-left reset-padding">
+                                    <label>Fecha Inicial</label>
+                                    <mat-input-container>
+                                        <input [(ngModel)]="objFiltrosHandler.fechaInicialBusqueda" (ngModelChange)="asignarRangoFechas()" matInput [matDatepicker]="fInicio" [min]="minFechaGeneral" [max]="maxFechaGeneral" name="fechaInicio" disabled>
+                                        <mat-datepicker-toggle matSuffix [for]="fInicio" [disabled]="isAvailable" (click)="clickInstituciones()"></mat-datepicker-toggle>
+                                    </mat-input-container>
+                                    <mat-datepicker #fInicio></mat-datepicker>
+                                </div>
+                                    
+                                    
+                                <div class="col-xs-12 text-left reset-padding">
+                                    <label>Fecha Final</label>
+                                    <mat-input-container>
+                                        <input [(ngModel)]="objFiltrosHandler.fechaFinalBusqueda" (ngModelChange)="asignarRangoFechas()" matInput [matDatepicker]="fFinal" [min]="minFechaGeneral" [max]="maxFechaGeneral" name="fechaFin" disabled>
+                                        <mat-datepicker-toggle matSuffix [for]="fFinal" [disabled]="isAvailable" (click)="clickInstituciones()"></mat-datepicker-toggle>
+                                    </mat-input-container>
+                                    <mat-datepicker #fFinal></mat-datepicker>
+                                </div>
+                                
+                                <div class="content-card-block reset-padding">
+                                    <div class="tabs-block">
+                                        <div class="tab-item rosa-01-ico" (click)="asignarTabContent(0)">
+                                            <i class="icon-stats-bars2"></i>&nbsp;Gráfica
+                                        <span [ngClass]="{'tab-line': objFiltrosHandler.showGraficaTabContent}"></span>
+                                        </div>
+                                        <div class="tab-item rosa-01-ico" (click)="asignarTabContent(1)">
+                                            <i class="icon-table2"></i>&nbsp;Tabla
+                                        <span [ngClass]="{'tab-line': objFiltrosHandler.showTablaTabContent}"></span>
+                                        </div>
+                                    </div>
+                                     <div id="filters" class="flex-filters-container flex-graphs-kind-container" *ngIf="objFiltrosHandler.showGraficaTabContent">
+                                        <div class="flex-item">
+                                         <label [ngClass]="{'checkbox-selected': graficaSelected === 'pie','checkbox-label': graficaSelected !== 'pie'}">
+                                             <input type="radio" name="grafica" value="pie" (click)="asignarTipoGrafica($event)" checked>
+                                             <span class="button-opt"><i class="icon-pie-chart small-icon"></i>&nbsp;&nbsp;Pastel</span>
+                                         </label>
+                                        </div>
+                                        <div class="flex-item">
+                                         <label [ngClass]="{'checkbox-selected': graficaSelected === 'columns','checkbox-label': graficaSelected !== 'columns'}">
+                                             <input type="radio" name="grafica" value="columns" (click)="asignarTipoGrafica($event)">
+                                             <span class="button-opt"><i class="icon-stats-bars small-icon"></i>&nbsp;&nbsp;Columnas</span>
+                                         </label>
+                                        </div>
+                                     </div>
+                                     <hr>
+                                     <div id="filters" class="flex-filters-container" *ngIf="objFiltrosHandler.showGraficaTabContent">
+                                         <!-- <div class="col-xs-12"> -->
+                                                 <div class="flex-item">
+                                                     <label [ngClass]="{'checkbox-selected': filtroSelected === 'INSTITUCION','checkbox-label': filtroSelected !== 'INSTITUCION'}">
+                                                         <input type="radio" name="agrupamiento" value="INSTITUCION" id="Institución" (click)="asignarAgrupamiento($event)" checked>
+                                                         <span class="button-fil">Institución</span>
+                                                     </label>
+                                                 </div>
+                                                 <div class="flex-item">
+                                                     <label [ngClass]="{'checkbox-selected': filtroSelected === 'SURTIMIENTO','checkbox-label': filtroSelected !== 'SURTIMIENTO'}">
+                                                         <input type="radio" name="agrupamiento" value="SURTIMIENTO" id="Surtimiento" (click)="asignarAgrupamiento($event)">
+                                                         <span class="button-fil">Surtimiento</span>
+                                                     </label>
+                                                 </div>
+                                                 <div class="flex-item">
+                                                     <label [ngClass]="{'checkbox-selected': filtroSelected === 'TASA','checkbox-label': filtroSelected !== 'TASA'}">
+                                                         <input type="radio" name="agrupamiento" value="TASA" id="Tasa" (click)="asignarAgrupamiento($event)">
+                                                         <span class="button-fil">Tasa</span>
+                                                     </label>
+                                                 </div>
+                                                 <div class="flex-item">
+                                                     <label [ngClass]="{'checkbox-selected': filtroSelected === 'SUCURSAL','checkbox-label': filtroSelected !== 'SUCURSAL'}">
+                                                         <input type="radio" name="agrupamiento" value="SUCURSAL" id="Sucursal" (click)="asignarAgrupamiento($event)">
+                                                         <span class="button-fil">Sucursal</span>
+                                                     </label>
+                                                 </div>
+                                                 <div class="flex-item">
+                                                     <label [ngClass]="{'checkbox-selected': filtroSelected === 'SUCURSAL SESION','checkbox-label': filtroSelected !== 'SUCURSAL SESION'}">
+                                                         <input type="radio" name="agrupamiento" value="SUCURSAL SESION" id="Sucursal sesión" (click)="asignarAgrupamiento($event)">
+                                                         <span class="button-fil">Suc. Sesión</span>
+                                                     </label>
+                                                 </div>
+                                                 <div class="flex-item">
+                                                     <label [ngClass]="{'checkbox-selected': filtroSelected === 'STATUS','checkbox-label': filtroSelected !== 'STATUS'}">
+                                                         <input type="radio" name="agrupamiento" value="STATUS" id="Estatus" (click)="asignarAgrupamiento($event)">
+                                                         <span class="button-fil">Estatus</span>
+                                                     </label>
+                                                 </div>
+                                                 <div class="flex-item">
+                                                     <label [ngClass]="{'checkbox-selected': filtroSelected === 'PERIODICIDAD','checkbox-label': filtroSelected !== 'PERIODICIDAD'}">
+                                                         <input type="radio" name="agrupamiento" value="PERIODICIDAD" id="Periodicidad" (click)="asignarAgrupamiento($event)">
+                                                         <span class="button-fil">Periodicidad</span>
+                                                     </label>
+                                                 </div>
+                                                 <div class="flex-item">
+                                                     <label [ngClass]="{'checkbox-selected': filtroSelected === 'PLAZO','checkbox-label': filtroSelected !== 'PLAZO'}">
+                                                         <input type="radio" name="agrupamiento" value="PLAZO" id="Plazo" (click)="asignarAgrupamiento($event)">
+                                                         <span class="button-fil">Plazo</span>
+                                                     </label>
+                                                 </div>
+                                                 <div class="flex-item">
+                                                    <label [ngClass]="{'checkbox-selected': filtroSelected === 'PRODUCTO','checkbox-label': filtroSelected !== 'PRODUCTO'}">
+                                                        <input type="radio" name="agrupamiento" value="PRODUCTO" id="Producto" (click)="asignarAgrupamiento($event)">
+                                                        <span class="button-fil">Producto</span>
+                                                    </label>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <label [ngClass]="{'checkbox-selected': filtroSelected === 'LIQUIDACION','checkbox-label': filtroSelected !== 'LIQUIDACION'}">
+                                                        <input type="radio" name="agrupamiento" value="LIQUIDACION" id="Liquidación" (click)="asignarAgrupamiento($event)">
+                                                        <span class="button-fil">Liquidación</span>
+                                                    </label>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <label [ngClass]="{'checkbox-selected': filtroSelected === 'CAPITAL','checkbox-label': filtroSelected !== 'CAPITAL'}">
+                                                        <input type="radio" name="agrupamiento" value="CAPITAL" id="Capital" (click)="asignarAgrupamiento($event)">
+                                                        <span class="button-fil">Capital</span>
+                                                    </label>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <label [ngClass]="{'checkbox-selected': filtroSelected === 'CANAL','checkbox-label': filtroSelected !== 'CANAL'}">
+                                                        <input type="radio" name="agrupamiento" value="CANAL" id="Canal" (click)="asignarAgrupamiento($event)">
+                                                        <span class="button-fil">Canal</span>
+                                                    </label>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <label [ngClass]="{'checkbox-selected': filtroSelected === 'TERMMINAL','checkbox-label': filtroSelected !== 'TERMMINAL'}">
+                                                        <input type="radio" name="agrupamiento" value="TERMMINAL" id="Terminal" (click)="asignarAgrupamiento($event)">
+                                                        <span class="button-fil">Terminal</span>
+                                                    </label>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <label [ngClass]="{'checkbox-selected': filtroSelected === 'PAGO','checkbox-label': filtroSelected !== 'PAGO'}">
+                                                        <input type="radio" name="agrupamiento" value="PAGO" id="Pago" (click)="asignarAgrupamiento($event)">
+                                                        <span class="button-fil">Pago</span>
+                                                    </label>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <label [ngClass]="{'checkbox-selected': filtroSelected === 'ASESOR','checkbox-label': filtroSelected !== 'ASESOR'}">
+                                                        <input type="radio" name="agrupamiento" value="ASESOR" id="Asesor" (click)="asignarAgrupamiento($event)">
+                                                        <span class="button-fil">Asesor</span>
+                                                    </label>
+                                                </div>
+                                        <!-- </div> -->
+                                    </div>
+                                    <div id="filters-tab" class="flex-filters-container" *ngIf="objFiltrosHandler.showTablaTabContent">
+                                        <!-- <div class="col-xs-6"> -->
+                                             <div class="flex-item">
+                                                 <label [ngClass]="{'checkbox-selected': objAtributosTabla.institucion,'checkbox-label': !objAtributosTabla.institucion}">
+                                                     <input type="checkbox" name="agrupamiento" (change)="objAtributosTabla.institucion = !objAtributosTabla.institucion" checked>
+                                                     <span class="button-fil">Institución</span>
+                                                 </label>
+                                             </div>
+                                             <div class="flex-item">
+                                                 <label [ngClass]="{'checkbox-selected': objAtributosTabla.tasa,'checkbox-label': !objAtributosTabla.tasa}">
+                                                     <input type="checkbox" name="agrupamiento" (change)="objAtributosTabla.tasa = !objAtributosTabla.tasa">
+                                                     <span class="button-fil">Tasa</span>
+                                                 </label>
+                                             </div>
+                                             <div class="flex-item">
+                                                 <label [ngClass]="{'checkbox-selected': objAtributosTabla.capital,'checkbox-label': !objAtributosTabla.capital}">
+                                                     <input type="checkbox" name="agrupamiento" (change)="objAtributosTabla.capital = !objAtributosTabla.capital">
+                                                     <span class="button-fil">Capital</span>
+                                                 </label>
+                                             </div>
+                                             <div class="flex-item">
+                                                 <label [ngClass]="{'checkbox-selected': objAtributosTabla.sucursal,'checkbox-label': !objAtributosTabla.sucursal}">
+                                                     <input type="checkbox" name="agrupamiento" (change)="objAtributosTabla.sucursal = !objAtributosTabla.sucursal">
+                                                     <span class="button-fil">Sucursal</span>
+                                                 </label>
+                                             </div>
+                                        
+                                            <div class="flex-item">
+                                                 <label [ngClass]="{'checkbox-selected': objAtributosTabla.fechaliq,'checkbox-label': !objAtributosTabla.fechaliq}">
+                                                     <input type="checkbox" name="agrupamiento" (change)="objAtributosTabla.fechaliq = !objAtributosTabla.fechaliq">
+                                                     <span class="button-fil">Fecha liquidación</span>
+                                                 </label>
+                                             </div>
+                                             <div class="flex-item">
+                                                 <label [ngClass]="{'checkbox-selected': objAtributosTabla.fechasur,'checkbox-label': !objAtributosTabla.fechasur}">
+                                                     <input type="checkbox" name="agrupamiento" (change)="objAtributosTabla.fechasur = !objAtributosTabla.fechasur">
+                                                     <span class="button-fil">Fecha surtimiento</span>
+                                                 </label>
+                                             </div>
+                                             <div class="flex-item">
+                                                 <label [ngClass]="{'checkbox-selected': objAtributosTabla.asesor,'checkbox-label': !objAtributosTabla.asesor}">
+                                                     <input type="checkbox" name="agrupamiento" (change)="objAtributosTabla.asesor = !objAtributosTabla.asesor">
+                                                      <span class="button-fil">Asesor</span>
+                                                 </label>
+                                             </div>
+                                             <div class="flex-item">
+                                                 <label [ngClass]="{'checkbox-selected': objAtributosTabla.periodo,'checkbox-label': !objAtributosTabla.periodo}">
+                                                    <input type="checkbox" name="agrupamiento" (change)="objAtributosTabla.periodo = !objAtributosTabla.periodo">
+                                                     <span class="button-fil">Período</span>
+                                                 </label>
+                                            </div>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="card content-graph">
+                            <div class="card-header tBlanco" style="background-color: #FF8873;">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-stats-bars margin-left05em"></i>
+                                        Reportes colocación de créditos
+                                    </div>
+                                    <div class="col-xs-3 end-xs reset-padding btnFormularios" *ngIf="!objFiltrosHandler.showGraficaTabContent">
+                                        <a (click)="getAll()" class="btn btn-sm btn-success"> <i class="icon-file-text2 margin-left05em icon-btn-headers"></i> Exportar</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row card-block center-xs center-sm center-lg graphs">
+                                
+                                <div class="col-xs-12 graphs" *ngIf="objFiltrosHandler.showGraficaTabContent" style="margin: auto 0;">
+                                    <grafica-highchart></grafica-highchart>
+                                </div>
+                               
+                                <div class="col-xs-12 graphs" *ngIf="objFiltrosHandler.showTablaTabContent">
+                                    <div class="scroll marginleftable">
+                                        <table class="table tableScroll">
+                                            <thead>
+                                                <th *ngIf="objAtributosTabla.institucion">Institución</th>
+                                                <th>Empleado</th>
+                                                <th *ngIf="objAtributosTabla.asesor">Asesor</th>
+                                                <th>Plazo</th>
+                                                <th>ID Crédito</th>
+                                                <th>Estatus crédito</th>
+                                                <th *ngIf="objAtributosTabla.tasa">Tasa</th>
+                                                <th *ngIf="objAtributosTabla.sucursal">Sucursal</th>
+                                                <th *ngIf="objAtributosTabla.capital">Capital</th>
+                                                <th>Tipo pago</th>
+                                                <th *ngIf="objAtributosTabla.periodo">Período pago</th>
+                                                <th *ngIf="objAtributosTabla.fechasur">Fecha surtimiento</th>
+                                                <th *ngIf="objAtributosTabla.fechaliq">Fecha liquidación</th>
+                                                <th>Número solicitud</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let empleado of pagedItems">
+                                                    <td *ngIf="objAtributosTabla.institucion">{{empleado.nombreClienteRazonSocial}}</td>
+                                                    <td>{{empleado.nombreEmpleado}}</td>
+                                                    <td *ngIf="objAtributosTabla.asesor">{{empleado.nombreAsesor}}</td>
+                                                    <td>{{empleado.plazo}}</td>
+                                                    <td>{{empleado.idCredito}}</td>
+                                                    <td>{{empleado.estatusCredito}}</td>
+                                                    <td *ngIf="objAtributosTabla.tasa">{{empleado.tasa}}</td>
+                                                    <td *ngIf="objAtributosTabla.sucursal">{{empleado.sucursal}}</td>
+                                                    <td *ngIf="objAtributosTabla.capital">{{empleado.capital}}</td>
+                                                    <td>{{empleado.tipoPagoCred}}</td>
+                                                    <td *ngIf="objAtributosTabla.periodo">{{empleado.periodoPagoCred}}</td>
+                                                    <td *ngIf="objAtributosTabla.fechasur">{{empleado.fechaSurtimiento}}</td>
+                                                    <td *ngIf="objAtributosTabla.fechaliq">{{empleado.fechaLiquidacion}}</td>
+                                                    <td>{{empleado.numeroSolicitud}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="container">
+                                        <div class="text-end">
+                                            <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                             <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                             <a (click)="setPage(1,pager.rango,pager.numeroCredito)">Inicio</a>
+                                             </li>
+                                             <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                             <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.numeroCredito)">Anterior</a>
+                                             </li>
+                                             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                             <a (click)="setPage(page,pager.rango,pager.numeroCredito)">{{page}}</a>
+                                             </li>
+                                             <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                             <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.numeroCredito)">Siguiente</a>
+                                             </li>
+                                             <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                             <a (click)="setPage(pager.totalPages,pager.rango,pager.numeroCredito)">Último</a>
+                                             </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+<div class="loader"></div>
+</div>

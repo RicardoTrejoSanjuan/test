@@ -1,0 +1,346 @@
+
+<header></header>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="/Users/gustavohernandezmartinez/Documents/Angular 2/PortalBig/src/app/portal/mantenimiento-internos/configuracion/parametros/jquery.tablesorter.js" ></script>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <!-- Detalle de datos generales de la session y modulo -->
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs"></div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <!-- Contenedor del area de trabajo de la grafica -->
+        <div class="row container-graph">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+
+                        <div class="col-xs-12">
+                                <div class="card">
+
+                        <div class="card-header tBlanco" style="background-color: #614338;">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-bookmark3 margin-left05em"></i>
+                                       Parametros
+                                    </div>
+                                    <div class="col-xs-3 end-xs reset-padding btnFormularios">
+										<a (click)="mostrarFormularioModal()" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i>&nbsp;Nuevo</a>
+									</div>
+                                </div>
+                            </div>
+
+                            <div class="row card-block">
+								<div class="col-xs-12 row">
+									<input type="text" [(ngModel)]="strBusqueda" name="busqueda" class="form-control col-xs-12"  placeholder="Buscar" (keyup)="Filtrarparametros(strBusqueda)">
+								</div>
+
+                            </div>
+
+
+
+
+                            <div class="row card-block">
+								<div class="col-xs-12">
+									<div>
+										<table class="table">
+											<thead>
+												<th class="text-center" (click)="SortTableByNumber('idParametro')">ID</th>
+												<th class="text-center" (click)="SortTableByNumber('idGrupo')">GRUPO</th>
+												<th class="text-center" (click)="SortTableByString('parametro')">PARAMETRO</th>
+												<th class="text-center">VALOR</th>
+												<th class="text-center">STATUS</th>
+                                                <th class="text-center">EDITAR</th>
+                                                <th class="text-center">ELIMINAR</th>
+											</thead>
+											<tbody>
+												<tr *ngFor="let parametro of Parametros | slice:ph.init:ph.final ">
+													<td>{{parametro.idParametro}}</td>
+													<td>{{parametro.idGrupo}}</td>
+													<td>{{parametro.parametro}}</td>
+													<td>{{parametro.valor}}</td>
+													<td>{{parametro.status}}</td>
+                                                    <!-- <td>{{parametro.idGrupo}}</td> -->
+													<td>
+														<a (click)="mostrarDetalleModal(parametro)" class="btnDetalle" title="Ver detalle">
+		                                                    <span class="icon-pencil3"></span>
+		                                                </a>
+													</td>
+													<td>
+
+														<a (click)="eliminarips(parametro)" class="btnDetalle" title="Ver detalle">
+		                                                    <span class="icon-trash-o"></span>
+		                                                </a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div>
+										<ng2-table #tablaparametros (update)="ActualizarTabla($event)">
+										</ng2-table>
+									</div>
+								</div>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Modal Guardar -->
+<app-dialog [(visible)]="displayModal">
+	<div class="modal-content">
+	    <div class="modal-header">
+	        <button (click)="displayModal = !displayModal;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	            <span class="icon-cross" aria-hidden="true"></span>
+	        </button>
+	        <h4 class="modal-title custom_align" id="Heading">Agregar Parametro</h4>
+	    </div>
+	    <div class="modal-body">
+	        <div class="card-block">
+	            <form [formGroup]="formularioInsert" (ngSubmit)="saveForm()" novalidate>
+
+
+
+              <fieldset class="form-group">
+	                    <label>Id Grupo</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-hammer icon-formulario"></i>
+	                        </span>
+
+                    <select id="select" name="select" class="form-control" size="1" formControlName="idGrupo">
+                        <option value="null">Seleccione</option>
+						<option *ngFor="let parametro of grupoId" value="{{parametro.idGrupo}}">{{parametro.descripcion}}</option>
+
+                    </select>
+
+                </div>
+                <control-messages [control]="formularioInsert.controls.idGrupo"></control-messages>
+            </fieldset>
+
+
+	                <fieldset class="form-group">
+	                    <label>Id Parametro</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formularioInsert"></i>
+	                        </span>
+	                        <input type="text" class="form-control" formControlName="idParametro">
+	                    </div>
+	                    <control-messages [control]="formularioInsert.controls.idParametro"></control-messages>
+	                </fieldset>
+
+	                <fieldset class="form-group">
+	                    <label>Descripción</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formulario"></i>
+	                        </span>
+	                        <input type="text" class="form-control" formControlName="descripcion">
+	                    </div>
+	                    <control-messages [control]="formularioInsert.controls.descripcion"></control-messages>
+					</fieldset>
+
+					<fieldset class="form-group">
+	                    <label>Valor</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formularioInsert"></i>
+	                        </span>
+	                        <input type="text" class="form-control" formControlName="valor">
+	                    </div>
+	                    <control-messages [control]="formularioInsert.controls.valor"></control-messages>
+	                </fieldset>
+
+
+
+
+
+	                <div class="modal-footer">
+	                    <button (click)="displayModal = !displayModal;" type="button" class="btn btn-info">
+	                        <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+	                    </button>
+
+	                    <!-- <button type="submit" class="btn btn-primary" [disabled]="!formularioInsert.valid" *ngIf="editItem">
+	                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Editar
+	                    </button> -->
+
+
+	                    <button type="submit" class="btn btn-success" [disabled]="!formularioInsert.valid"  (click)="saveForm2();">
+	                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+	                    </button>
+	                </div>
+
+	            </form>
+	        </div>
+	    </div>
+	</div>
+</app-dialog>
+
+<!-- Modal Actualiza -->
+<app-dialog [(visible)]="displayModalActualiza">
+	<div class="modal-content">
+	    <div class="modal-header">
+	        <button (click)="displayModalActualiza = !displayModalActualiza;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	            <span class="icon-cross" aria-hidden="true"></span>
+	        </button>
+	        <h4 class="modal-title custom_align" id="Heading">Editar Parametros</h4>
+	    </div>
+	    <div class="modal-body">
+	        <div class="card-block">
+	            <form [formGroup]="formulario" (ngSubmit)="saveForm()" novalidate>
+
+
+
+
+
+
+			<fieldset class="form-group">
+				<label>Id Grupo</label>
+				<div class="input-group">
+					<span class="input-group-addon alignJustifyCenter">
+						<i class="icon-link icon-formulario"></i>
+					</span>
+					<input type="text" class="form-control" formControlName="idGrupo">
+				</div>
+				<control-messages [control]="formulario.controls.idGrupo"></control-messages>
+			</fieldset>
+
+
+	                <fieldset class="form-group">
+	                    <label>Id Parametro</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formulario"></i>
+	                        </span>
+	                        <input type="text" class="form-control" formControlName="idParametro">
+	                    </div>
+	                    <control-messages [control]="formulario.controls.idParametro"></control-messages>
+	                </fieldset>
+
+	                <fieldset class="form-group">
+	                    <label>Descripción</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formulario"></i>
+	                        </span>
+	                        <input type="text" class="form-control" formControlName="descripcion">
+	                    </div>
+	                    <control-messages [control]="formulario.controls.descripcion"></control-messages>
+					</fieldset>
+
+					<fieldset class="form-group">
+	                    <label>Valor</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formulario"></i>
+	                        </span>
+	                        <input type="text" class="form-control" formControlName="valor">
+	                    </div>
+	                    <control-messages [control]="formulario.controls.valor"></control-messages>
+	                </fieldset>
+
+					<fieldset class="form-group">
+	                    <label>status</label>
+	                    <div class="input-group">
+	                        <span class="input-group-addon alignJustifyCenter">
+	                            <i class="icon-link icon-formulario"></i>
+	                        </span>
+	                        <input type="text" class="form-control" formControlName="status">
+	                    </div>
+	                    <control-messages [control]="formulario.controls.status"></control-messages>
+	                </fieldset>
+
+
+
+	                <div class="modal-footer">
+	                    <button (click)="displayModalActualiza = !displayModalActualiza;" type="button" class="btn btn-info">
+	                        <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+	                    </button>
+
+	                    <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid" *ngIf="editItem">
+	                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Editar
+	                    </button>
+
+	                    <!-- <button (click)="displayModal = !displayModal; showDialogAlert = !showDialogAlert;" type="button" class="btn btn-danger" [disabled]="!formulario.valid" *ngIf="editItem">
+	                        <span class="icon-bin2 icoBntModal"></span>&nbsp;&nbsp;Eliminar
+	                    </button> -->
+
+	                    <button type="submit" class="btn btn-success" [disabled]="!formulario.valid" *ngIf="saveItem">
+	                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+	                    </button>
+	                </div>
+
+	            </form>
+	        </div>
+	    </div>
+	</div>
+</app-dialog>
+
+<!-- Modal eliminar -->
+<app-dialog [(visible)]="showDialogAlert">
+	<div class="modal-content">
+        <div class="modal-header">
+            <button (click)="showDialogAlert = !showDialogAlert;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Aviso</h4>
+        </div>
+        <div class="modal-body">
+            <div class="card-block">
+                <fieldset class="form-group">
+                    <label>¿Está seguro de que desea eliminar el registro?</label>
+                </fieldset>
+
+
+                <div class="modal-footer">
+                    <button (click)="showDialogAlert = !showDialogAlert; displayModal = displayModal;" type="button" class="btn btn-info">
+                        <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                    </button>
+
+                	<button (click)="deleteForm();" type="submit" class="btn btn-danger">
+                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+	</div>
+</app-dialog>
+
+
+
+
+
+
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+<div class="loader"></div>
+</div>

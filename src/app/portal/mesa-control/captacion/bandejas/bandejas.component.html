@@ -1,0 +1,105 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+     <div class="contenedor-general">
+          <!-- BANDEJAS DE RECEPCION DE SOLICITUDES -->
+          <div class="cont-boton-regresar regresar-menu">
+               <div class="boton-regresar" (click)="Regresar()">
+                    <img src="{{load_static}}/images/header/back.png" alt="regresar">
+                    Regresar
+              </div>
+          </div>
+          <div class="contenedor-tablas fondo-contenedores">
+               <div class="header-contenidos verde-03">
+                    <div class="principal">
+                         <img src="{{load_static}}/images/header/control.png">
+                         <div class="titulo">Mesa de Control</div>
+                    </div>
+                    <div></div>
+               </div>
+               <div class="contenido-principal">
+                    <div class="tabs-item-top">
+                         <li *ngFor="let item of tabs" class="tabs" [ngClass]="{'tabs-active' : item.active }" (click)="BuscarSolicitudes(item)">
+                              {{item.title}}
+                         </li>
+                    </div>
+                    <div class="registos">
+                         <form class="form-busqueda">
+                              <label for="busqueda">Buscar: </label>
+                              <div class="content-input">
+                                  <input
+                                        id="busqueda"
+                                        type="text"
+                                        placeholder="Busqueda de cliente"
+                                        name="busqueda"
+                                        autocomplete="off"
+                                        #str
+                                        [disabled]="objHandler.searching"
+                                        [(ngModel)]="objHandler.strBusqueda"
+                                        (ngModelChange)="BuscarTexto(objHandler.strBusqueda)"
+                                        />
+                                    <span class="icon-cross btn-cerrar" (click)="limpiarStrBusqueda()"></span>
+                              </div>
+                         </form>
+                    </div>
+                    <div class="registos" *ngIf="objHandler.existenRegistros">
+                         <table class="table">
+                              <thead>
+                                        <td class="text-center">FOLIO</td>
+                                        <td class="text-center">EMPRESA</td>
+                                        <td class="text-center">CLIENTE</td>
+                                        <td class="text-center">RFC</td>
+                                        <td class="text-center">PRODUCTO</td>
+                                        <td class="text-center">FECHA RECEPCIÓN</td>
+                                        <td class="text-center">REVISIÓN</td>
+                                        <td class="text-center">REVISOR</td>
+                                        <td class="text-center"></td>
+                              </thead>
+                              <tbody>
+                                   <tr *ngFor="let item of pagedItems">
+                                        <td>{{item.folio}}</td>
+                                        <td>{{item.empresa}}</td>
+                                        <td>{{item.cliente}}</td>
+                                        <td>{{item.rfc}}</td>
+                                        <td>{{item.tipo_producto}}</td>
+                                        <td>{{item.fecha_recepcion}}</td>
+                                        <td>{{item.revision}}</td>
+                                        <td>{{item.nombreBloqueo}}</td>
+                                        <td class="padding-img"><img class="img-captacion" src="{{load_static}}/images/mesa-control-expedientes/{{catColores(item.estadoBloqueo)}}" (click)="ConsultarDisponibilidad(item)"></td>
+                                   </tr>
+                              </tbody>
+                         </table>
+                         <div class="container">
+                             <div class="text-center">
+                                 <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                     <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                         <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                     </li>
+                                     <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                         <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                     </li>
+                                     <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                         <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                     </li>
+                                     <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                         <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                     </li>
+                                     <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                         <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                     </li>
+                                 </ul>
+                             </div>
+                         </div>
+                    </div>
+                    <div class="registos sin-registros" *ngIf="!objHandler.existenRegistros">
+                        La busqueda no arrojo resultados
+                    </div>
+               </div>
+          </div>
+          <!-- FIN BANDEJAS DE RECEPCION DE SOLICITUDES -->
+     </div>
+</div>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

@@ -1,0 +1,79 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row end-xs">
+            <div class="col-xs-10">
+                <div class="pathNavegacion text-left">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row wrapAllHeight center-xs">
+            <div class="col-xs-2">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-10">                
+                <div class="card wrapAllHeightCard">
+                    <div class="card-header-formularios azul-05-ico">
+                        <div class="row">
+                            <div class="col-xs-12 reset-padding header-title">
+                                <i class="icon-binoculars margin-left05em"></i>Seguimiento de responsables
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block wrapAllHeightGraphic scroll-card">
+                        <div class="row between-xs">
+                            <div class="col-xs-4 form-group">
+                                <label>Filtrar por número de remesa</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-star icon-formulario"></i>
+                                    </span>
+                                    <select class="form-control" [(ngModel)]="numRemesa" (change)="consultarDetalleSeguimiento()">
+                                        <option value="">Todas las remesas</option>
+                                        <option *ngFor="let remesa of listaRemesas" value="{{remesa.numRemesa}}">{{remesa.numRemesa}}&nbsp;-&nbsp;Tarjetas:&nbsp;{{remesa.numTarjetas}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 header-title align-flex-end">
+                                <a class="btn btn-sm btn-secondary" *ngIf="!esMaganerGeneral" (click)="regresarNivelGerarquia()"> 
+                                    <i class="icon-arrow-circle-left icon-btn-headers"></i>&nbsp;&nbsp;Regresar un nivel
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="listaResponsablesFiltrada.length > 0">
+                            <div class="col-xs-12 bradcumbs-seguimiento">
+                                <span *ngFor="let breadcumb of breadcumbsSeguimiento" [innerHTML]="breadcumb"></span>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="listaResponsablesFiltrada.length > 0">
+                            <div class="col-xs-12 contenedor-seguimiento">
+                                <div class="caja-seguimiento" *ngFor="let responsable of listaResponsablesFiltrada" (click)="navegarResponsablesPorManager(responsable)">
+                                    <div class="seguimiento-detalle" [innerHTML]="responsable.text"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

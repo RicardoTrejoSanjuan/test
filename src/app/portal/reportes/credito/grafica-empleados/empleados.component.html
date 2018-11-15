@@ -1,0 +1,173 @@
+
+<header></header>
+<div class="row rowSubMenuHeader">
+	<div class="col-xs-12 main-general">
+		<!-- Detalle de datos generales de la session y modulo -->
+		<div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+		<!-- Contenedor del area de trabajo de la grafica -->
+		<div class="row container-graph">
+			<div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+				<ul class="nav">
+					<li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+						<div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+					</li>
+				</ul>
+			</div>
+			<div class="row col-xs-9 col-sm-10 col-md-10 center-xs">
+				<div class="row col-xs-12 center-xs row-menu-general">
+					<div class="col-xs-12">
+						<div class="card content-graph">
+							<div class="card-header naranja-02-ico">
+
+								<div class="row">
+									<div class="col-xs-9 reset-padding">
+                                    	<i class="icon-users margin-left05em"></i>
+                                    	<span *ngIf="!mostrarDetalle">Instituciones</span>
+                                    	<span *ngIf="mostrarDetalle">Lista de empleados de {{instSelected}} por créditos {{requestConsulta.tipo}}</span>
+
+									</div>
+	                                <div class="col-xs-3 end-xs containet-btn-regresar">
+										<a  (click)="openForm()" class="btn btn-sm btn-success" *ngIf="!mostrarDetalle"> <i class="icon-file-text2 margin-left05em icon-btn-headers"></i> Exportar</a>
+	                                    <p  *ngIf="mostrarDetalle"
+	                                        (click)="ocultarLista()"
+	                                        class="btn-regresar">
+	                                        <span class="icon-arrow-left"></span>
+	                                        Regresar
+	                                    </p>
+	                                </div>
+								</div>
+							</div>
+
+							<div class="row card-block center-xs center-sm center-lg graphs" *ngIf="!showListEmpleados">
+
+								<div class="col-xs-12" >
+									<grafica-highchart (eventClick)="seleccionarBarra($event)"></grafica-highchart>
+								</div>
+
+							</div>
+
+
+									<div class="row card center-xs center-sm center-lg graphs" *ngIf="showListEmpleados">
+										<div class="col-xs-12">
+
+										<div class="scroll marginleftableNombre">
+											<table class="table tableScroll">
+												<thead>
+													<th class="colFixedNombre">Nombre</th>
+													<th>Cliente único</th>
+													<th>Número de empleado</th>
+													<th>RFC</th>
+													<th>Edad</th>
+													<th>Ingreso mensual</th>
+													<th>Domicilio</th>
+													<th *ngIf="showAditionalData">Plazo</th>
+													<th *ngIf="showAditionalData">Tasa interés</th>
+													<th *ngIf="showAditionalData">Capital</th>
+												</thead>
+												<tbody>
+													<tr *ngFor="let empleado of pagedItems">
+														<td class="colFixedNombre">{{empleado.nombre}}</td>
+														<td>{{empleado.clienteUnico}}</td>
+														<td>{{empleado.numempleado}}</td>
+														<td>{{empleado.rfc}}</td>
+														<td>{{empleado.edad}}</td>
+														<td>{{empleado.ingresoMensual}}</td>
+														<td>{{empleado.domicilio}}</td>
+														<td *ngIf="showAditionalData">{{empleado.plazo}}</td>
+														<td *ngIf="showAditionalData">{{empleado.tasaInteres}}%</td>
+														<td *ngIf="showAditionalData">${{empleado.capitalpagado}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										
+										<div class="container">
+											<div style="padding-left: .6%; margin-top: 10px;width: 10px;position: absolute;">
+												<a *ngIf="mostrarDetalle" (click)="getAll()" class="btn btn-sm btn-success" > <i class="icon-file-text2 margin-left05em icon-btn-headers"></i> Exportar</a>
+											</div>
+	                                		<div class="text-end">
+	                                			<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+			                                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+			                                            <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+			                                        </li>
+			                                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+			                                            <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+			                                        </li>
+			                                        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+			                                            <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+			                                        </li>
+			                                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+			                                            <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+			                                        </li>
+			                                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+			                                            <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+			                                        </li>
+			                                    </ul>
+	                                		</div>
+	                                	</div>
+									</div>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<app-dialog [(visible)]="modalFormulario">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button aria-hidden="true" class="close" data-dismiss="modal" type="button"
+					(click)="closeForm()">
+				<span aria-hidden="true" class="icon-cross"></span>
+			</button>
+			<h4 class="modal-title custom_align" id="Heading">Elija estatus para descargar</h4>
+		</div>
+		<div class="modal-body">
+			<div class="card-block">
+			<form  (ngSubmit)="descargar()" >
+				<fieldset class="form-group" *ngFor="let item of tipo">
+						<div class="input-group row">
+							<label class="col-xs-4 col-sm-4 col-md-4 center-xs">{{item.name}}</label>
+							<input  type="checkbox" name="txtNombre" id="item.name" class="form-control col-xs-3 col-sm-3 col-md-3 center-xs"  
+							(change)="seleccionar($event,item.name)" >
+						</div>
+				</fieldset>
+				<fieldset class="form-group" >
+						<div class="input-group row">
+							<label class="col-xs-4 col-sm-4 col-md-4 center-xs">Todo</label>
+							<input  type="checkbox" name="txtNombre" id="todo" class="form-control col-xs-3 col-sm-3 col-md-3 center-xs"  
+							(change)="seleccionar($event,null)" >
+						</div>
+				</fieldset>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success" name="btnGuardar" id="guardar"  >
+						<i class="icon-floppy-disk icoBntModal"></i>&nbsp; Aceptar
+					</button>
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+</app-dialog>
+
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>

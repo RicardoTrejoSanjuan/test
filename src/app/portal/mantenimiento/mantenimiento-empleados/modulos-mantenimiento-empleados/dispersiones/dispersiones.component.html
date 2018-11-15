@@ -1,0 +1,324 @@
+<header></header>
+
+<div class="row rowSubMenuHeader">
+	<div class="col-xs-12 main-general">
+		<div class="row">
+			<div class="col-xs-9 col-sm-10 col-md-10 col-xs-offset-3 col-sm-offset-2 col-md-offset-2">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+		</div>
+		<div class="row">
+
+			<div class="col-xs-3 col-sm-2 col-md-2 boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+            	</ul>
+            </div>
+
+            <div class="col-xs-9 col-sm-10 col-md-10">
+            	<div class="card">
+            		<div class="card-header verde-01">
+            			<div class="row">
+                            <div class="col-xs-9 reset-padding">
+                                <i class="icon-calculator margin-left05em"></i>
+                                Dispersión
+                            </div>
+                            <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                                <a (click)="openForm()" class="btn btn-sm btn-success verde-01-active"> <i class="icon-plus margin-left05em icon-btn-headers"></i> Nuevo</a>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="card-footer">
+                        <ul>
+                            <li>
+                                <div class="text-muted" style="text-align:left !important"><strong>{{empleado.nombreEmpleado}} {{empleado.apPaternoEmp}} {{empleado.apMaternoEmp}}</strong></div>
+                                <div class="text-muted" style="text-align:left !important">ID <strong>{{empleado.idEmpleado}}</strong></div>
+                                <div class="text-muted" style="text-align:left !important">CU <strong>{{empleado.cu}}</strong></div>
+                            </li>
+                        </ul>
+                    </div>
+            		<div class="card-block">
+                        <div class="row row-margin-bottom">
+                            <div class="col-xs-12 reset-padding">
+                                
+                                <div class="row ">
+                                    <div class="col-xs-12">
+                                        <div class="scroll col-xs-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <th>Número de dispersión </th>
+                                                    <th>Cuenta del cargo</th>
+                                                    <th>Cuenta de abono</th>
+                                                    <th>Fecha generación</th>
+                                                    <th>Fecha aplicación</th>
+                                                    <th>Importe</th>
+                                                    <th>Descripción</th>
+                                                    <th>Eliminar</th>
+                                                </thead>
+                                                <tr *ngFor="let item of pagedItems">
+                                                    <td>{{item.numeroDispersion}}</td>
+                                                    <td>{{item.cuentaCargo}}</td>
+                                                    <td>{{item.cuentaAbono}}</td>
+                                                    <td>{{item.fechaGeneracion}}</td>
+                                                    <td>{{item.fechaAplicacion}}</td>
+                                                    <td>{{item.importe}}</td>
+                                                    <td>{{item.leyenda}}</td>
+                                                    <td>
+                                                        <a (click)="dispersionEliminar(item)" *ngIf="item.statusElimina===1">
+                                                            <span class="icon-trash text-inverse delete-icon"></span>
+                                                        </a>
+                                                        <span class="" *ngIf="item.statusElimina===0"></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="container">
+                                            <div class="text-end">
+                                                <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                        <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                                    </li>
+                                                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                                        <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                                    </li>
+                                                    <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                                        <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                                    </li>
+                                                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                        <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                                    </li>
+                                                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                                        <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!--<div class="row row-margin-bottom shadow-container">
+                                            <div class="col-xs-12">
+                                                <div class="row row-margin-bottom">
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Número de dispersión</label>
+                                                        <p>4567890</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Cuenta del cargo</label>
+                                                        <p>34567890098765</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Cuenta de abono</label>
+                                                        <p>34567890987654</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row row-margin-bottom">
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Fecha generación</label>
+                                                        <p>23/07/2017</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Fecha aplicación</label>
+                                                        <p>24/07/2017</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Importe</label>
+                                                        <p>$2,000 MXN</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-10 col-xs-offset-1 text-left">
+                                                        <label class="label-custom">Descripción</label>
+                                                        <p>Dispersión mensual de la cuenta 4567890 por un concepto de pago de nomina</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>  -->
+                                         <!-- <div class="row row-margin-bottom shadow-container">
+                                            <div class="col-xs-12">
+                                                <div class="row row-margin-bottom">
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Número de dispersión</label>
+                                                        <p>4567890</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Cuenta del cargo</label>
+                                                        <p>34567890098765</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Cuenta de abono</label>
+                                                        <p>34567890987654</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row row-margin-bottom">
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Fecha generación</label>
+                                                        <p>23/07/2017</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Fecha aplicación</label>
+                                                        <p>24/07/2017</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Importe</label>
+                                                        <p>$2,000 MXN</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-10 col-xs-offset-1 text-left">
+                                                        <label class="label-custom">Descripción</label>
+                                                        <p>Dispersión mensual de la cuenta 4567890 por un concepto de pago de nomina</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        -->
+                                        <!--<div class="row row-margin-bottom shadow-container">
+                                            <div class="col-xs-12">
+                                                <div class="row row-margin-bottom">
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Número de dispersión</label>
+                                                        <p>4567890</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Cuenta del cargo</label>
+                                                        <p>34567890098765</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Cuenta de abono</label>
+                                                        <p>34567890987654</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row row-margin-bottom">
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Fecha generación</label>
+                                                        <p>23/07/2017</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Fecha aplicación</label>
+                                                        <p>24/07/2017</p>
+                                                    </div>
+                                                    <div class="col-xs-4 text-center">
+                                                        <label class="label-custom">Importe</label>
+                                                        <p>$2,000 MXN</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-10 col-xs-offset-1 text-left">
+                                                        <label class="label-custom">Descripción</label>
+                                                        <p>Dispersión mensual de la cuenta 4567890 por un concepto de pago de nomina</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>!-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <app-dialog [(visible)]="modalFormulario">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button (click)="closeForm() " type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        <span class="icon-cross" aria-hidden="true"></span>
+                                    </button>
+                                    <h4 class="modal-title custom_align" id="Heading">Alta de dispersión</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card-block">
+                                        <form [formGroup]="formulario" (ngSubmit)="guardarDispersion()" novalidate>
+                                            <div class="row row-margin-bottom">
+                                                <div class="col-xs-6 form-group">
+                                                    <label>Cuenta cargo*</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-credit-card icon-formulario"></i>
+                                                        </span>
+
+                                                        <select name="slctCuentaDis" id="cuentaDis" class="form-control" formControlName="cuentaDis">
+                                                            <option value="">Selecciona una cuenta</option>
+                                                            <option *ngFor="let item of cuentas" value="{{item.numeroCuenta}}">{{item.numeroCuenta}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <control-messages [control]="formulario.controls.cuentaDis"></control-messages>
+                                                </div>
+                                                <div class="col-xs-6 form-group">
+                                                    <label>Importe*</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-coin-dollar icon-formulario"></i>
+                                                        </span>
+                                                        <input type="text" name="txtImporteDis" OnlyNumber="true" id="importeDis"  class="form-control" formControlName="importeDis" placeholder="0.00" (keyup)="decimal($event)">
+                                                    </div>
+                                                    <control-messages [control]="formulario.controls.importeDis"></control-messages>
+                                                </div>
+                                            </div>
+                                            <div class="row row-margin-bottom">
+                                                <div class="col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 text-left col-without-padding-left">
+                                                            <label>Fecha de aplicación*</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12 form-group">
+                                                            <mat-input-container>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon alignJustifyCenter">
+                                                                        <i class="icon-calendar icon-formulario"></i>
+                                                                    </span>
+                                                                    <input matInput [matDatepicker]="fecha" [min]="minFecha" [max]="maxFecha" name="fecha" formControlName='fecha' readonly>
+                                                                </div>
+                                                                <mat-datepicker-toggle matSuffix [for]="fecha"></mat-datepicker-toggle>
+                                                            </mat-input-container>
+                                                            <control-messages [control]="formulario.controls.fecha"></control-messages>
+                                                            <mat-datepicker #fecha></mat-datepicker>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row row-margin-bottom">
+                                                <div class="col-xs-12 form-group">
+                                                    <label>Referencia*</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-pushpin icon-formulario"></i>
+                                                        </span>
+                                                        <input type="text" name="txtReferenciaDis" id="referenciaDis" class="form-control" formControlName="referenciaDis" maxlength="12">
+                                                    </div>
+                                                    <control-messages [control]="formulario.controls.referenciaDis"></control-messages>
+                                                </div>
+                                            </div>
+                                            <!--<div class="row end-xs">
+                                                <div class="col-xs-2 text-center">
+                                                    <input type="submit" name="btnGenerar" id="generar" class="btn btn-lg" value="Generar" [disabled]="!formulario.valid">
+                                                </div>
+                                            </div>!-->
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-success" [disabled]="!formulario.valid" >
+                                                    <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </app-dialog>
+            		</div>
+            	</div>
+            </div>
+
+		</div>	
+	</div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<div *ngIf="activateLoading" class="Loading">
+	<div class="loader"></div>
+</div>

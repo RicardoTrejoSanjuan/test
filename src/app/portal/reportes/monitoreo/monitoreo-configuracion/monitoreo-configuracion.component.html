@@ -1,0 +1,197 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+    <div class="contenedor-general">
+
+        <!-- BANDEJAS DE RECEPCION DE SOLICITUDES -->
+        <div class="cont-boton-regresar regresar-menu">
+             <div class="boton-regresar" (click)="Regresar()">
+                  <img src="{{load_static}}/images/header/back.png" alt="regresar">
+                  Regresar
+            </div>
+        </div>
+        <div class="contenidos-pantalla-full fondo-contenedores background-white" [ngSwitch]="objHandler.tabVisible">
+            <!-- HEADER DE LA VISTA -->
+            <div class="header-contenidos verde-01">
+                 <div class="principal">
+                      <span class="icon-gears"></span>
+                      <div class="titulo">Configuración de Seguimiento</div>
+                 </div>
+                 <div></div>
+            </div>
+            <!-- FIN HEADER DE LA VISTA -->
+            <!-- CONTENEDOR DE CONFIGURACIONES DE SEGUIMIENTO -->
+            <div class="contenidos-distribuidos margin-configuracion">
+                <fieldset class="formulario-search">
+                    <div class="input-group">
+                        <span class="input-group-addon alignJustifyCenter icon-left">
+                            <i class="icon-search icon-formulario"></i>
+                        </span>
+                        <mat-input-container class="ng-tns-c8-0 mat-input-container ng-pristine ng-valid ng-touched">
+                            <input matInput [matAutocomplete]="auto" [formControl]="FormFlujos" OnlyAlfanumerico="true">
+                        </mat-input-container>
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let item of ArrayCatalogosFlujos | async" [value]="item.descripcion" (onSelectionChange)="ConsultarEtapas(item)">
+                                {{ item.descripcion }}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <span class="input-group-close alignJustifyCenter cursor-pointer" (click)="ClearInput()">
+                            <i class="icon-cross icon-formulario"></i>
+                        </span>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="altura-configuracion margin-configuracion" *ngSwitchCase="1">
+                <!-- TABLA DE CONTENIDOS -->
+                <div class="boxes100">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>FLUJO</td>
+                                <td>AREA</td>
+                                <td>ETAPA</td>
+                                <td>RESPONSABLE</td>
+                                <td>DIAS</td>
+                                <td>ORDEN</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of EtapasAsignadas; let i=index" class="cursor-pointer" (click)="CargarFormulario('editar',item)">
+                                <td>{{item.idFlujo}}</td>
+                                <td class="text-uppercase">{{item.descripcionArea}}</td>
+                                <td class="text-uppercase">{{item.descripcionEtapa}}</td>
+                                <td class="text-uppercase">{{item.descripcionNombre}}</td>
+                                <td>{{item.diasDuracionEtapa}}</td>
+                                <td>{{item.orden}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="altura-configuracion sin-registros-configuracion margin-configuracion" *ngSwitchCase="2">
+                No cuenta con etapas configuradas
+            </div>
+            <div class="contenedor-btns-bottom margin-configuracion" *ngIf="objHandler.tabVisible === 2 || objHandler.tabVisible === 1">
+            <!--<div class="contenedor-btns-bottom"> -->
+                <p class="opacity cursor-pointer" (click)="CargarFormulario('alta')">Agregar</p>
+            </div>
+            <!-- FIN CONTENEDOR DE CONFIGURACIONES DE SEGUIMIENTO -->
+        </div>
+
+    </div>
+</div>
+<app-dialog [(visible)]="handlerModal.visible">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button aria-hidden="true" class="close" data-dismiss="modal" type="button" (click)="CloseForm()">
+                <span aria-hidden="true" class="icon-cross"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading" *ngIf="handlerModal.editar">Editar Etapa</h4>
+            <h4 class="modal-title custom_align" id="Heading" *ngIf="handlerModal.nuevo">Nueva Etapa</h4>
+        </div>
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formulario" novalidate>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Area</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-search icon-formulario"></i>
+                                    </span>
+                                    <select class="form-control ng-untouched ng-pristine ng-invalid" formControlName="idArea">
+                                        <option [value]="null">Seleccione</option>
+                                        <option *ngFor="let item of ArrayCatalogosAreas" [value]="item.idArea">{{item.descripcion}}</option>
+                                    </select>
+                                </div>
+                                <control-messages [control]="formulario.controls.idArea"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Etapa</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-user icon-formulario"></i>
+                                    </span>
+                                    <select class="form-control ng-untouched ng-pristine ng-invalid" formControlName="idEtapa">
+                                        <option [value]="null">Seleccione</option>
+                                        <option *ngFor="let item of ArrayCatalogosEtapas" [value]="item.idEtapa">{{item.descripcion}}</option>
+                                    </select>
+                                </div>
+                                <control-messages [control]="formulario.controls.idEtapa"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Responsable</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-users icon-formulario"></i>
+                                    </span>
+                                    <select class="form-control ng-untouched ng-pristine ng-invalid" formControlName="idResponsable">
+                                        <option [value]="null">Seleccione</option>
+                                        <option *ngFor="let item of ArrayCatalogosResponsables" [value]="item.idResponsable">{{item.nombre}} {{item.apPaterno}} {{item.apMaterno}}</option>
+                                    </select>
+                                </div>
+                                <control-messages [control]="formulario.controls.idResponsable"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Orden</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-move-up icon-formulario"></i>
+                                    </span>
+                                    <input formControlName="orden" class="form-control ng-untouched ng-pristine ng-invalid" type="number" min="1" (click)="onClick()">
+                                </div>
+                                <control-messages [control]="formulario.controls.orden"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="handlerModal.editar || handlerModal.nuevo">
+                        <div class="col-xs-12">
+                            <fieldset class="form-group">
+                                <label>Dias de Duración</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-code-fork icon-formulario"></i>
+                                    </span>
+                                    <input formControlName="diasDuracion" class="form-control ng-untouched ng-pristine ng-invalid text-capitalize" type="number" min="1">
+                                </div>
+                                <control-messages [control]="formulario.controls.diasDuracion"></control-messages>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 info-warn" *ngIf="handlerModal.msgE">{{handlerModal.msgEValue}}</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" (click)="CloseForm()">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success" *ngIf="handlerModal.nuevo" [disabled]="!formulario.valid" (click)="ValidarItem(formulario.value)">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Guardar
+                        </button>
+                        <button type="submit" class="btn btn-primary" *ngIf="handlerModal.editar" [disabled]="!formulario.valid" (click)="Actualizar(formulario.value)">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Editar
+                        </button>
+                        <button type="submit" class="btn btn-danger" *ngIf="handlerModal.editar" (click)="Delete(formulario.value)">
+                            <i class="icon-bin2 icoBntModal"></i>&nbsp; Eliminar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</app-dialog>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

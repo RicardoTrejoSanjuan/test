@@ -1,0 +1,122 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+     <div class="contenedor-general">
+          <!-- BANDEJAS DE RECEPCION DE SOLICITUDES -->
+          <div class="cont-boton-regresar regresar-menu">
+               <div class="boton-regresar" (click)="Regresar()">
+                    <img src="{{load_static}}/images/header/back.png" alt="regresar">
+                    Regresar
+              </div>
+          </div>
+          <div class="contenedor-tablas fondo-contenedores">
+               <div class="header-contenidos naranja-01-ico">
+                    <div class="principal">
+                         <img src=".{{load_static}}/images/header/control.png">
+                         <div class="titulo">Mantenimiento Empleados</div>
+                    </div>
+                    <div></div>
+               </div>
+               <div class="card-block">
+                    <div class="row">
+                        <div class="box1" >
+                            <div class="tleft mt">Instituciones</div>
+                        </div>
+                        <div class="box1">
+                            <div class="tleft mt">Cliente</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter" style="height: 36px;">
+                                    <i class="icon-office icon-formulario"></i>
+                                </span>
+
+                                <mat-input-container>
+                                <input style="width:94% !important; margin-left: 0px; height: 38px; margin-top: 0px;" type="text" class="search-input" matInput type="text" [matAutocomplete]="auto" [formControl]="institucionCtrl" [readonly]="isAvailable" OnlyAlfanumerico="true">
+                                </mat-input-container>
+                                <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let inst of listaInstituciones | async" [value]="inst.name" (onSelectionChange)="getInstitucion(inst)">
+                                    {{ inst.name }}
+                                </mat-option>
+                                </mat-autocomplete>
+
+                            </div>
+                        </div>
+
+                        <div class="col-xs-5 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter" style="height: 36px;">
+                                    <i class="icon-user icon-formulario"></i>
+                                </span>
+                                <input style="width:94% !important; margin-left: 0px; height: 38px; margin-top: 0px;" type="text" class="search-input" mdInput type="text"  OnlyAlfanumerico="true" [formControl]="clienteControl" (keyup)="abilitar()">
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-group">
+                            <button type="submit" class="btn btn-success" (click)="consultarEmpleados()" [disabled]="!boton">
+                                <i class=" icoBntModal"></i>Buscar
+                            </button>
+                        </div>
+                         
+                            <div class="scroll col-xs-12" >
+                                <table class="table"   id="cont1">
+                                    <thead>
+                                        <th *ngIf="institucion===0">ID Institución</th>
+                                        <th *ngIf="institucion===0">Nombre de institución</th>
+                                        <th>ID Empleado</th>
+                                        <th>Nombre</th>
+                                        <th>Apellido Paterno</th>
+                                        <th>Apellido Materno</th>
+                                        <th>CU</th>
+                                    </thead>
+                                    <tr *ngFor="let item of pagedItems "  (click)="getCliente(item)" style="cursor:pointer">
+                                        <td *ngIf="institucion===0">{{item.idInstitucion}}</td>
+                                        <td *ngIf="institucion===0">{{item.descInstitucion}}</td>
+                                        <td>{{item.idEmpleado}}</td>
+                                        <td>{{item.nombreEmpleado}}</td>
+                                        <td>{{item.apPaternoEmp}}</td>
+                                        <td>{{item.apMaternoEmp}}</td>
+                                        <td>{{item.cu}}</td>
+                                        
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="container">
+                                <div class="text-end">
+                                    <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                            <a (click)="setPage(1,pager.rango,pager.total)">Inicio</a>
+                                        </li>
+                                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                            <a (click)="setPage(pager.currentPage - 1,pager.rango,pager.total)">Anterior</a>
+                                        </li>
+                                        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                            <a (click)="setPage(page,pager.rango,pager.total)">{{page}}</a>
+                                        </li>
+                                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                            <a (click)="setPage(pager.currentPage + 1,pager.rango,pager.total)">Siguiente</a>
+                                        </li>
+                                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                            <a (click)="setPage(pager.totalPages,pager.rango,pager.total)">Último</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                         <!--<table class="table">
+
+                              <tbody>
+
+                              </tbody>
+
+                         </table>-->
+               </div>
+          </div>
+          <!-- FIN BANDEJAS DE RECEPCION DE SOLICITUDES -->
+     </div>
+</div>
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

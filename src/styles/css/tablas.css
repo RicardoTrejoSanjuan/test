@@ -1,0 +1,113 @@
+/* TABLA */
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 5px;
+    border-collapse: collapse;
+    background-color: rgba(0, 0, 0, 0);
+    /*border: 1px solid #D1D4D7;*/
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #D1D4D7;
+    border: 1px solid #D1D4D7;
+    padding: 9px;
+    vertical-align: top;
+    border-top: 1px solid #D1D4D7;
+    font-size: 12px;
+}
+.table td {
+    padding: 9px;
+    vertical-align: top;
+    border-top: 1px solid #D1D4D7;
+    border: 1px solid #D1D4D7;
+    text-align: center;
+    font-size: 12px;
+    word-break: break-all;
+}
+/*
+.table tr:nth-of-type(odd) {
+<<<<<<< HEAD
+    background-color: rgba(0, 0, 0, 0.05);
+}*/
+
+.table tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table tr td a i{
+    transition: all .3s;
+}
+
+.table tr td a i:hover{
+    color:#2A2C36;
+}
+/* FINAL DE LOS ESTILOS PARA LOS TABS GENERICOS */
+.list-style{
+    list-style: none;
+}
+
+/* Scroll */
+.tableScroll{
+     white-space: nowrap;
+     border-collapse: separate;
+}
+.scroll{
+  overflow: scroll;
+  max-height: 550px;
+  overflow-x: scroll;
+  overflow-y: visible;
+}
+
+
+.marginleftable{
+    margin-left: 6.1em;
+    border: 1px solid #D1D4D7;
+}
+.colFixed1{
+    position: absolute;
+    width: 7em;
+    left: 1.2em;
+}
+
+.colorCell:nth-child(){
+    background-color: blue;
+
+}
+
+.colFixed1 tr td:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.marginleftableNombre{
+    margin-top: 15px;
+    margin-left: 14.4em;
+    margin-right: 5px;
+    border-right: 1px solid #D1D4D7;
+}
+.marginleftableNombreCaptacion{
+    margin-top: 15px;
+    margin-left: 14.3em;
+    margin-right: 5px;
+}
+.colFixedNombre{
+    position: absolute;
+    width: 17em;
+    left: 1.2em;
+}
+
+td:last-child(1) {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: rgb(209, 212, 215);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}

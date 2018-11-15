@@ -1,0 +1,102 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <!-- Detalle de datos generales de la session y modulo -->
+        <div class="row">
+            <div class="col-xs-12 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <!-- Contenedor del area de trabajo de la grafica -->
+        <div class="row container-graph">
+            <div class="row col-xs-12 center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card-header" id="verde">
+                                <i class="icon-list-ol"></i> Consulta de Movimientos
+                                <div style="float:right;" (click)="regresar()">
+                                   <p  class="btn-regresar">
+                                        <span class="icon-arrow-left"></span>
+                                        Regresar
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <div id="lb">
+                                            <label *ngIf="storageData.fc_NOMBRE_EMPLEADO!==null">{{storageData.fc_NOMBRE_EMPLEADO}}</label>
+                                            <label *ngIf="storageData.fc_APELLIDO_PAT_EMPLEADO!==null">{{storageData.fc_APELLIDO_PAT_EMPLEADO}}</label>
+                                            <label *ngIf="storageData.fc_APELLIDO_MAT_EMPLEADO!==null">{{storageData.fc_APELLIDO_MAT_EMPLEADO}}</label>
+                                        </div>
+                                        <div id="lb">
+                                            TDC: {{storageData.finoplasticoasignado}}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="row">
+                                            <div class="col-xs-6 text-left">
+                                                <label>Fecha Inicial</label>
+                                                <mat-input-container>
+                                                <input [(ngModel)]="fechaInicial" (ngModelChange)="fechaInicialCambia()" mdInput [matDatepicker]="picker2" [max]="maxDate" name="fechaInicial" type="text" disabled>
+                                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                                </mat-input-container>
+                                                <mat-datepicker #picker2></mat-datepicker>
+                                            </div>
+                                            <div class="col-xs-6 text-left">
+                                                <label>Fecha Final</label>
+                                                <mat-input-container>
+                                                <input [(ngModel)]="fechaFinal" mdInput [matDatepicker]="picker" [max]="maxDate2" [min]="minDate" name="fechaFinal" type="text" disabled>
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                </mat-input-container>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2" style="line-height: 5rem;">
+                                        <button class="boton" id="verde"  (click)="buscar(fechaInicial, fechaFinal)"> Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-block" *ngIf="showTable">
+                                <table class="table">
+                                    <thead>
+                                        <th>Fecha Operación</th>
+                                        <th>Número Autorización</th>
+                                        <th>Monto en Pesos</th>
+                                        <th>Origen del Pago</th>
+                                        <th>Capital</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let servicio of arrayServicios">
+                                            <td>{{servicio.fechaOperacion}}</td>
+                                            <td>{{servicio.numAutorizadosTransaccion}}</td>
+                                            <td>{{servicio.montoPesos}}</td>
+                                            <td>{{servicio.origenPago}}</td>
+                                            <td>capital</td>
+
+                                            <!--<a class="colorBread" (click)="Editar(servicio)" title="Editar"><i class="icon-pencil2 icon-accion-body"></i> </a>
+                                            <a class="colorBread" (click)="AgregarParametros(servicio)" title="Parametros"><i class="icon-equalizer2 icon-accion-body"></i> </a>
+                                            <a class="colorBread" (click)="Eliminar(servicio)" *ngIf="servicio.estatusServicio != 0" title="Eliminar"><i class="icon-cross icon-accion-body itemEliminar"></i></a>
+                                            <a class="colorBread" (click)="Activar(servicio)" *ngIf="servicio.estatusServicio == 0" title="Activar"><i class="icon-checkmark icon-accion-body itemActivar"></i></a>-->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

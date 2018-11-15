@@ -1,0 +1,113 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row end-xs">
+            <div class="col-xs-10">
+                <div class="pathNavegacion text-left">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row wrapAllHeight center-xs">
+            <div class="col-xs-2">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-10">                
+                <div class="card wrapAllHeightCard">
+                    <div class="card-header-formularios azul-05-ico">
+                        <div class="row">
+                            <div class="col-xs-9 reset-padding header-title align-flex-start">
+                                <i class="icon-credit-card-alt margin-left05em"></i>Tarjetas de remesa
+                            </div>
+                            <div class="col-xs-3 reset-padding header-title align-flex-end">
+                                <a class="btn btn-sm btn-secondary" *ngIf="tarjetasFiltradas.length > 0" (click)="exportarDatosModulo()"> 
+                                    <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Exportar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block wrapAllHeightGraphic scroll-card">
+                        <div class="row">
+                            <div class="col-xs-8 form-group" [ngClass]="{'element-disabled': tarjetasFiltradas.length === 0}">
+                                <label>Buscador</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-star icon-formulario"></i>
+                                    </span>
+                                    <input type="text" name="busqueda" placeholder="Tarjeta..." class="form-control" [(ngModel)]="cadena" (keyup)="filtrarTarjetas(cadena)">
+                                </div>
+                            </div>
+                            <div class="col-xs-4 form-group">
+                                <label>Filtrar por remesa</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon alignJustifyCenter">
+                                        <i class="icon-star icon-formulario"></i>
+                                    </span>
+                                    <select id="remesa" class="form-control" [(ngModel)]="idRemesa" [ngModelOptions]="{standalone: true}" (change)="consultarLoteTarjetasPorRemesa()">
+                                        <option value="">Selecciona una remesa</option>
+                                        <option *ngFor="let remesa of listaRemesas" value="{{remesa.numRemesa}}">{{remesa.numRemesa}}&nbsp;-&nbsp;Tarjetas:&nbsp;{{remesa.numTarjetas}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tabla">
+                            <table class="table">
+                                <thead>
+                                    <th class="text-center">Remesa</th>
+                                    <th class="text-center">Tarjeta</th>
+                                    <th class="text-center">Fecha vencimiento</th>
+                                    <th class="text-center">Responsable</th>
+                                    <th class="text-center">ID empleado</th>
+                                    <th class="text-center">Fecha entrega</th>
+                                    <th class="text-center">Estatus</th>
+                                    <th class="text-center">Detalle</th>
+                                </thead>
+                                <tr *ngFor="let tarjeta of tarjetasFiltradas | slice:pagesHandler.init:pagesHandler.final">
+                                    <td>{{tarjeta.numRemesa}}</td>
+                                    <td>{{tarjeta.numTarjeta}}</td>
+                                    <td>{{tarjeta.fechaVencimiento}}</td>
+                                    <td>{{tarjeta.responsable}}</td>
+                                    <td>{{tarjeta.idEmpleado}}</td>
+                                    <td>{{tarjeta.fechaEntrega != null ? tarjeta.fechaEntrega : "--"}}</td>
+                                    <td>
+                                        <span class="tag" [ngClass]="{'tag-danger': tarjeta.idStatusTarjeta === 0,'tag-success': tarjeta.idStatusTarjeta > 0}">
+                                            {{tarjeta.statusTarjeta !== null ? tarjeta.statusTarjeta : "Sin estatus"}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a (click)="consultarDetalleTarjeta(tarjeta)">
+                                            <span class="icon-search text-inverse"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="tarjetasFiltradas.length === 0">
+                                    <td colspan="8">
+                                        <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="paginador text-end" *ngIf="mostrarPaginadorTabla">
+                            <ng2-table #tablatarjetas (update)="actualizarTablaTarjetas($event)"></ng2-table>  
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

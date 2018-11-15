@@ -1,0 +1,111 @@
+<ul class="container-pagination">
+
+    <li class="borde-primero" (click)="anterior()">
+        <span class="tables-chevron-left btns-span"></span>
+    </li>
+
+    <li class="items-pagination" (click)="primero()" *ngIf="(ph.final > 8)">1</li>
+
+    <li class="items-plus" *ngIf="(ph.final > 9)">...</li>
+
+    <li *ngFor="let item of pages | slice:ph.init:ph.final; let i = index" class="items-pagination {{item._active ? 'items-active' : ''}}" (click)="selectPage(item)">
+        {{item._str}}
+    </li>
+
+    <li class="items-plus" *ngIf="( ph.final < pages.length)">...</li>
+
+    <li class="items-pagination" (click)="ultimo()" *ngIf="( ph.final < pages.length)" >{{pages.length}}</li>
+
+    <li class="borde-ultimo" (click)="siguiente()">
+        <span class="tables-chevron-right btns-span"></span>
+    </li>
+
+</ul>
+
+<style>
+.container-pagination {
+    display: flex;
+    margin-bottom: 0px;
+    list-style-type: none;
+    font-size: 12px;
+    padding: 15px 0px;
+    color: #9C9C9C;
+    font-weight: bold;
+}
+.container-pagination .items-pagination{
+    height: 30px;
+    min-width: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    border-left: 1px solid;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+.container-pagination .items-pagination:hover {
+    background-color: #599e9e;
+    color: white;
+    border-bottom: 1px solid #085f5f;
+    border-top: 1px solid #085f5f;
+    border-left: 1px solid #085f5f;
+}
+
+.container-pagination .items-plus{
+    height: 30px;
+    min-width: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    border-left: 1px solid;
+    padding: 2px 5px;
+}
+.container-pagination .items-active {
+    background-color: #599e9e;
+    color: white;
+    border-bottom: 1px solid #085f5f;
+    border-top: 1px solid #085f5f;
+    border-left: 1px solid #085f5f;
+}
+.btns-span {
+    font-size: 1.3rem;
+    margin: 0px 5px;
+}
+.borde-primero {
+    border-radius: 3px 0px 0px 3px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+    border-top: 1px solid;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+.borde-ultimo {
+    border-radius: 0px 3px 3px 0px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+.borde-primero:hover {
+    border-bottom: 1px solid #085f5f;
+    border-left: 1px solid #085f5f;
+    border-top: 1px solid #085f5f;
+    background-color: #599e9e;
+    color: white;
+}
+.borde-ultimo:hover {
+    background-color: #599e9e;
+    color: white;
+    border: 1px solid #085f5f;
+}
+</style>

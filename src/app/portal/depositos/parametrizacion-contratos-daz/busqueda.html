@@ -1,0 +1,240 @@
+<header></header>
+<!-- Fondo y contenedor principal -->
+<div class="fondo-mesa-control">
+    <div class="contenedor-general">
+
+        <div class="row col-xs-12 pathNavegacion btn-regresar padding-menunavegacion" style="padding-left: 5%;">
+
+            <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}}  </a>
+
+        </div>
+
+
+        <div class="contenedor-tablas fondo-contenedores">
+
+
+            <div class="header-contenidos verde-03">
+                <div class="principal">
+                    <img src="{{load_static}}/images/header/control.png">
+                    <div class="titulo">Configuración de parametros</div>
+                </div>
+                <div></div>
+            </div>
+            <div class="contenido-principal busqueda-instituciones">
+
+
+
+                <div class="formularioBusquedaAlta">
+                    <label for="busqueda" class="busquedalabel">Buscar: </label>
+                    <div class="busquedainput">
+                        <mat-input-container>
+                            <input style="width:90% !important" type="text" class="search-input" matInput type="text" [matAutocomplete]="auto" [formControl]="institucionCtrl"
+                                [readonly]="isAvailable">
+                        </mat-input-container>
+
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let inst of listaInstituciones | async" [value]="inst.name" (onSelectionChange)="getInstitucion(inst)">
+                                {{ inst.name }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </div>
+                </div>
+
+
+
+                <div class="card-block minheight" *ngIf="activarDataConsulta">
+
+                    <div class="row">
+                        <div class="col-sm-6 titleEditado">
+                            <h4 class="card-title mb-0">{{nameInstitucion}}</h4>
+                            <div class="small text-muted">{{rfcInstitucion}}</div>
+                        </div>
+                    </div>
+
+                    <div class="row col-xs-12 center-xs">
+                        <div class="col-xs-6 center-xs">
+                            <div class="card">
+                                <div class="card-header-formularios verde-03">
+                                    <div class="row">
+                                        <div class="col-xs-9 reset-padding">
+                                            <i class="icon-table2 margin-left05em"></i>Cuentas
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-block resetpadincar">
+                                <div id="menuv">
+                                    <ul>
+                                        <li *ngFor="let item of listcuentas" ><a (click)="mostrarContratos(item.numCuenta)">{{item.numCuenta}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 center-xs">
+                            <div class="card">
+                                <div class="card-header-formularios verde-03">
+                                    <div class="row">
+                                        <div class="col-xs-9 reset-padding">
+                                            <i class="icon-table2 margin-left05em"></i>Contratos DAZ
+                                        </div>
+                                        <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                                            <!-- <a routerLink="referencia/" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i> Nuevo</a> -->
+                                            <div *ngIf="activarContratosDAZ">
+                                                <!-- <a (click)="deleteContratoDAZ()" class="link"> <span class="icon-minus"></span> </a> -->
+                                                <a (click)="creaContradoDAZ()" class="link"> <span class="icon-plus colormasadd"></span> </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-block resetpadincar">
+                                <div id="menuv">
+                                    <ul>
+                                        <li *ngFor="let item of listcontratos" class="licontratosdaz">
+                                            <a class="botonesparametrizacion">{{item.idContratoDaz}}</a> 
+                                            <div class="marginbtn"> 
+                                                <span (click)="editarContratoDAZ(item)" class="icon-pencil link"></span> 
+                                                <!-- <span (click)="editarContratoDAZ(item.idContratoDaz)" class="icon-pencil link"></span>  -->
+                                                <span (click)="showDialogAlert = !showDialogAlert; CargarIdContrato(item.idContratoDaz)" class="icon-minus link"></span> 
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-dialog [(visible)]="showDialogAlert">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button (click)="showDialogAlert = !showDialogAlert;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Menú</h4>
+        </div>
+        <div class="modal-body">
+            <div class="card-block">
+                <fieldset class="form-group">
+                    <label>¿Está seguro de que desea eliminar el registro?</label>
+                </fieldset>
+
+                <div class="modal-footer">
+                    <button (click)="showDialogAlert = !showDialogAlert; modalFormulario = !modalFormulario;" type="button" class="btn btn-info">
+                        <i class="icon-cross icoBntModal"></i>&nbsp; Cancelar
+                    </button>
+        
+                <button (click)="eliminarContratoDAZ();showDialogAlert = !showDialogAlert;" type="submit" class="btn btn-danger">
+                        <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Aceptar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        </div>
+</app-dialog>
+
+
+<app-dialog [(visible)]="modalContrato">
+    <div class="modal-content">
+        <div class="modal-header card-header-formularios verde-03" style="padding-right: 10px;">
+                <div class="row">
+                        <div class="col-xs-9 reset-padding">
+                            <i class="icon-table2 margin-left05em"></i>Contratos DAZ
+                        </div>
+                        <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                          
+                            <!-- <div *ngIf="activarContratosDAZ">
+                              
+                                <a (click)="agregarContratoDAZ()" class="link"> <span class="icon-plus colormasadd"></span> </a>
+                            </div> -->
+                        </div>
+                    </div>
+            <!-- <button (click)="modalContrato = !modalContrato;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Menú</h4> -->
+        </div>
+        <div class="modal-body">
+            <div class="col-xs-12 center-xs">
+                <div class="card">
+                        <div class="row">
+                                <div class="col-md-5">
+                               <input type="radio"  [(ngModel)]="generacionAutomatica" id="generacionAutomatica" name="generacionAutomatica" (change)="lageneraciones()" [value]="1">Generacion Automática
+                                 </div>
+                                <div class="col-md-6">
+                                <input type="radio"  [(ngModel)]="generacionAutomatica" id="generacionAutomatica" name="generacionAutomatica" (change)="lageneraciones()"  [value]="2">Contrato de Vanidad
+                            </div>
+                          
+                        </div>
+                        <br>
+                        <br>
+
+                        <hr style="border-top: 1px solid #0da0a0;">
+                        <br>
+                        <br>
+                        <div class="row">
+                        <div class="col-sm-2" ></div>
+                            <label>Predefinido</label>
+                     
+                        <div class="col-sm-6">
+                                <select id="select" [(ngModel)]="predefinido"  name="predefinido" class="form-control" size="1" [disabled]="bolqueaPredefinido"  >
+                                        <option [ngValue]="undefined" selected>Seleccione</option>
+                                        <option *ngFor="let item of tipoCuentasVanidad" [value]="item.descContrato" (onSelectionChange)="verificainputs(item)" value="{{item.idContrato}}">{{item.descContrato}}</option>
+                                    </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                            <div class="col-sm-2" ></div>
+                                <label>Otro</label>
+                         
+                            <div class="col-sm-6" style="margin-left: 7%;" >
+                                  <input type="text" [(ngModel)]="otro" style="width: 92%;" (keydown)="solonumero($event)" (keyup)="verificainputs2()" maxlength="7" class="form-control" [disabled]="bloqueaOtro">
+                            </div>
+                        </div>
+                    <br>
+                    <br>
+
+                        <button type="button" class="btn btn-danger" (click)="modalContrato = !modalContrato;"> Cancelar</button>
+                        <button type="button" class="btn btn-success" (click)="creaContratoDAZ()">Guardar</button>
+
+                      
+                        <br>
+                       
+                       
+
+                  
+                </div>
+                <!-- <div class="card-block resetpadincar">
+                    <div id="menuv">
+                        <ul>
+                            <li *ngFor="let item of listcontratos" class="licontratosdaz">
+                                <a class="botonesparametrizacion">{{item.idContratoDaz}}</a> 
+                                <div class="marginbtn"> 
+                                    <span (click)="editarContratoDAZ(item.idContratoDaz)" class="icon-pencil link"></span> 
+                                    <span (click)="showDialogAlert = !showDialogAlert; CargarIdContrato(item.idContratoDaz)" class="icon-minus link"></span> 
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        </div>
+</app-dialog>
+
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

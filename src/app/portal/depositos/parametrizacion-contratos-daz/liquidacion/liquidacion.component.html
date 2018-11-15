@@ -1,0 +1,298 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2  row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 row middle-xs">
+
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-10 row center-xs">
+
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+
+
+
+                        <div class="card">
+                            <div class="card-header-formularios azul-03-ico">
+                                <div class="row">
+                                    <div class="col-xs-9 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>Liquidación
+                                    </div>
+                                    <!-- <div class="col-xs-3 end-xs reset-padding btnFormularios">
+                                        <a (click)="openForm()" class="btn btn-sm btn-success"> <i class="icon-plus margin-left05em icon-btn-headers"></i> Nuevo</a>
+                                        <a (click)="reporte()" class="btn btn-sm btn-success"> <i class="icon-file-text2 margin-left05em icon-btn-headers"></i> Excel</a>
+                                    </div> -->
+                                </div>
+                            </div>
+
+                            
+                            <div class="card-block minheight">
+
+                                    <div class="row">
+                                            <div class="col-sm-4 titleMenuizquiero">
+                                                <h4 class="card-title mb-0">{{depositosObject.name}}</h4>
+                                                <div class="small text-muted"> RFC: {{depositosObject.rfcInstitucion}}</div>
+                                            </div>
+                                            <div class="col-sm-8 titleMenuderecho">
+                                                    <div class="small text-muted">Contrato DAZ: {{depositosObject.idContratoDaz}}</div>
+                                                    <div class="small text-muted">Cuenta: {{depositosObject.numCuenta}}</div>
+                                                    <div class="small text-muted">Clabe Interbancaria: {{depositosObject.ctosDazClave}}</div>
+                                                    
+                                            </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 center-xs">
+                                            <div class="card-block bodercardblock">
+
+                                                    <form class="form-horizontal ng-pristine ng-valid"  [formGroup]="form" (ngSubmit)="guardarLiquidacion()">
+
+
+                                                            <div class="form-group row">
+                                                                    <label class="col-md-3 form-control-label" for="multiple-select">Buscar:</label>
+                                                                    <div class="col-md-9">
+                                                                            <div class="busquedainput">
+
+                                                                                    <mat-input-container>
+                                                                                        <input style="width:96% !important" class="search-input" required matInput [matAutocomplete]="auto2" (change)="verificaCobro();" [formControl]="CuentaControl">
+                                                                                    </mat-input-container>
+                                                            
+                                                                                    <mat-autocomplete #auto2="matAutocomplete" required>
+                                                                                        <mat-option *ngFor="let inst of listaInstituciones | async" [value]="inst.numCuenta" (onSelectionChange)="getCuenta(inst)" required>
+                                                                                            {{ inst.numCuenta }} - {{ inst.name }}
+                                                                                        </mat-option>
+                                                                                    </mat-autocomplete>
+
+                                                                            </div>
+                                                                    </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                    <label class="col-md-3 form-control-label" for="select">Tipos de cuentas</label>
+                                                                    <div class="col-md-9">
+                                                                            <!-- [ngClass]="{'not-clickable' : bloquearSelectTipoCuenta }" -->
+                                                                        <select id="select" name="select" class="form-control" size="1" required [(ngModel)]="cuentas" (change)="verificaCobro(); verificaCta();"  formControlName="inputBuscar"  >
+                                                                                        <option [ngValue]="undefined" selected>Seleccione</option>
+                                                                                        <option  *ngFor="let item of ConsultaTipoCuenta" value="{{item.idTipoCuenta}}">{{item.descTipoCuenta}}</option>
+                                                                                        <!-- [disabled]="bloqueaLinea &&  item.idTipoCuenta === 1" -->
+                                                                                    </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <label class="col-md-3 form-control-label" for="select">Tipo de cobro comisión</label>
+                                                                    <div class="col-md-9" [ngClass]="{'not-clickable' : isCobroComision }" >
+                                                                        <select id="select" name="select" class="form-control" size="1" (change)="verificaCobro();"  required [(ngModel)]="tipoCobro" formControlName="inputTipo"  >
+                                                                                        <option [ngValue]="undefined" selected>Seleccione</option>
+                                                                                        <option [disabled]="item.idTipoCobroComi === 1 && bloqueaLinea" *ngFor="let item of ConsultaTipoCobro" value="{{item.idTipoCobroComi}}">{{item.descTipoCobroComi}}</option> 
+                                                                                    </select>
+                                                                    </div>
+                                                                </div>
+
+                                                            <!-- <div class="form-group row">
+                                                                    <label class="col-md-3 form-control-label" for="multiple-select">Cuentas</label>
+                                                                    <div class="col-md-9">
+                                                                        <select id="multiple-select" [(ngModel)]="cuentas" name="multiple-select" class="form-control" size="5" multiple="" required #model="ngModel">
+                                                                            <option [disabled]="item.idTipoCuenta === 1" *ngFor="let item of consultacattipoctaObject" value="{{item.idTipoCuenta}}">{{item.descTipoCuenta}}</option>
+                                                                        </select>
+                                                                        <div [hidden]="model.valid || model.pristine" class="alert-dangerForm">
+                                                                                <div [hidden]="!model.hasError('required')">Campo requerido</div>
+                                                                        </div>
+                                                                    </div>
+                                                            </div> -->
+
+                                                            <div class="form-actions alinbtn editbtnguardar">
+                                                                    <button type="reset" class="btn btn-danger" (click)="cancelar()"> Cancelar</button>
+                                                                <button type="submit" class="btn btn-success" >Guardar</button>
+                                                            </div>
+
+
+                                                            <div class="form-group row">
+                                                                    <div class="col-md-12">
+                                                                        
+                                                                            <div class="scroll">
+                                                                                    <table class="table">
+                                                                                        <thead>
+                                                                                            <th>Número de cuenta</th>
+                                                                                            <th>Titular</th> 
+                                                                                            <th>Tipo de cuenta</th>
+                                                                                            <th>Tipo de cobro comisión</th>
+                                                                                            <th>Acción</th>
+                                                                                        </thead>
+                                                                                        <tr *ngFor="let item of consultaCuentaLiquidaObject">
+                                                                                            <td>{{item.cuentaDeposito}}</td>
+                                                                                            <td>{{item.titularCuenta}}</td>
+                                                                                            <td>{{item.tipoCuenta}}</td>
+                                                                                            <td>{{item.descTipoCobroComi}}</td>
+                                                                                            <td>
+                                                                                                <a (click)="editar(item)" class="btnDetalle" title="Editar">
+                                                                                                    <span class="icon-pencil"></span>
+                                                                                                </a>
+
+                                                                                                <a (click)="showDialogAlert = !showDialogAlert; CargarIdLiquidacion(item)" class="btnDetalle" title="Eliminar">
+                                                                                                        <span class="icon-bin"></span>
+                                                                                                </a>
+
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </div>
+    
+                                                                    </div>
+                                                                </div>
+
+                                                     
+    
+                                                    </form>
+
+                                                    
+                                                    <!--/row-->
+                                                </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                            </div>
+
+                            
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+<app-dialog [(visible)]="showDialogAlert">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="showDialogAlert = !showDialogAlert;" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="icon-cross" aria-hidden="true"></span>
+                </button>
+                <h4 class="modal-title custom_align" id="Heading">Referencia</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-block">
+                    <fieldset class="form-group">
+                        <label>¿Está seguro de que desea eliminar el registro?</label>
+                    </fieldset>
+    
+                    <div class="modal-footer">
+                        <button (click)="showDialogAlert = !showDialogAlert; modalFormulario = !modalFormulario;" type="button" class="btn btn-info">
+                            <i class="icon-cross icoBntModal"></i>&nbsp; Cancelar
+                        </button>
+            
+                    <button (click)="eliminarLiquidacion();showDialogAlert = !showDialogAlert;" type="submit" class="btn btn-danger">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp; Aceptar
+                        </button>
+                    </div>
+    
+                </div>
+            </div>
+            </div>
+    </app-dialog>
+
+
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
+
+<style>
+
+.form-group label {
+    display: block;
+}
+
+.minheight{
+    min-height: 500px !important;
+}
+
+.titleMenuizquiero{
+    text-align: start;
+    padding-left: 18px;
+    margin-bottom: 17px;
+}
+.titleMenuderecho{
+    margin-top: 6px;
+    text-align: left;
+}
+
+.bodercardblock{
+    border: 1px solid #d1d4d7;
+}
+
+.alinbtn{
+    text-align: right;
+}
+
+.alinradio{
+    display: flex;
+}
+.btninput{
+    display: flex;
+}
+.widthInput{
+    width: 20px;
+    float: left;
+    margin-right: 5px;
+}
+
+.marginRightRadio{
+    margin-right: 20px;
+}
+
+.flexbox{
+    display: flex;
+    align-items: center;
+}
+
+.flexboxPadding{
+    padding-right: 5px;
+    padding-left: 5px;
+}
+.not-clickable {
+    pointer-events: none;
+    cursor: default;
+ }
+
+
+</style>

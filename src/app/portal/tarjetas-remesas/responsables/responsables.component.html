@@ -1,0 +1,364 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row end-xs">
+            <div class="col-xs-10">
+                <div class="pathNavegacion text-left">
+                     <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row wrapAllHeight center-xs">
+            <div class="col-xs-2">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active" *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-10">                
+                <div class="card wrapAllHeightCard">
+                    <div class="card-header-formularios azul-05-ico">
+                        <div class="row">
+                            <div class="col-xs-9 reset-padding header-title align-flex-start">
+                                <i class="icon-group margin-left05em"></i>Responsables de remesa
+                            </div>
+                            <div class="col-xs-3 reset-padding header-title align-flex-end">
+                                <a class="btn btn-sm btn-success" (click)="mostrarModalCreacionResponsable()"> 
+                                    <i class="icon-plus icon-btn-headers"></i>&nbsp;&nbsp;Crear
+                                </a>
+                                <a class="btn btn-sm btn-secondary" *ngIf="responsablesFiltrados.length > 0" (click)="exportarDatosModulo()"> 
+                                    <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Exportar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-block wrapAllHeightGraphic scroll-card">
+                     
+                        <div class="form-group" [ngClass]="{'element-disabled': responsablesFiltrados.length === 0}">
+                            <label>Buscador</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" name="busqueda" placeholder="Responsable..." class="form-control" [(ngModel)]="cadena" (keyup)="filtrarResponsables(cadena)">
+                            </div>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                                <th class="text-center">ID resoponsable</th>
+                                <th class="text-center">Nombre responsable</th>
+                                <th class="text-center">Estatus</th>
+                                <th class="text-center">Nombre manager</th>
+                                <th class="text-center">Tarjetas</th>
+                                <th class="text-center">Monitoreo</th>
+                                <th class="text-center">Eliminar</th>
+                                <th class="text-center">Detalle</th>
+                            </thead>
+                            <tr *ngFor="let responsable of responsablesFiltrados | slice:pagesHandler.init:pagesHandler.final">
+                                <td>{{responsable.idResponsable}}</td>
+                                <td>{{responsable.nombre}}&nbsp;{{responsable.apPaterno}}&nbsp;{{responsable.apMaterno}}</td>
+                                <td>
+                                    <span class="tag" [ngClass]="{'tag-success': responsable.status === 1,'tag-danger': responsable.status === 0}">
+                                         {{responsable.statusDesc !== null ? responsable.statusDesc : "Sin estatus"}}
+                                    </span>
+                                </td>
+                                <td>{{responsable.nomManager}}</td>
+                                <td>
+                                    <a (click)="consultarDetalleTarjetas(responsable)" [ngClass]="{'button-disabled': responsable.status === 0}">
+                                        <span class="icon-credit-card-alt text-inverse"></span>
+                                    </a>
+                                </td>
+                                <td>
+                                     <a (click)="consultarDetalleMonitoreo(responsable)" [ngClass]="{'button-disabled': responsable.status === 0}">
+                                        <span class="icon-flag text-inverse"></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a (click)="asignarValoresEliminar(responsable)">
+                                        <span class="icon-trash text-inverse delete-icon" [ngClass]="{'button-disabled': responsable.status === 0}"></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a (click)="mostrarModalActualizacionResponsable(responsable)" [ngClass]="{'button-disabled': responsable.status === 0}">
+                                        <span class="icon-pencil-square text-inverse update-icon"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr *ngIf="responsablesFiltrados.length === 0">
+                                <td colspan="9">
+                                    <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="paginador text-end" *ngIf="mostrarPaginadorTabla">
+                            <ng2-table #tablaresponsables (update)="actualizarTablaResponsables($event)"></ng2-table>  
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-dialog [(visible)]="mostrarFormularioResponsable">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cerrarFormularioResponsable()">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Administrar responsables</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formularioResponsable" (ngSubmit)="manejadorResponsable(formularioResponsable.getRawValue())" novalidate>
+
+                    <div class="row">
+
+                        <div class="col-xs-4 form-group" [ngClass]="{'element-disabled': !esCreacionResponsable}">
+                            <label>ID responsable*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" class="form-control" formControlName="idResponsable" OnlyNumber="true" placeholder="XXXXXX" 
+                                [ngClass]="{'element-invalid': formularioResponsable.controls.idResponsable.invalid && (formularioResponsable.controls.idResponsable.dirty || formularioResponsable.controls.idResponsable.touched)}">
+                            </div>
+                            <control-messages [control]="formularioResponsable.controls.idResponsable"></control-messages>
+                        </div>
+
+                        <div class="col-xs-8 form-group">
+                            <label>Manager*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <select class="form-control" formControlName="idManager"
+                                [ngClass]="{'element-invalid': formularioResponsable.controls.idManager.invalid && (formularioResponsable.controls.idManager.dirty || formularioResponsable.controls.idManager.touched)}">
+                                    <option value="">Selecciona un manager</option>
+                                    <option value="0">Manager global</option>
+                                    <option *ngFor="let manager of listaResponsablesSinDuplicar" value="{{manager.idManager}}">{{manager.idManager}}&nbsp;-&nbsp;{{manager.nomManager}}</option>
+                                </select>
+                            </div>
+                            <control-messages [control]="formularioResponsable.controls.idManager"></control-messages>
+                        </div>
+
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <label>Nombre*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" class="form-control" formControlName="nombre" OnlyAlfanumerico="true" placeholder="Nombre o nombres"
+                                [ngClass]="{'element-invalid': formularioResponsable.controls.nombre.invalid && (formularioResponsable.controls.nombre.dirty || formularioResponsable.controls.nombre.touched)}">
+                            </div>
+                            <control-messages [control]="formularioResponsable.controls.nombre"></control-messages>
+                        </div>
+                    </div>
+                    <div class="row">                        
+                        <div class="col-xs-12 form-group">
+                            <label>Apellido paterno*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" class="form-control" formControlName="apPat" OnlyAlfanumerico="true" placeholder="Primer apellido" 
+                                [ngClass]="{'element-invalid': formularioResponsable.controls.apPat.invalid && (formularioResponsable.controls.apPat.dirty || formularioResponsable.controls.apPat.touched)}">
+                            </div>
+                            <control-messages [control]="formularioResponsable.controls.apPat"></control-messages>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <label>Apellido materno*</label>
+                            <div class="input-group">
+                                <span class="input-group-addon alignJustifyCenter">
+                                    <i class="icon-star icon-formulario"></i>
+                                </span>
+                                <input type="text" id="apMaterno" class="form-control" formControlName="apMat" OnlyAlfanumerico="true" placeholder="Segundo apellido">
+                            </div>
+                            <control-messages [control]="formularioResponsable.controls.apMat"></control-messages>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button (click)="cerrarFormularioResponsable()" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary" [disabled]="!formularioResponsable.valid" *ngIf="!esCreacionResponsable" [ngClass]="{'button-disabled': !formularioResponsable.valid}">
+                            <i class="icon-pencil-square-o icoBntModal"></i>&nbsp;&nbsp;Editar
+                        </button>
+                        <button type="submit" class="btn btn-success" [disabled]="!formularioResponsable.valid" *ngIf="esCreacionResponsable" [ngClass]="{'button-disabled': !formularioResponsable.valid}">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</app-dialog>
+
+<app-dialog [(visible)]="mostrarFormularioEliminar">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cerrarFormularioEliminar()">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Eliminar responsable</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form (ngSubmit)="eliminarResponsable()" novalidate>
+                    
+                    <div class="col-xs-12 form-group">
+                        <h6>Esta apunto de eliminar el responsable "{{responsableEliminar.nombre}}" de remesas, ¿Desea continuar con la acción?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button (click)="cerrarFormularioEliminar()" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</app-dialog>
+
+
+<app-dialog [(visible)]="mostrarDetalleTarjetas">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cerrarModalDetalleTarjetas()">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Tarjetas asociadas</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+
+                <div class="row">
+                    <div class="col-xs-7 form-group">
+                        <label>Responsable</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <input type="text" name="busqueda" class="form-control" readonly [(ngModel)]="nombreResponsable">
+                        </div>
+                    </div>
+                    <div class="col-xs-5 form-group">
+                        <label>Estatus tarjetas</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <select class="form-control" [(ngModel)]="statusTarjeta" (change)="filtrarTarjetasPorEstatus()">
+                                <option value="null">Todo el conjunto</option>
+                                <option value="1">Disponible</option>  
+                                <option value="2">Entregada</option>  
+                                <option value="5">Devuelta</option>  
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divisor-busqueda-filtros">
+                
+                <div class="row">   
+                    <div class="col-xs-12 form-group" [ngClass]="{'element-disabled': tarjetasFiltradas.length === 0}">
+                        <label>Buscador</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-star icon-formulario"></i>
+                            </span>
+                            <input type="text" name="busqueda" placeholder="Tarjeta..." class="form-control" [(ngModel)]="tarjeta" (keyup)="filtrarTarjetasResponsable(tarjeta)">
+                        </div>
+                    </div>
+                </div>
+                <div class="table-scrollable">
+                <table class="table">
+                    <thead>
+                    <tr *ngIf="tarjetasFiltradas.length > 0">
+                        <td colspan="6" class="align-end">
+                            <a class="btn btn-sm btn-secondary" (click)="exportarDatosModulo()"> 
+                                <i class="icon-download icon-btn-headers"></i>&nbsp;&nbsp;Exportar
+                            </a>
+                        </td>
+                    </tr>
+                        <th class="text-center">ID empleado</th>
+                        <th class="text-center">Tarjeta</th>
+                        <th class="text-center">Estatus</th>
+                        <th class="text-center">Fecha vencimiento</th>
+                        <th class="text-center">Fecha entrega</th>
+                        <th class="text-center">Detalle</th>
+                    </thead>
+                    <tr *ngFor="let tarjeta of tarjetasFiltradas | slice:pagesHandler2.init:pagesHandler2.final">
+                        <td>{{tarjeta.idEmpleado}}</td>
+                        <td>{{tarjeta.numTarjeta}}</td>
+                        <td>
+                            <span class="tag" [ngClass]="{'tag-danger': tarjeta.idStatusTarjeta === 0,'tag-success': tarjeta.idStatusTarjeta > 0}">
+                                {{tarjeta.statusTarjeta !== null ? tarjeta.statusTarjeta : "Sin estatus"}}
+                            </span>
+                        </td>
+                        <td>{{tarjeta.fechaVencimiento != null ? tarjeta.fechaVencimiento : "--"}}</td>
+                        <td>{{tarjeta.fechaEntrega != null ? tarjeta.fechaEntrega : "--"}}</td>
+                        <td>
+                            <a (click)="consultarDetalleTarjeta(tarjeta)">
+                                <span class="icon-search text-inverse"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr *ngIf="tarjetasFiltradas.length === 0">
+                        <td colspan="6">
+                            <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                        </td>
+                    </tr>
+                    <tfoot *ngIf="tarjetasFiltradas.length > 0">
+                        <tr>
+                            <td colspan="6" class="align-end">Total de tarjetas: <em>{{totalTarjetas}}</em></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                </div>
+
+                <div class="paginador text-end" *ngIf="mostrarPaginadorTabla2">
+                    <ng2-table #tablatarjetas (update)="actualizarTarjetasResponsable($event)"></ng2-table>  
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="cerrarModalDetalleTarjetas()">
+                        <i class="icon-check-circle-o icoBntModal"></i>&nbsp;&nbsp;Aceptar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</app-dialog>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>

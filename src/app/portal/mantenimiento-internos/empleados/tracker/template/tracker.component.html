@@ -1,0 +1,117 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12  rowSubMenuHeader main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                    <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-9 col-sm-10 col-md-10 row center-xs">
+
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+
+
+
+                        <div class="card">
+                            <div class="card-header-formularios cafe-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-12 reset-padding">
+                                        <i class="icon-table2 margin-left05em"></i>Tracker
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-block" *ngIf="menuActivos.menuTracker">
+                                <div class="contenedor-menu fondo-contenedores">
+                                    <div class="menu-opcion" *ngFor="let item of children" (click)="windows(item.data)">
+                                         <div>
+                                              <img src="./static/images/menu/{{item.imagen}}">
+                                         </div>
+                                         <div class="informacion {{item.claseFondo}}">
+                                              <h3 class="titulo-menu">{{item.textoMenu}}</h3>
+                                              <div class="progress-bar">
+                                                   <div class="{{item.claseIcono}}"></div>
+                                              </div>
+                                         </div>
+                                    </div>
+                                </div>
+                            </div> 
+
+
+
+
+                            <div class="card-block" *ngIf="menuActivos.empleados">
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input type="email" id="input2-group2" name="input2-group2" class="form-control" placeholder="Buscar" [(ngModel)]="input">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary" (click)="buscar(input)">Buscar</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row start-xs">
+                                        <div class="col-md-12">
+                                            <label class="radio-inline" for="inline-radio1">
+                                                <input type="radio" id="inline-radio1" name="inline-radios" value="nombre" [(ngModel)]="radio"> Por nombre
+                                            </label>
+                                            <label class="radio-inline" for="inline-radio2">
+                                                <input type="radio" id="inline-radio2" name="inline-radios" value="idbig" [(ngModel)]="radio"> Por Id Big
+                                            </label>
+                                            <label class="radio-inline" for="inline-radio3">
+                                                <input type="radio" id="inline-radio3" name="inline-radios" value="numempleado" [(ngModel)]="radio"> Por número de Empleado
+                                            </label>
+                                            <label class="radio-inline" for="inline-radio3">
+                                                    <input type="radio" id="inline-radio3" name="inline-radios" value="todos" [(ngModel)]="radio"> Consulta General
+                                                </label>
+                                        </div>
+                                    </div>
+                            </div>
+
+
+                            <div class="card-block" *ngIf="menuActivos.modulos">
+
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+

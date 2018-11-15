@@ -1,0 +1,282 @@
+<header></header>
+<div class="row rowSubMenuHeader">
+    <div class="col-xs-12 main-general">
+        <div class="row">
+            <div class="col-xs-3 col-sm-2 col-md-2 row middle-xs center-xs">
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row middle-xs">
+                <div class="row col-xs-12 pathNavegacion btn-regresar">
+                    <a routerLink="{{item.pahtUrl}}" class="{{item.class}}" *ngFor="let item of menuNavigation"> {{item.name}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row rowSubMenuHeader">
+
+            <div class="col-xs-3 col-sm-2 col-md-2  boxMenuIzquierdo reset-padding">
+                <ul class="nav">
+                     <li class="btnMenuLateral" routerLink="{{item.url}}" routerLinkActive="active"  *ngFor="let item of menuLateral">
+                        <div class="imgBtnMenuLateral {{item.claseIcono}}">
+                            <i class="{{item.imagen}}"></i>
+                        </div>
+                        <div class="desBtnMenuLateral {{item.claseFondo}}">
+                            {{item.textoMenu}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-9 col-sm-10 col-md-10 row center-xs">
+                <div class="row col-xs-12 center-xs row-menu-general">
+                    <div class="col-xs-12">
+                        <div class="card full-height">
+                            <div class="card-header-formularios cafe-01-ico">
+                                <div class="row">
+                                    <div class="col-xs-12 reset-padding header-middle">
+                                        <i class="icon-shield2 margin-left05em"></i>Configuración factor seguro para {{institucion.razonSocial}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-block">
+                                <!-- FORMULARIO DE BUSQUEDA DE CONFIGURACIONES -->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <form [formGroup]="formularioBusqueda" (ngSubmit)="ConsultarConfiguracion(formularioBusqueda.value)" novalidate>
+                                            <div class="row row-margin-bottom">
+                                                <div class="col-xs-5 form-group">
+                                                    <label>Producto*</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-star icon-formulario"></i>
+                                                        </span>
+                                                        <select class='form-control' formControlName="producto">
+                                                            <option value="">Selecciona un producto</option>
+                                                            <option *ngFor="let item of productoValidate.registros" value={{item.idProducto}}>{{item.descripcionProducto}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <control-messages [control]="formularioBusqueda.controls.producto"></control-messages>
+                                                </div>
+                                                <div class="col-xs-5 form-group">
+                                                    <label>Periodicidad de pago*</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-calendar icon-formulario"></i>
+                                                        </span>
+                                                        <select class='form-control' formControlName="periocidad">
+                                                            <option value="">Selecciona una periodicidad</option>
+                                                            <option *ngFor="let item of periodicidadValidate.registros" value={{item.idPeridocidadPago}}>{{item.descripPeriodo}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <control-messages [control]="formularioBusqueda.controls.periocidad"></control-messages>
+                                                </div>
+                                                <div class="col-xs-2" id="columnaConsultar">
+                                                    <input type="submit" name="btnConsultar" id="consultar" class="btn" value="Consultar" [disabled]="!formularioBusqueda.valid">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- FORMULARIO DE BUSQUEDA DE CONFIGURACIONES -->
+                                <hr class="separador-mantenimiento">
+                                <br><br>
+                                <br><br>
+                                <!-- FORMULARIO PARA COPIAR CONFIGURACION -->
+                                <div class="row" *ngIf="formularioBusqueda.valid && enableFormConfig">
+                                    <div class="col-xs-12">
+                                        <form [formGroup]="formularioCopiar" (ngSubmit)="ConsultaConfInstitucion(formularioCopiar.value, formularioBusqueda.value)" novalidate>
+                                            <div class="row row-margin-bottom">
+                                                <div class="col-xs-2 form-group" id="copyRadioButton">
+                                                <label [ngClass]="{'radio-selected': enabledCopyConf,'radio-label': formularioBusqueda.valid && !enabledCopyConf,'radio-disabled': !formularioBusqueda.valid}">
+                                                         <input type="radio" name="copy" (click)="EnabledCopy()" [checked]="enabledCopyConf" [disabled]="!formularioBusqueda.valid">
+                                                         <span class="button-opt"><i class="icon-copy small-icon"></i></span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-8 form-group">
+                                                    <label>Copiar configuración de:</label>
+                                                    <div class="input-group" [ngClass]="{'element-disabled': !instituciones.length > 0}">
+                                                        <span class="input-group-addon alignJustifyCenter">
+                                                            <i class="icon-user icon-formulario"></i>
+                                                        </span>
+                                                        <select class='form-control' formControlName="institucion">
+                                                            <option value="">Selecciona una institución</option>
+                                                            <option *ngFor="let item of instituciones" value={{item.idInstitucion}}>{{item.razonSocial}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <control-messages [control]="formularioCopiar.controls.institucion"></control-messages>
+                                                </div>
+                                                <div class="col-xs-2" id="columnaConsultar">
+                                                    <input type="submit" name="btnConsultar" id="consultar" class="btn" value="Clonar" [disabled]="!formularioCopiar.valid">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <!-- FORMULARIO PARA COPIAR CONFIGURACION -->
+                                <div class="row" *ngIf="formularioBusqueda.valid && enableFormConfig">
+                                    <div class="col-xs-12">
+                                        <div class="row">
+                                            <div class="col-xs-6 text-left reset-padding">
+                                                <label class="table-title">Factor seguro</label>
+                                            </div>
+                                            <div class="col-xs-6 text-end reset-padding">
+                                                <button (click)="mostrarFormularioConfig()" type="button" class="btn btn-sm btn-success" *ngIf="enableFormConfig" [disabled]="!formularioBusqueda.valid || enabledCopyConf">
+                                                    <i class="icon-plus icon-btn-headers"></i>&nbsp;&nbsp;Nuevo
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                          <thead>
+                                              <th class="text-center">Cuota</th>
+                                              <th class="text-center">Comisión</th>
+                                              <th class="text-center">Edad Minima</th>
+                                              <th class="text-center">Edad Máxima</th>
+                                              <th class="text-center">Status</th>
+                                              <th class="text-center">Editar</th>
+                                          </thead>
+                                          <tbody>
+                                            <tr *ngFor="let item of plazosScoreDestino">
+                                                <td>{{item.cuota !== null ? item.cuota : '--'}}</td>
+                                                <td>{{item.comision !== null ? item.comision : '--'}}</td>
+                                                <td>{{item.edadMin !== null ? item.edadMin : '--'}}</td>
+                                                <td>{{item.edadMax !== null ? item.edadMax : '--'}}</td>
+                                                <td>
+                                                    <span class="tag tag-success" *ngIf="item.status === 1">Activo</span>
+                                                    <span class="tag tag-danger" *ngIf="item.status !== 1">Inactivo</span>
+                                                </td>
+                                                <td>
+                                                    <a (click)="llenarDatosFormulario(item)">
+                                                        <span class="icon-pencil-square text-inverse update-icon"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="plazosScoreDestino.length === 0">
+                                                <td colspan="6">
+                                                    <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                                </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- <br><br> -->
+                                <!-- <div class="row" *ngIf="false">
+                                    <div class="col-xs-12">
+                                        <table class="table">
+                                          <thead>
+                                              <th class="text-center">Cuota</th>
+                                              <th class="text-center">Comisión</th>
+                                              <th class="text-center">Edad Minima</th>
+                                              <th class="text-center">Edad Máxima</th>
+                                              <th class="text-center">Status</th>
+                                          </thead>
+                                          <tbody>
+                                            <tr *ngFor="let item of plazosScoreOrigen">
+                                                <td>{{item.cuota}}</td>
+                                                <td>{{item.comision}}</td>
+                                                <td>{{item.edadMin}}</td>
+                                                <td>{{item.edadMax}}</td>
+                                                <td>
+                                                    <span class="tag tag-success" *ngIf="item.status === 1">Activo</span>
+                                                    <span class="tag tag-danger" *ngIf="item.status !== 1">Inactivo</span>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="plazosScoreOrigen.length === 0">
+                                                <td colspan="5">
+                                                    <p class="resultado-vacio">No se obtuvo ningún resultado</p>
+                                                </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-dialog [(visible)]="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modal = false">
+                <span class="icon-cross" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title custom_align" id="Heading">Configuración Factor Seguro</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="card-block">
+                <form [formGroup]="formulario" (ngSubmit)="actualizarConfig(formulario.value)" novalidate>
+                    <fieldset class="form-group">
+                        <label>Cuota</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-money icon-formulario"></i>
+                            </span>
+                            <input type="text" class="form-control" formControlName="cuota" OnlyNumber="true">
+                        </div>
+                        <control-messages [control]="formulario.controls.cuota"></control-messages>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>Comisión</label>
+                        <div class="input-group">
+                            <span class="input-group-addon alignJustifyCenter">
+                                <i class="icon-money icon-formulario"></i>
+                            </span>
+                            <input type="text" class="form-control" formControlName="comision" OnlyNumber="true">
+                        </div>
+                        <control-messages [control]="formulario.controls.comision"></control-messages>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>Edad Mínima</label>
+                        <div class="input-group" [ngClass]="{'element-disabled': !createItem}">
+                            <span class="input-group-addon alignJustifyCenter">
+        	                    <i class="icon-hand-o-down icon-formulario"></i>
+        	                  </span>
+                            <select id="select" name="select" class="form-control" formControlName="edadMin" [ngClass]="{'element-invalid': (formulario.controls.edadMin.invalid && (formulario.controls.edadMin.dirty || formulario.controls.edadMin.touched))}">
+        	                    <option value="">Selecciona una edad</option>
+                                <option *ngFor="let item of edades" value="{{item}}">{{item}}</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formulario.controls.edadMin"></control-messages>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>Edad Máxima</label>
+                        <div class="input-group" [ngClass]="{'element-disabled': !createItem}">
+                            <span class="input-group-addon alignJustifyCenter">
+        	                    <i class="icon-hand-o-up icon-formulario"></i>
+        	                  </span>
+                            <select id="select" name="select" class="form-control" formControlName="edadMax" [ngClass]="{'element-invalid': (formulario.controls.edadMax.invalid && (formulario.controls.edadMax.dirty || formulario.controls.edadMax.touched))}">
+        	                    <option value="">Selecciona una edad</option>
+                                <option *ngFor="let item of edades" value="{{item}}">{{item}}</option>
+                            </select>
+                        </div>
+                        <control-messages [control]="formulario.controls.edadMax"></control-messages>
+                    </fieldset>
+                    <div class="modal-footer">
+                        <button (click)="modal = !modal;" type="button" class="btn btn-danger">
+                            <i class="icon-cross icoBntModal"></i>&nbsp;&nbsp;Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid" *ngIf="!createItem">
+                            <i class="icon-pencil-square-o icoBntModal"></i>&nbsp;&nbsp;Editar
+                        </button>
+                        <button type="submit" class="btn btn-success" [disabled]="!formulario.valid" *ngIf="createItem">
+                            <i class="icon-floppy-disk icoBntModal"></i>&nbsp;&nbsp;Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</app-dialog>
+
+<div *ngIf="activateLoading" class="Loading">
+    <div class="loader"></div>
+</div>
+
+<simple-notifications [options]="optionsNotifications"></simple-notifications>
